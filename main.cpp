@@ -4,6 +4,10 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include <iostream>
+#include "exprtkengine.h"
+#include "dicerolltracker.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

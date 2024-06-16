@@ -16,6 +16,8 @@ public:
 
     int evaluate(const QString& expression);
 
+    void setDiceRollTracker(DiceRollTracker* dt);
+
 private:
     exprtk::symbol_table<double> symbol_table;
 
