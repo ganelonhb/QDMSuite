@@ -9,6 +9,7 @@ CONFIG += c++23
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dicedockwidget.cpp \
     diceroll.cpp \
     dicerolltracker.cpp \
     exprtkengine.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     dice_roll.h \
+    dicedockwidget.h \
     diceroll.h \
     dicerolltracker.h \
     exprtk/exprtk.hpp \
@@ -24,6 +26,7 @@ HEADERS += \
     mainwindow.h
 
 FORMS += \
+    dicedockwidget.ui \
     mainwindow.ui
 
 TRANSLATIONS += \

@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "dicerolltracker.h"
+#include "dicedockwidget.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -19,5 +22,9 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+    DiceRollTracker dt;
+
+    DiceDockWidget *dock;
 };
 #endif // MAINWINDOW_H

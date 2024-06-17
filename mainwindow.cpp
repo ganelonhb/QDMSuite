@@ -6,6 +6,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    this->dock = new DiceDockWidget(&this->dt, this);
+
+    this->dock->setFloating(true);
+    this->dock->show();
 }
 
 MainWindow::~MainWindow()
