@@ -10,6 +10,7 @@
 *.dll
 *.dylib
 
+QDungeonSuite.pro.user
 build/
 
 # Qt-es

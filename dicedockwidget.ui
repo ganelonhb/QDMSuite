@@ -26,7 +26,8 @@
          <string/>
         </property>
         <property name="icon">
-         <iconset theme="QIcon::ThemeIcon::GoNext"/>
+         <iconset resource="res.qrc">
+          <normaloff>:/ui/icons/symbolic-dark/enter.svg</normaloff>:/ui/icons/symbolic-dark/enter.svg</iconset>
         </property>
         <property name="default">
          <bool>true</bool>
@@ -65,7 +66,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+           <iconset resource="res.qrc">
+            <normaloff>:/ui/icons/symbolic-dark/trash.svg</normaloff>:/ui/icons/symbolic-dark/trash.svg</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -113,7 +115,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::EditDelete"/>
+           <iconset resource="res.qrc">
+            <normaloff>:/ui/icons/symbolic-dark/trash.svg</normaloff>:/ui/icons/symbolic-dark/trash.svg</iconset>
           </property>
           <property name="flat">
            <bool>true</bool>
@@ -151,6 +154,8 @@
   <tabstop>clearExpressions</tabstop>
   <tabstop>clearRollHistory</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

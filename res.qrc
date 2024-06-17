@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/ui">
+        <file>icons/symbolic-dark/trash.svg</file>
+        <file>icons/symbolic-light/trash.svg</file>
+        <file>icons/symbolic-dark/enter.svg</file>
+        <file>icons/symbolic-light/enter.svg</file>
+        <file>icons/symbolic-dark/dice.svg</file>
+        <file>icons/symbolic-light/dice.svg</file>
+    </qresource>
+</RCC>

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QMenuBar>
 
 #include "dicerolltracker.h"
 #include "dicedockwidget.h"
@@ -31,5 +32,7 @@ private:
     DiceRollTracker dt;
 
     DiceDockWidget *dock;
+
+    const QMenuBar* menu;
 };
 #endif // MAINWINDOW_H

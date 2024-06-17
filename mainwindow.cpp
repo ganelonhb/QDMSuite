@@ -7,10 +7,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->dock = new DiceDockWidget(&this->dt, this);
+    this->menu = this->menuBar();
 
-    this->dock->setFloating(true);
+    this->dock = new DiceDockWidget(&this->dt, this);
     this->dock->hide();
+    this->dock->setFloating(true);
 
     connect(&this->dt, &DiceRollTracker::changed, this, &MainWindow::dice_rolled);
 }
