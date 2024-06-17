@@ -67,3 +67,18 @@ const DiceRoll& DiceRollTracker::operator[](int i) const
 {
     return this->_results[i];
 }
+
+const DiceRoll& DiceRollTracker::first() const
+{
+    return this->_results.first();
+}
+
+const DiceRoll& DiceRollTracker::last() const
+{
+    return this->_results.last();
+}
+
+bool DiceRollTracker::empty() const
+{
+    return this->_results.empty();
+}

@@ -20,6 +20,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_actionDice_Roller_triggered();
+
+    void dice_rolled();
+
 private:
     Ui::MainWindow *ui;
 

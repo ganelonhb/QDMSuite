@@ -31,6 +31,11 @@ public:
 
     const DiceRoll& operator[](int i) const;
 
+    const DiceRoll& first() const;
+    const DiceRoll& last() const;
+
+    bool empty() const;
+
 signals:
     void changed(const QList<DiceRoll>& results);
 

@@ -3,7 +3,6 @@
 
 #include <exprtk/exprtk.hpp>
 #include <QString>
-#include <QStringTokenizer>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 
