@@ -14,6 +14,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->dock->setFloating(true);
 
     connect(&this->dt, &DiceRollTracker::changed, this, &MainWindow::dice_rolled);
+
+    QHBoxLayout* horizontalLayout = new QHBoxLayout(this->ui->homeTab);
+
+    this->ui->homeTab->setLayout(horizontalLayout);
+
+    this->ui->homeTab->layout()->addWidget(new WelcomeWidget());
 }
 
 MainWindow::~MainWindow()

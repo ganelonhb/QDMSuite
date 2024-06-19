@@ -3,9 +3,12 @@
 
 #include <QMainWindow>
 #include <QMenuBar>
+#include <QHBoxLayout>
 
 #include "dicerolltracker.h"
 #include "dicedockwidget.h"
+
+#include "welcomewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -34,5 +37,7 @@ private:
     DiceDockWidget *dock;
 
     const QMenuBar* menu;
+
+    WelcomeWidget *w;
 };
 #endif // MAINWINDOW_H

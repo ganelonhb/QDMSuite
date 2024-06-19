@@ -14,7 +14,8 @@ SOURCES += \
     dicerolltracker.cpp \
     exprtkengine.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    welcomewidget.cpp
 
 HEADERS += \
     dice_roll.h \
@@ -23,11 +24,13 @@ HEADERS += \
     dicerolltracker.h \
     exprtk/exprtk.hpp \
     exprtkengine.h \
-    mainwindow.h
+    mainwindow.h \
+    welcomewidget.h
 
 FORMS += \
     dicedockwidget.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    welcomewidget.ui
 
 TRANSLATIONS += \
     QDungeonSuite_en_US.ts

@@ -6,5 +6,6 @@
         <file>icons/symbolic-light/enter.svg</file>
         <file>icons/symbolic-dark/dice.svg</file>
         <file>icons/symbolic-light/dice.svg</file>
+        <file>imgs/dice-twenty-faces-twenty.svg</file>
     </qresource>
 </RCC>
