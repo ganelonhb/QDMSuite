@@ -37,7 +37,8 @@ FORMS += \
     welcomewidget.ui
 
 TRANSLATIONS += \
-    QDungeonSuite_en_US.ts
+    QDungeonSuite_en_US.ts \
+    QDungeonSuite_ja_JP.ts
 CONFIG += lrelease
 CONFIG += embed_translations
 

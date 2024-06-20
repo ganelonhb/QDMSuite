@@ -1,8 +1,6 @@
 #include "dicedockwidget.h"
 #include "ui_dicedockwidget.h"
 
-#include <iostream>
-
 DiceDockWidget::DiceDockWidget(DiceRollTracker *dt, QWidget *parent)
     : QDockWidget(parent)
     , ui(new Ui::DiceDockWidget)
@@ -103,13 +101,21 @@ void DiceDockWidget::on_enterPushButton_clicked()
 {
     const QString currentText = this->ui->historyTextEdit->toPlainText();
     const QString lineEditText = this->ui->expressionLineEdit->text();
+
     QString answer;
 
-    try{
-        answer = currentText + lineEditText + ": " +QString::number(this->e.evaluate(lineEditText.simplified())) + "\n";
+    if (lineEditText.simplified().length())
+    {
+        try{
+            answer = currentText + lineEditText + ": " +QString::number(this->e.evaluate(lineEditText.simplified())) + "\n";
+        }
+        catch (const ExprTkParseException &e){
+            answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
+        }
     }
-    catch (const ExprTkParseException &e){
-        answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
+    else
+    {
+        answer = currentText + "You haven't written anything in the expression field.\n";
     }
 
     this->ui->historyTextEdit->setText(answer);
