@@ -13,6 +13,7 @@ SOURCES += \
     diceroll.cpp \
     dicerolltracker.cpp \
     exprtkengine.cpp \
+    exprtkparseexception.cpp \
     main.cpp \
     mainwindow.cpp \
     welcomewidget.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     dicerolltracker.h \
     exprtk/exprtk.hpp \
     exprtkengine.h \
+    exprtkparseexception.h \
     mainwindow.h \
     welcomewidget.h
 

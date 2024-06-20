@@ -52,8 +52,16 @@ void DiceDockWidget::on_enterPushButton_clicked()
 {
     const QString currentText = this->ui->historyTextEdit->toPlainText();
     const QString lineEditText = this->ui->expressionLineEdit->text();
-    const QString answer = QString::number(this->e.evaluate(lineEditText.simplified()));
-    this->ui->historyTextEdit->setText(currentText + lineEditText + ": " + answer + "\n");
+    QString answer;
+
+    try{
+        answer = currentText + lineEditText + ": " +QString::number(this->e.evaluate(lineEditText.simplified())) + "\n";
+    }
+    catch (const ExprTkParseException &e){
+        answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
+    }
+
+    this->ui->historyTextEdit->setText(answer);
 
     this->ui->expressionLineEdit->clear();
 }

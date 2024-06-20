@@ -7,5 +7,17 @@
         <file>icons/symbolic-dark/dice.svg</file>
         <file>icons/symbolic-light/dice.svg</file>
         <file>imgs/dice-twenty-faces-twenty.svg</file>
+        <file>dice/symbolic-dark/d20.svg</file>
+        <file>dice/symbolic-dark/d12.svg</file>
+        <file>dice/symbolic-dark/d10.svg</file>
+        <file>dice/symbolic-dark/d8.svg</file>
+        <file>dice/symbolic-dark/d6.svg</file>
+        <file>dice/symbolic-dark/d4.svg</file>
+        <file>dice/symbolic-light/d20.svg</file>
+        <file>dice/symbolic-light/d12.svg</file>
+        <file>dice/symbolic-light/d10.svg</file>
+        <file>dice/symbolic-light/d8.svg</file>
+        <file>dice/symbolic-light/d6.svg</file>
+        <file>dice/symbolic-light/d4.svg</file>
     </qresource>
 </RCC>

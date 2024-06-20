@@ -19,8 +19,6 @@ int ExprTkEngine::evaluate(const QString& expression)
 
     QStringList result = e.split(' ');
 
-    QRegularExpression re("(?<number>\\d+)d(?<sides>\\d+)");
-
     for (QString& str : result)
     {
 
@@ -35,7 +33,9 @@ int ExprTkEngine::evaluate(const QString& expression)
         std::cout << str.toStdString() << "\n\n";
     }
 
-    parser.compile(result.join(' ').toStdString(), exp);
+    if (!parser.compile(result.join(' ').toStdString(), exp))
+        throw ExprTkParseException();
+
 
     return exp.value();
 }

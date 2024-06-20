@@ -5,6 +5,7 @@
 
 #include "exprtkengine.h"
 #include "dicerolltracker.h"
+#include "exprtkparseexception.h"
 
 namespace Ui {
 class DiceDockWidget;

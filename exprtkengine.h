@@ -5,8 +5,10 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QException>
 
 #include "dice_roll.h"
+#include "exprtkparseexception.h"
 
 class ExprTkEngine
 {
@@ -21,6 +23,8 @@ private:
     exprtk::symbol_table<double> symbol_table;
 
     dice_roll<double> roll;
+
+    QRegularExpression re{"(?<number>\\d+)d(?<sides>\\d+)"};
 
 };
 
