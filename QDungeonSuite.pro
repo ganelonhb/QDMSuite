@@ -16,6 +16,7 @@ SOURCES += \
     exprtkparseexception.cpp \
     main.cpp \
     mainwindow.cpp \
+    qclickablelabel.cpp \
     welcomewidget.cpp
 
 HEADERS += \
@@ -27,6 +28,7 @@ HEADERS += \
     exprtkengine.h \
     exprtkparseexception.h \
     mainwindow.h \
+    qclickablelabel.h \
     welcomewidget.h
 
 FORMS += \

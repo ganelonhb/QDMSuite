@@ -42,6 +42,29 @@
       </widget>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QTreeWidget" name="treeWidget">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <attribute name="headerVisible">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Current Tools</string>
+       </property>
+      </column>
+      <item>
+       <property name="text">
+        <string>Home</string>
+       </property>
+      </item>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -97,17 +120,19 @@
   </widget>
   <action name="actionDice_Roller">
    <property name="icon">
-    <iconset>
+    <iconset resource="res.qrc">
      <normaloff>:/ui/icons/symbolic-dark/dice.svg</normaloff>:/ui/icons/symbolic-dark/dice.svg</iconset>
    </property>
    <property name="text">
-    <string>Dice Roller</string>
+    <string>&amp;Dice Roller</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
  <connections/>
 </ui>

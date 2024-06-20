@@ -5,6 +5,7 @@
 #include <QString>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
+#include <QRegularExpressionMatchIterator>
 #include <QException>
 
 #include "dice_roll.h"
@@ -24,7 +25,7 @@ private:
 
     dice_roll<double> roll;
 
-    QRegularExpression re{"(?<number>\\d+)d(?<sides>\\d+)"};
+    QRegularExpression re{"\\b(?<number>\\d+)d(?<sides>\\d+)\\b"};
 
 };
 

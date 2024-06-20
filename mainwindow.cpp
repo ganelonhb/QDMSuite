@@ -40,3 +40,12 @@ void MainWindow::dice_rolled()
         this->ui->statusbar->showMessage(message);
     }
 }
+
+void MainWindow::on_tabWidget_tabCloseRequested(int index)
+{
+    Q_UNUSED(index);
+
+    if (this->ui->tabWidget->count() == 1)
+        this->ui->tabWidget->removeTab(0);
+}
+
