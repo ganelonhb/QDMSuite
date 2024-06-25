@@ -5,12 +5,16 @@
 #include <QTranslator>
 
 #include <iostream>
-#include "exprtkengine.h"
-#include "dicerolltracker.h"
+#include <QStandardPaths>
+#include "fantasynamegeneratorwidget.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    FantasyNameGeneratorWidget retard;
+
+    QCoreApplication::setApplicationName("qdms");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

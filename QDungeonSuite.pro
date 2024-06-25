@@ -14,9 +14,11 @@ SOURCES += \
     dicerolltracker.cpp \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
+    fantasynamegeneratorwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     qclickablelabel.cpp \
+    swearchecker.cpp \
     welcomewidget.cpp
 
 HEADERS += \
@@ -27,12 +29,15 @@ HEADERS += \
     exprtk/exprtk.hpp \
     exprtkengine.h \
     exprtkparseexception.h \
+    fantasynamegeneratorwidget.h \
     mainwindow.h \
     qclickablelabel.h \
+    swearchecker.h \
     welcomewidget.h
 
 FORMS += \
     dicedockwidget.ui \
+    fantasynamegeneratorwidget.ui \
     mainwindow.ui \
     welcomewidget.ui
 

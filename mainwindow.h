@@ -7,8 +7,7 @@
 
 #include "dicerolltracker.h"
 #include "dicedockwidget.h"
-
-#include "welcomewidget.h"
+#include "fantasynamegeneratorwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -40,6 +39,5 @@ private:
 
     const QMenuBar* menu;
 
-    WelcomeWidget *w;
 };
 #endif // MAINWINDOW_H

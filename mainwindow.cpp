@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->ui->homeTab->setLayout(horizontalLayout);
 
-    this->ui->homeTab->layout()->addWidget(new WelcomeWidget());
+    this->ui->homeTab->layout()->addWidget(new FantasyNameGeneratorWidget());
 }
 
 MainWindow::~MainWindow()
