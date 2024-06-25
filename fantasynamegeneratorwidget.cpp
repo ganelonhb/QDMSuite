@@ -26,6 +26,8 @@ FantasyNameGeneratorWidget::FantasyNameGeneratorWidget(QWidget *parent)
 
     if (QDir d; !nameGenerators.exists())
         d.mkdir(nameGenerators.absolutePath());
+
+    this->generatorPath = nameGenerators;
 }
 
 FantasyNameGeneratorWidget::~FantasyNameGeneratorWidget()

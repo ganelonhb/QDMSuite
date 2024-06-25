@@ -19,6 +19,8 @@ public:
 
 private:
     Ui::FantasyNameGeneratorWidget *ui;
+
+    QDir generatorPath;
 };
 
 #endif // FANTASYNAMEGENERATORWIDGET_H
