@@ -1,8 +1,10 @@
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++23
+
+INCLUDEPATH += $$PWD/deps
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -14,6 +16,7 @@ SOURCES += \
     dicerolltracker.cpp \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
+    fantasynamegeneratordownloader.cpp \
     fantasynamegeneratorwidget.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -26,10 +29,11 @@ HEADERS += \
     dicedockwidget.h \
     diceroll.h \
     dicerolltracker.h \
-    exprtk/exprtk.hpp \
     exprtkengine.h \
     exprtkparseexception.h \
+    fantasynamegeneratordownloader.h \
     fantasynamegeneratorwidget.h \
+    genderflags.h \
     mainwindow.h \
     qclickablelabel.h \
     swearchecker.h \
