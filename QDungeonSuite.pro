@@ -17,6 +17,7 @@ SOURCES += \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
     fantasynamegeneratordownloader.cpp \
+    fantasynamegeneratoritem.cpp \
     fantasynamegeneratorwidget.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     exprtkengine.h \
     exprtkparseexception.h \
     fantasynamegeneratordownloader.h \
+    fantasynamegeneratoritem.h \
     fantasynamegeneratorwidget.h \
     genderflags.h \
     mainwindow.h \
