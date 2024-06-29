@@ -21,5 +21,8 @@
         <file>dice/symbolic-light/d4.svg</file>
         <file>dice/symbolic-dark/dPercent.svg</file>
         <file>dice/symbolic-light/dPercent.svg</file>
+        <file>icons/symbolic-dark/cloud-download.svg</file>
+        <file>icons/symbolic-light/cloud-download.svg</file>
+        <file>imgs/logo.svg</file>
     </qresource>
 </RCC>

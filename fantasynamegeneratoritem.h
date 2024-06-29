@@ -2,24 +2,16 @@
 #define FANTASYNAMEGENERATORITEM_H
 
 #include <QString>
-#include <cstdint>
-
-#include "genderflags.h"
 
 struct FantasyNameGeneratorItem
 {
-private:
-    using gender_t = FantasyNameGender::namegenderflags_t;
-
 public:
-    FantasyNameGeneratorItem(QString name, QString scriptUrl, QString homeUrl, gender_t gender);
-    FantasyNameGeneratorItem(QString name, QString scriptUrl, QString homeUrl, int gender);
+    FantasyNameGeneratorItem(QString name, QString category, QString subCategory, QString url);
 
     QString name;
-    QString scriptUrl;
-    QString homeUrl;
-
-    gender_t gender;
+    QString category;
+    QString subCategory;
+    QString url;
 };
 
 #endif // FANTASYNAMEGENERATORITEM_H

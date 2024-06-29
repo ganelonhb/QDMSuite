@@ -16,7 +16,7 @@ SOURCES += \
     dicerolltracker.cpp \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
-    fantasynamegeneratordownloader.cpp \
+    fantasynamegeneratordownloadwidget.cpp \
     fantasynamegeneratoritem.cpp \
     fantasynamegeneratorwidget.cpp \
     main.cpp \
@@ -32,7 +32,7 @@ HEADERS += \
     dicerolltracker.h \
     exprtkengine.h \
     exprtkparseexception.h \
-    fantasynamegeneratordownloader.h \
+    fantasynamegeneratordownloadwidget.h \
     fantasynamegeneratoritem.h \
     fantasynamegeneratorwidget.h \
     genderflags.h \
@@ -43,6 +43,7 @@ HEADERS += \
 
 FORMS += \
     dicedockwidget.ui \
+    fantasynamegeneratordownloadwidget.ui \
     fantasynamegeneratorwidget.ui \
     mainwindow.ui \
     welcomewidget.ui
