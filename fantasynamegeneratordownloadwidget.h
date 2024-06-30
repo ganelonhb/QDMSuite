@@ -27,6 +27,8 @@ signals:
 private slots:
     void finished(QNetworkReply *q);
 
+    void on_cancelButton_clicked();
+
 private:
     Ui::FantasyNameGeneratorDownloadWidget *ui;
 

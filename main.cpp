@@ -4,15 +4,13 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include <iostream>
-#include <QStandardPaths>
-#include "fantasynamegeneratorwidget.h"
+#include "fantasynamegeneratoritem.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    FantasyNameGeneratorWidget retard;
+    qRegisterMetaType<FantasyNameGeneratorItem*>("FantasyNameGeneratorItem*");
 
     QCoreApplication::setApplicationName("qdms");
 

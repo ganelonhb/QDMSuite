@@ -38,3 +38,9 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 
     emit downloadComplete(true);
 }
+
+void FantasyNameGeneratorDownloadWidget::on_cancelButton_clicked()
+{
+    this->close();
+}
+
