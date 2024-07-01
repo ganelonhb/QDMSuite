@@ -7,6 +7,10 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <htmlparser/html.hpp>
+#include <QTreeWidgetItem>
+#include <QIcon>
+#include <QList>
+
 #include <vector>
 
 namespace Ui {

@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+
+
 FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , ui(new Ui::FantasyNameGeneratorDownloadWidget)
@@ -39,20 +41,27 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 
     std::vector<html::node *> selected = node->select("ul.navmenu>li");
 
-    for (size_t i = 1; i < selected.size() - 2; ++i)
+    QList<QTreeWidgetItem *> items;
+    for (size_t i = 1; i < selected.size() - 4; ++i)
     {
-        QString name = QString::fromStdString(selected[i]->to_text()).split('\n')[0];
+        QString name = QString::fromStdString(selected[i]->to_text()).split('\n')[0].simplified();
 
-        std::vector<html::node *> main = selected[i]->select("ol.mainOl>li");
-        for (auto e : main)
-        {
-            if (e->get_attr("class") == "subList")
-            {
-                QString subListName = QString::fromStdString(e->to_text()).split('\n')[0];
-                std::cout << subListName.toStdString() << "\n\n";
-            }
-        }
+        QTreeWidgetItem *item = new QTreeWidgetItem(0);
+        item->setText(0, name);
+
+        if (name == "Fantasy & Folklore")
+            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/fantasy-and-folklore.svg"));
+        if (name == "Real Names")
+            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/real-names.svg"));
+        if (name == "Places & Locations")
+            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/places-and-locations.svg"));
+        if (name == "Other Names")
+            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/other-names.svg"));
+
+        items.append(item);
     }
+
+    this->ui->treeWidget->insertTopLevelItems(0, items);
 
     /* parse DOM and put in tree */
     r->deleteLater();
