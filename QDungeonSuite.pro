@@ -11,6 +11,7 @@ INCLUDEPATH += $$PWD/deps
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    deps/htmlparser/html.cpp \
     dicedockwidget.cpp \
     diceroll.cpp \
     dicerolltracker.cpp \
@@ -26,6 +27,7 @@ SOURCES += \
     welcomewidget.cpp
 
 HEADERS += \
+    deps/htmlparser/html.hpp \
     dice_roll.h \
     dicedockwidget.h \
     diceroll.h \

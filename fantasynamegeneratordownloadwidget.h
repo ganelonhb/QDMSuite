@@ -6,6 +6,8 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <htmlparser/html.hpp>
+#include <vector>
 
 namespace Ui {
 class FantasyNameGeneratorDownloadWidget;
@@ -33,6 +35,8 @@ private:
     Ui::FantasyNameGeneratorDownloadWidget *ui;
 
     QNetworkAccessManager *nw;
+    html::parser p;
+    html::node_ptr node;
 };
 
 #endif // FANTASYNAMEGENERATORDOWNLOADWIDGET_H
