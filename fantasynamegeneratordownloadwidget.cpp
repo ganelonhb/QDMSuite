@@ -48,6 +48,7 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 
         QTreeWidgetItem *item = new QTreeWidgetItem(0);
         item->setText(0, name);
+        item->setCheckState(0, Qt::Unchecked);
 
         if (name == "Fantasy & Folklore")
             item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/fantasy-and-folklore.svg"));
@@ -57,6 +58,8 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
             item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/places-and-locations.svg"));
         if (name == "Other Names")
             item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/other-names.svg"));
+        if (name == "Pop Culture")
+            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/pop-culture.svg"));
 
         items.append(item);
     }
@@ -72,5 +75,35 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 void FantasyNameGeneratorDownloadWidget::on_cancelButton_clicked()
 {
     this->close();
+}
+
+void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Qt::CheckState &arg1)
+{
+    Q_UNUSED(arg1);
+
+    // block signals for these two
+    this->ui->checkAllCheckBox->blockSignals(true);
+    this->ui->checkAllCheckBox->setCheckState(Qt::Unchecked);
+    this->ui->checkAllCheckBox->blockSignals(false);
+
+    this->ui->checkSelectedCheckBox->blockSignals(true);
+    this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
+    this->ui->checkSelectedCheckBox->blockSignals(false);
+
+    for (QTreeWidgetItem* item : this->ui->treeWidget)
+        item->setCheckState(0, Qt::Unchecked);
+
+    this->ui->unCheckAll->blockSignals(true);
+    this->ui->unCheckAll->setCheckState(Qt::Unchecked);
+    this->ui->unCheckAll->blockSignals(false);
+}
+
+
+void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemSelectionChanged()
+{
+    //block signals and uncheck checkSelected
+    this->ui->checkSelectedCheckBox->blockSignals(true);
+    this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
+    this->ui->checkSelectedCheckBox->blockSignals(false);
 }
 

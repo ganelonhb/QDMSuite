@@ -34,6 +34,9 @@ private slots:
     void finished(QNetworkReply *q);
 
     void on_cancelButton_clicked();
+    void on_unCheckAll_checkStateChanged(const Qt::CheckState &arg1);
+
+    void on_treeWidget_itemSelectionChanged();
 
 private:
     Ui::FantasyNameGeneratorDownloadWidget *ui;

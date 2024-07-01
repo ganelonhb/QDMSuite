@@ -19,7 +19,61 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Select which generators to download/update.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="unCheckAll">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="text">
+        <string>Uncheck All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkAllCheckBox">
+       <property name="text">
+        <string>Check All</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkSelectedCheckBox">
+       <property name="text">
+        <string>Check Selected</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <widget class="QTreeWidget" name="treeWidget">
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectionBehavior::SelectItems</enum>
+     </property>
      <attribute name="headerVisible">
       <bool>false</bool>
      </attribute>
