@@ -77,11 +77,10 @@ void FantasyNameGeneratorDownloadWidget::on_cancelButton_clicked()
     this->close();
 }
 
-void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Qt::CheckState &arg1)
+void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Qt::CheckState &state)
 {
-    Q_UNUSED(arg1);
+    Q_UNUSED(state);
 
-    // block signals for these two
     this->ui->checkAllCheckBox->blockSignals(true);
     this->ui->checkAllCheckBox->setCheckState(Qt::Unchecked);
     this->ui->checkAllCheckBox->blockSignals(false);
@@ -90,20 +89,123 @@ void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Q
     this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
     this->ui->checkSelectedCheckBox->blockSignals(false);
 
-    for (QTreeWidgetItem* item : this->ui->treeWidget)
-        item->setCheckState(0, Qt::Unchecked);
+    setAllCheckStates(this->ui->treeWidget, Qt::Unchecked);
 
     this->ui->unCheckAll->blockSignals(true);
     this->ui->unCheckAll->setCheckState(Qt::Unchecked);
     this->ui->unCheckAll->blockSignals(false);
 }
 
+inline void FantasyNameGeneratorDownloadWidget::iterateTreeItems(QTreeWidgetItem* item, Qt::CheckState state)
+{
+    if (!item) return;
+
+    item->setCheckState(0, state);
+
+    for (int i = 0; i < item->childCount(); ++i)
+        iterateTreeItems(item->child(i), state);
+}
+
+inline void FantasyNameGeneratorDownloadWidget::setAllCheckStates(QTreeWidget* widget, Qt::CheckState state)
+{
+    for (int i = 0; i < widget->topLevelItemCount(); ++i)
+        iterateTreeItems(widget->topLevelItem(i), state);
+}
+
 
 void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemSelectionChanged()
 {
-    //block signals and uncheck checkSelected
     this->ui->checkSelectedCheckBox->blockSignals(true);
     this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
     this->ui->checkSelectedCheckBox->blockSignals(false);
+}
+
+
+void FantasyNameGeneratorDownloadWidget::on_checkAllCheckBox_checkStateChanged(const Qt::CheckState &state)
+{
+    if (!this->ui->treeWidget->selectedItems().empty())
+    {
+        this->ui->checkSelectedCheckBox->blockSignals(true);
+        this->ui->checkSelectedCheckBox->setCheckState(state);
+        this->ui->checkSelectedCheckBox->blockSignals(false);
+    }
+
+    setAllCheckStates(this->ui->treeWidget, state);
+}
+
+
+void FantasyNameGeneratorDownloadWidget::on_checkSelectedCheckBox_checkStateChanged(const Qt::CheckState &state)
+{
+    for (QTreeWidgetItem* item : this->ui->treeWidget->selectedItems())
+        item->setCheckState(0, state);
+
+    if (allChecked(this->ui->treeWidget))
+    {
+        this->ui->checkAllCheckBox->blockSignals(true);
+        this->ui->checkAllCheckBox->setCheckState(Qt::Checked);
+        this->ui->checkAllCheckBox->blockSignals(false);
+    }
+}
+
+
+void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+    Q_UNUSED(column);
+
+    if (item->checkState(0) == Qt::Unchecked)
+    {
+        this->ui->checkAllCheckBox->blockSignals(true);
+        this->ui->checkAllCheckBox->setCheckState(Qt::Unchecked);
+        this->ui->checkAllCheckBox->blockSignals(false);
+    }
+
+    if (allChecked(this->ui->treeWidget))
+    {
+        this->ui->checkAllCheckBox->blockSignals(true);
+        this->ui->checkAllCheckBox->setCheckState(Qt::Checked);
+        this->ui->checkAllCheckBox->blockSignals(false);
+    }
+
+    bool allSelected = true;
+
+    for(QTreeWidgetItem* i : this->ui->treeWidget->selectedItems())
+        if (i->checkState(0) != Qt::Checked) allSelected = false;
+
+    if (allSelected)
+    {
+        this->ui->checkSelectedCheckBox->blockSignals(true);
+        this->ui->checkSelectedCheckBox->setCheckState(Qt::Checked);
+        this->ui->checkSelectedCheckBox->blockSignals(false);
+    }
+    else
+    {
+        this->ui->checkSelectedCheckBox->blockSignals(true);
+        this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
+        this->ui->checkSelectedCheckBox->blockSignals(false);
+    }
+
+}
+
+inline bool FantasyNameGeneratorDownloadWidget::allChecked(QTreeWidget* widget)
+{
+    bool allChecked = true;
+
+    for (int i = 0; i < widget->topLevelItemCount(); ++i)
+        iterateTreeCheck(widget->topLevelItem(i), allChecked);
+
+    return allChecked;
+}
+inline void FantasyNameGeneratorDownloadWidget::iterateTreeCheck(QTreeWidgetItem* item, bool& allChecked)
+{
+    if (!item || !allChecked) return;
+
+    if (item->checkState(0) == Qt::Unchecked)
+    {
+        allChecked = false;
+        return;
+    }
+
+    for (int i = 0; i < item->childCount(); ++i)
+        iterateTreeCheck(item->child(i), allChecked);
 }
 
