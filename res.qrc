@@ -34,5 +34,7 @@
         <file>icons/symbolic-light/other-names.svg</file>
         <file>icons/symbolic-dark/pop-culture.svg</file>
         <file>icons/symbolic-light/pop-culture.svg</file>
+        <file>icons/symbolic-dark/fng.svg</file>
+        <file>icons/symbolic-light/fng.svg</file>
     </qresource>
 </RCC>

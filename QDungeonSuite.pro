@@ -11,10 +11,11 @@ INCLUDEPATH += $$PWD/deps
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    contextmenupushbutton.cpp \
     deps/htmlparser/html.cpp \
-    dicedockwidget.cpp \
     diceroll.cpp \
     dicerolltracker.cpp \
+    dicerollwidget.cpp \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
     fantasynamegeneratordownloadwidget.cpp \
@@ -27,11 +28,12 @@ SOURCES += \
     welcomewidget.cpp
 
 HEADERS += \
+    contextmenupushbutton.h \
     deps/htmlparser/html.hpp \
     dice_roll.h \
-    dicedockwidget.h \
     diceroll.h \
     dicerolltracker.h \
+    dicerollwidget.h \
     exprtkengine.h \
     exprtkparseexception.h \
     fantasynamegeneratordownloadwidget.h \
@@ -44,7 +46,7 @@ HEADERS += \
     welcomewidget.h
 
 FORMS += \
-    dicedockwidget.ui \
+    dicerollwidget.ui \
     fantasynamegeneratordownloadwidget.ui \
     fantasynamegeneratorwidget.ui \
     mainwindow.ui \
