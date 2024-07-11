@@ -60,92 +60,87 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 
 void MainWindow::on_diceRollerToolButton_clicked()
 {
-    newDiceRollerDock();
+    this->newWidget(new DiceRollWidget(&dt), WidgetType::FLOATING_DOCK, "Dice Roller");
 }
 
 void MainWindow::newDiceRollerTab()
 {
-    QWidget *tab = new QWidget(this);
-    DiceRollWidget *diceRoll = new DiceRollWidget(&dt, tab);
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(tab);
-
-    tab->setLayout(horizontalLayout);
-
-    tab->layout()->addWidget(diceRoll);
-    this->ui->tabWidget->addTab(tab, "Dice Roller");
+    this->newWidget(new DiceRollWidget(&dt), WidgetType::TAB, "Dice Roller");
 }
 
 void MainWindow::newDiceRollerWindow()
 {
-    QWidget *window = new QWidget(this, Qt::WindowFlags() | Qt::Window);
-    window->setAttribute(Qt::WA_DeleteOnClose);
-    window->setWindowTitle("Dice Roller");
-
-    DiceRollWidget *diceRoll = new DiceRollWidget(&dt, window);
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(window);
-    window->setLayout(horizontalLayout);
-
-    window->layout()->addWidget(diceRoll);
-
-    window->show();
+    this->newWidget(new DiceRollWidget(&dt), WidgetType::WINDOW, "Dice Roller");
 }
 
 void MainWindow::newDiceRollerDock()
 {
-    QDockWidget *dock = new QDockWidget(this);
-    dock->setFloating(true);
-    dock->setAttribute(Qt::WA_DeleteOnClose);
-    dock->setWindowTitle("Dice Roller");
-
-    DiceRollWidget *diceRoll = new DiceRollWidget(&dt, dock);
-    dock->setWidget(diceRoll);
-
-    dock->show();
+    this->newWidget(new DiceRollWidget(&dt), WidgetType::FLOATING_DOCK, "Dice Roller");
 }
 
 void MainWindow::newFNGTab()
 {
-    QWidget *tab = new QWidget(this);
-    FantasyNameGeneratorWidget *fng = new FantasyNameGeneratorWidget(tab);
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(tab);
-
-    tab->setLayout(horizontalLayout);
-
-    tab->layout()->addWidget(fng);
-    this->ui->tabWidget->addTab(tab, "Fantasy Name Generator");
+    this->newWidget(new FantasyNameGeneratorWidget, WidgetType::TAB, "Fantasy Name Generator");
 }
 
 void MainWindow::newFNGWindow()
 {
-    QWidget *window = new QWidget(this, Qt::WindowFlags() | Qt::Window);
-    window->setAttribute(Qt::WA_DeleteOnClose);
-    window->setWindowTitle("Fantasy Name Generator");
-
-    FantasyNameGeneratorWidget *fng = new FantasyNameGeneratorWidget(window);
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(window);
-    window->setLayout(horizontalLayout);
-
-    window->layout()->addWidget(fng);
-
-    window->show();
+    this->newWidget(new FantasyNameGeneratorWidget, WidgetType::WINDOW, "Fantasy Name Generator");
 }
 
 void MainWindow::newFNGDock()
 {
-    QDockWidget *dock = new QDockWidget(this);
-    dock->setFloating(true);
-    dock->setAttribute(Qt::WA_DeleteOnClose);
-    dock->setWindowTitle("Fantasy Name Generator");
-
-    FantasyNameGeneratorWidget *fng = new FantasyNameGeneratorWidget(dock);
-    dock->setWidget(fng);
-
-    dock->show();
+    this->newWidget(new FantasyNameGeneratorWidget, WidgetType::FLOATING_DOCK, "Fantasy Name Generator");
 }
 
 
 void MainWindow::on_fantasyNameGenerator_clicked()
 {
-    this->newFNGTab();
+    this->newWidget(new FantasyNameGeneratorWidget, WidgetType::TAB, "Fantasy Name Generator");
+}
+
+void MainWindow::newWidget(QWidget *widget, MainWindow::WidgetType wt, const QString &title)
+{
+
+    if (wt == MainWindow::WidgetType::WINDOW)
+    {
+        QWidget *window = new QWidget(this, Qt::WindowFlags() | Qt::Window);
+        window->setAttribute(Qt::WA_DeleteOnClose);
+        window->setWindowTitle(title);
+
+        widget->setParent(window);
+        QHBoxLayout* horizontalLayout = new QHBoxLayout(window);
+        window->setLayout(horizontalLayout);
+
+        window->layout()->addWidget(widget);
+
+        window->show();
+    }
+    else if (wt == MainWindow::WidgetType::TAB)
+    {
+        QWidget *tab = new QWidget(this);
+        widget->setParent(tab);
+        QHBoxLayout* horizontalLayout = new QHBoxLayout(tab);
+
+        tab->setLayout(horizontalLayout);
+
+        tab->layout()->addWidget(widget);
+        this->ui->tabWidget->addTab(tab, title);
+        this->ui->tabWidget->setCurrentIndex(this->ui->tabWidget->count() - 1);
+    }
+    else if (wt == MainWindow::WidgetType::FLOATING_DOCK)
+    {
+        QDockWidget *dock = new QDockWidget(this);
+        dock->setFloating(true);
+        dock->setAttribute(Qt::WA_DeleteOnClose);
+        dock->setWindowTitle(title);
+
+        widget->setParent(dock);
+        dock->setWidget(widget);
+
+        dock->show();
+    }
+
+    return;
 }
 

@@ -24,17 +24,17 @@
         <file>icons/symbolic-dark/cloud-download.svg</file>
         <file>icons/symbolic-light/cloud-download.svg</file>
         <file>imgs/logo.svg</file>
-        <file>icons/symbolic-dark/fantasy-and-folklore.svg</file>
-        <file>icons/symbolic-light/fantasy-and-folklore.svg</file>
-        <file>icons/symbolic-dark/real-names.svg</file>
-        <file>icons/symbolic-light/real-names.svg</file>
-        <file>icons/symbolic-dark/places-and-locations.svg</file>
-        <file>icons/symbolic-light/places-and-locations.svg</file>
-        <file>icons/symbolic-dark/other-names.svg</file>
-        <file>icons/symbolic-light/other-names.svg</file>
-        <file>icons/symbolic-dark/pop-culture.svg</file>
-        <file>icons/symbolic-light/pop-culture.svg</file>
         <file>icons/symbolic-dark/fng.svg</file>
         <file>icons/symbolic-light/fng.svg</file>
+        <file>icons/symbolic-dark/fantasynamegenerators/fantasy-and-folklore.svg</file>
+        <file>icons/symbolic-dark/fantasynamegenerators/other-names.svg</file>
+        <file>icons/symbolic-dark/fantasynamegenerators/places-and-locations.svg</file>
+        <file>icons/symbolic-dark/fantasynamegenerators/pop-culture.svg</file>
+        <file>icons/symbolic-dark/fantasynamegenerators/real-names.svg</file>
+        <file>icons/symbolic-light/fantasynamegenerators/fantasy-and-folklore.svg</file>
+        <file>icons/symbolic-light/fantasynamegenerators/other-names.svg</file>
+        <file>icons/symbolic-light/fantasynamegenerators/places-and-locations.svg</file>
+        <file>icons/symbolic-light/fantasynamegenerators/pop-culture.svg</file>
+        <file>icons/symbolic-light/fantasynamegenerators/real-names.svg</file>
     </qresource>
 </RCC>

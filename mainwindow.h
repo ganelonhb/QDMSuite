@@ -23,6 +23,12 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    enum class WidgetType {
+        WINDOW,
+        TAB,
+        FLOATING_DOCK,
+    };
+
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
@@ -43,7 +49,9 @@ private slots:
 
     void on_fantasyNameGenerator_clicked();
 
-private:
+    void newWidget(QWidget *widget, WidgetType wt = WidgetType::WINDOW, const QString &title = "Q.D.M.S.");
+
+private:   
     Ui::MainWindow *ui;
 
     DiceRollTracker dt;

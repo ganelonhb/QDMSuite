@@ -1,15 +1,13 @@
 #include "fantasynamegeneratordownloadwidget.h"
 #include "ui_fantasynamegeneratordownloadwidget.h"
 
-#include <iostream>
-
-
-
 FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , ui(new Ui::FantasyNameGeneratorDownloadWidget)
 {
     ui->setupUi(this);
+
+    parseHtml = new FantasyNameGeneratorHtmlParser(this->ui->treeWidget);
 
     this->ui->downloadWidget->setVisible(false);
 
@@ -22,6 +20,7 @@ FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *
 FantasyNameGeneratorDownloadWidget::~FantasyNameGeneratorDownloadWidget()
 {
     delete ui;
+    delete parseHtml;
 }
 
 void FantasyNameGeneratorDownloadWidget::download()
@@ -31,44 +30,19 @@ void FantasyNameGeneratorDownloadWidget::download()
 
 void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 {
+    this->ui->treeWidget->blockSignals(true);
     if (r->error() != QNetworkReply::NoError) {
         emit downloadComplete(false);
         r->deleteLater();
         return;
     }
 
-    node = p.parse(r->readAll().toStdString());
-
-    std::vector<html::node *> selected = node->select("ul.navmenu>li");
-
-    QList<QTreeWidgetItem *> items;
-    for (size_t i = 1; i < selected.size() - 4; ++i)
-    {
-        QString name = QString::fromStdString(selected[i]->to_text()).split('\n')[0].simplified();
-
-        QTreeWidgetItem *item = new QTreeWidgetItem(0);
-        item->setText(0, name);
-        item->setCheckState(0, Qt::Unchecked);
-
-        if (name == "Fantasy & Folklore")
-            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/fantasy-and-folklore.svg"));
-        if (name == "Real Names")
-            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/real-names.svg"));
-        if (name == "Places & Locations")
-            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/places-and-locations.svg"));
-        if (name == "Other Names")
-            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/other-names.svg"));
-        if (name == "Pop Culture")
-            item->setIcon(0, QIcon(":/ui/icons/symbolic-dark/pop-culture.svg"));
-
-        items.append(item);
-    }
-
-    this->ui->treeWidget->insertTopLevelItems(0, items);
+    parseHtml->parse(r);
 
     /* parse DOM and put in tree */
     r->deleteLater();
 
+    this->ui->treeWidget->blockSignals(false);
     emit downloadComplete(true);
 }
 
@@ -80,6 +54,8 @@ void FantasyNameGeneratorDownloadWidget::on_cancelButton_clicked()
 void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Qt::CheckState &state)
 {
     Q_UNUSED(state);
+
+    this->ui->treeWidget->blockSignals(true);
 
     this->ui->checkAllCheckBox->blockSignals(true);
     this->ui->checkAllCheckBox->setCheckState(Qt::Unchecked);
@@ -94,6 +70,8 @@ void FantasyNameGeneratorDownloadWidget::on_unCheckAll_checkStateChanged(const Q
     this->ui->unCheckAll->blockSignals(true);
     this->ui->unCheckAll->setCheckState(Qt::Unchecked);
     this->ui->unCheckAll->blockSignals(false);
+
+    this->ui->treeWidget->blockSignals(false);
 }
 
 inline void FantasyNameGeneratorDownloadWidget::iterateTreeItems(QTreeWidgetItem* item, Qt::CheckState state)
@@ -123,6 +101,7 @@ void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemSelectionChanged()
 
 void FantasyNameGeneratorDownloadWidget::on_checkAllCheckBox_checkStateChanged(const Qt::CheckState &state)
 {
+    this->ui->treeWidget->blockSignals(true);
     if (!this->ui->treeWidget->selectedItems().empty())
     {
         this->ui->checkSelectedCheckBox->blockSignals(true);
@@ -131,12 +110,14 @@ void FantasyNameGeneratorDownloadWidget::on_checkAllCheckBox_checkStateChanged(c
     }
 
     setAllCheckStates(this->ui->treeWidget, state);
+    this->ui->treeWidget->blockSignals(false);
 }
 
 
 void FantasyNameGeneratorDownloadWidget::on_checkSelectedCheckBox_checkStateChanged(const Qt::CheckState &state)
 {
-    for (QTreeWidgetItem* item : this->ui->treeWidget->selectedItems())
+    //this->ui->treeWidget->blockSignals(true);
+    foreach(QTreeWidgetItem* item, this->ui->treeWidget->selectedItems())
         item->setCheckState(0, state);
 
     if (allChecked(this->ui->treeWidget))
@@ -151,6 +132,8 @@ void FantasyNameGeneratorDownloadWidget::on_checkSelectedCheckBox_checkStateChan
 void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
 {
     Q_UNUSED(column);
+
+    this->ui->treeWidget->blockSignals(true);
 
     if (item->checkState(0) == Qt::Unchecked)
     {
@@ -168,7 +151,7 @@ void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemClicked(QTreeWidgetIt
 
     bool allSelected = true;
 
-    for(QTreeWidgetItem* i : this->ui->treeWidget->selectedItems())
+    foreach(QTreeWidgetItem* i, this->ui->treeWidget->selectedItems())
         if (i->checkState(0) != Qt::Checked) allSelected = false;
 
     if (allSelected)
@@ -183,6 +166,8 @@ void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemClicked(QTreeWidgetIt
         this->ui->checkSelectedCheckBox->setCheckState(Qt::Unchecked);
         this->ui->checkSelectedCheckBox->blockSignals(false);
     }
+
+    this->ui->treeWidget->blockSignals(false);
 
 }
 
@@ -209,3 +194,16 @@ inline void FantasyNameGeneratorDownloadWidget::iterateTreeCheck(QTreeWidgetItem
         iterateTreeCheck(item->child(i), allChecked);
 }
 
+inline void FantasyNameGeneratorDownloadWidget::setAllChildCheckStates(QTreeWidgetItem * item, Qt::CheckState state)
+{
+
+    iterateTreeItems(item, state);
+}
+
+void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
+{
+    Q_UNUSED(column);
+    this->ui->treeWidget->blockSignals(true);
+    setAllChildCheckStates(item, item->checkState(column));
+    this->ui->treeWidget->blockSignals(false);
+}

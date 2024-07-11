@@ -19,11 +19,13 @@ SOURCES += \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
     fantasynamegeneratordownloadwidget.cpp \
-    fantasynamegeneratoritem.cpp \
+    fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     qclickablelabel.cpp \
+    reportemptytabwidget.cpp \
+    splittabswidget.cpp \
     swearchecker.cpp \
     welcomewidget.cpp
 
@@ -37,11 +39,13 @@ HEADERS += \
     exprtkengine.h \
     exprtkparseexception.h \
     fantasynamegeneratordownloadwidget.h \
-    fantasynamegeneratoritem.h \
+    fantasynamegeneratorhtmlparser.h \
     fantasynamegeneratorwidget.h \
     genderflags.h \
     mainwindow.h \
     qclickablelabel.h \
+    reportemptytabwidget.h \
+    splittabswidget.h \
     swearchecker.h \
     welcomewidget.h
 

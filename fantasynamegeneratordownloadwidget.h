@@ -6,12 +6,12 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-#include <htmlparser/html.hpp>
 #include <QTreeWidgetItem>
 #include <QIcon>
 #include <QList>
+#include <QVariant>
 
-#include <vector>
+#include "fantasynamegeneratorhtmlparser.h"
 
 namespace Ui {
 class FantasyNameGeneratorDownloadWidget;
@@ -44,16 +44,19 @@ private slots:
 
     void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
 
+    void on_treeWidget_itemChanged(QTreeWidgetItem *item, int column);
+
 private:
     static inline void iterateTreeItems(QTreeWidgetItem* item, Qt::CheckState state = Qt::Unchecked);
     static inline void setAllCheckStates(QTreeWidget* widget, Qt::CheckState state = Qt::Unchecked);
+    static inline void setAllChildCheckStates(QTreeWidgetItem * item, Qt::CheckState state = Qt::Unchecked);
     static inline bool allChecked(QTreeWidget* widget);
     static inline void iterateTreeCheck(QTreeWidgetItem* item, bool& allChecked);
     Ui::FantasyNameGeneratorDownloadWidget *ui;
 
     QNetworkAccessManager *nw;
-    html::parser p;
-    html::node_ptr node;
+
+    FantasyNameGeneratorHtmlParser *parseHtml;
 };
 
 #endif // FANTASYNAMEGENERATORDOWNLOADWIDGET_H
