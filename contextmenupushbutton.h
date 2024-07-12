@@ -31,7 +31,7 @@ private:
     QAction *actionNewWindow;
     QAction *actionNewDock;
 
-    void setupThis();
+    inline void setupThis();
 };
 
 #endif // CONTEXTMENUPUSHBUTTON_H

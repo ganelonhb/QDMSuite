@@ -36,5 +36,7 @@
         <file>icons/symbolic-light/fantasynamegenerators/places-and-locations.svg</file>
         <file>icons/symbolic-light/fantasynamegenerators/pop-culture.svg</file>
         <file>icons/symbolic-light/fantasynamegenerators/real-names.svg</file>
+        <file>icons/symbolic-dark/split-tabs.svg</file>
+        <file>icons/symbolic-light/split-tabs.svg</file>
     </qresource>
 </RCC>

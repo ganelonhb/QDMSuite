@@ -24,64 +24,40 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         <widget class="SplitTabsWidget" name="splitTabWidget" native="true">
+          <layout class="QGridLayout" name="gridLayout_4"/>
+         </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="splitTabPushButton">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::WindowNew"/>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QTabWidget" name="tabWidget">
-          <property name="tabPosition">
-           <enum>QTabWidget::TabPosition::North</enum>
-          </property>
-          <property name="tabShape">
-           <enum>QTabWidget::TabShape::Rounded</enum>
-          </property>
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <property name="elideMode">
-           <enum>Qt::TextElideMode::ElideNone</enum>
-          </property>
-          <property name="documentMode">
-           <bool>false</bool>
-          </property>
-          <property name="tabsClosable">
-           <bool>true</bool>
-          </property>
-          <property name="movable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="homeTab">
-           <attribute name="title">
-            <string>Home</string>
-           </attribute>
-          </widget>
-         </widget>
+         <layout class="QVBoxLayout" name="tabSplitButtonLayout">
+          <item>
+           <widget class="ClickMenuPushButton" name="splitTabPushButton">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="res.qrc">
+              <normaloff>:/ui/icons/symbolic-dark/split-tabs.svg</normaloff>:/ui/icons/symbolic-dark/split-tabs.svg</iconset>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -211,12 +187,12 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionDice_Roller_2">
    <property name="text">
-    <string>Dice Roller</string>
+    <string>&amp;Dice Roller</string>
    </property>
   </action>
   <action name="actionName_Generator">
    <property name="text">
-    <string>Name Generator</string>
+    <string>&amp;Name Generator</string>
    </property>
   </action>
  </widget>
@@ -225,6 +201,17 @@
    <class>ContextMenuPushButton</class>
    <extends>QPushButton</extends>
    <header>contextmenupushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SplitTabsWidget</class>
+   <extends>QWidget</extends>
+   <header>splittabswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ClickMenuPushButton</class>
+   <extends>QPushButton</extends>
+   <header>clickmenupushbutton.h</header>
   </customwidget>
  </customwidgets>
  <resources>

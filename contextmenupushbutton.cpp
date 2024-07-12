@@ -45,7 +45,7 @@ QAction* ContextMenuPushButton::newDock()
     return this->actionNewDock;
 }
 
-void ContextMenuPushButton::setupThis()
+inline void ContextMenuPushButton::setupThis()
 {
     this->contextMenu = new QMenu(this);
 

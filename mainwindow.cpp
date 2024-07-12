@@ -20,10 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->fantasyNameGenerator->newWindow(), &QAction::triggered, this, &MainWindow::newFNGWindow);
     connect(this->ui->fantasyNameGenerator->newTab(), &QAction::triggered, this, &MainWindow::newFNGTab);
 
+    connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createHorizontalTab);
+    connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createVerticalTab);
+    connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
+    connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this, &MainWindow::lockTabSplit);
 
-    QHBoxLayout* horizontalLayout = new QHBoxLayout(this->ui->homeTab);
-    this->ui->homeTab->setLayout(horizontalLayout);
-    this->ui->homeTab->layout()->addWidget(new WelcomeWidget());
 }
 
 MainWindow::~MainWindow()
@@ -37,23 +38,6 @@ void MainWindow::dice_rolled()
         const DiceRoll roll= this->dt.last();
         const QString message = "Last Roll - 1d" + QString::number(roll.sides()) + " : " + QString::number(roll.result());
         this->ui->statusbar->showMessage(message);
-    }
-}
-
-void MainWindow::on_tabWidget_tabCloseRequested(int index)
-{
-    this->ui->tabWidget->widget(index)->deleteLater();
-
-    if (this->ui->tabWidget->count() == 1) {
-        this->ui->tabWidget->removeTab(0);
-        QWidget *tab = new QWidget(this);
-        WelcomeWidget *home = new WelcomeWidget();
-        QHBoxLayout* horizontalLayout = new QHBoxLayout(tab);
-
-        tab->setLayout(horizontalLayout);
-
-        tab->layout()->addWidget(home);
-        this->ui->tabWidget->addTab(tab, "Home");
     }
 }
 
@@ -125,8 +109,8 @@ void MainWindow::newWidget(QWidget *widget, MainWindow::WidgetType wt, const QSt
         tab->setLayout(horizontalLayout);
 
         tab->layout()->addWidget(widget);
-        this->ui->tabWidget->addTab(tab, title);
-        this->ui->tabWidget->setCurrentIndex(this->ui->tabWidget->count() - 1);
+        this->ui->splitTabWidget->selected()->addTab(tab, title);
+        this->ui->splitTabWidget->selected()->setCurrentIndex(this->ui->splitTabWidget->selected()->count() - 1);
     }
     else if (wt == MainWindow::WidgetType::FLOATING_DOCK)
     {
@@ -144,3 +128,14 @@ void MainWindow::newWidget(QWidget *widget, MainWindow::WidgetType wt, const QSt
     return;
 }
 
+void MainWindow::unlockTabSplit()
+{
+    this->ui->splitTabPushButton->setEnabled(true);
+    this->ui->tabSplitButtonLayout->widget()->setVisible(true);
+}
+
+void MainWindow::lockTabSplit()
+{
+    this->ui->tabSplitButtonLayout->widget()->setVisible(false);
+    this->ui->splitTabPushButton->setEnabled(false);
+}

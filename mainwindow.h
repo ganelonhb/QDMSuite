@@ -35,8 +35,6 @@ public:
 private slots:
     void dice_rolled();
 
-    void on_tabWidget_tabCloseRequested(int index);
-
     void on_diceRollerToolButton_clicked();
 
     void newDiceRollerTab();
@@ -50,6 +48,9 @@ private slots:
     void on_fantasyNameGenerator_clicked();
 
     void newWidget(QWidget *widget, WidgetType wt = WidgetType::WINDOW, const QString &title = "Q.D.M.S.");
+
+    void unlockTabSplit();
+    void lockTabSplit();
 
 private:   
     Ui::MainWindow *ui;

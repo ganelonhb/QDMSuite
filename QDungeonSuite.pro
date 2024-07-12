@@ -11,6 +11,7 @@ INCLUDEPATH += $$PWD/deps
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    clickmenupushbutton.cpp \
     contextmenupushbutton.cpp \
     deps/htmlparser/html.cpp \
     diceroll.cpp \
@@ -24,12 +25,12 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     qclickablelabel.cpp \
-    reportemptytabwidget.cpp \
     splittabswidget.cpp \
     swearchecker.cpp \
     welcomewidget.cpp
 
 HEADERS += \
+    clickmenupushbutton.h \
     contextmenupushbutton.h \
     deps/htmlparser/html.hpp \
     dice_roll.h \
@@ -44,7 +45,6 @@ HEADERS += \
     genderflags.h \
     mainwindow.h \
     qclickablelabel.h \
-    reportemptytabwidget.h \
     splittabswidget.h \
     swearchecker.h \
     welcomewidget.h
