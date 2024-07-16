@@ -58,7 +58,7 @@ void DiceRollWidget::on_expressionsEnter_clicked()
     if (lineEditText.simplified().length())
     {
         try{
-            answer = currentText + lineEditText + ": " +QString::number(this->e.evaluate(lineEditText.simplified())) + "\n";
+            answer = currentText + lineEditText + ": " + int128ToString(this->e.evaluate(lineEditText.simplified())) + "\n";
         }
         catch (const ExprTkParseException &e){
             answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
@@ -145,7 +145,7 @@ inline void DiceRollWidget::quickDiceRoll_Helper(DiceRollWidget::DDWDice d)
     QString answer;
 
     try{
-        answer = currentText + dice + ": " +QString::number(this->e.evaluate(fnFormat)) + "\n";
+        answer = currentText + dice + ": " + int128ToString(this->e.evaluate(fnFormat)) + "\n";
     }
     catch (const ExprTkParseException &e){
         answer = currentText + "Could not parse: \"" + fnFormat + "\"\n";
@@ -154,3 +154,34 @@ inline void DiceRollWidget::quickDiceRoll_Helper(DiceRollWidget::DDWDice d)
     this->ui->expressionHistoryTextEdit->setText(answer);
 }
 
+inline QString DiceRollWidget::int128ToString(qint128 value)
+{
+    std::ostringstream oss;
+
+    if (value < 0)
+    {
+        value = -value;
+        oss << '-';
+    }
+
+    if (value == 0)
+    {
+        oss << '0';
+        return QString::fromStdString(oss.str());
+    }
+
+    char c[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    std::string result;
+    while(value != 0)
+    {
+        int ones = value % 10;
+        result.push_back(c[ones]);
+        value /= 10;
+    }
+
+    std::reverse(result.begin(), result.end());
+    oss << result;
+
+    return QString::fromStdString(oss.str());
+}

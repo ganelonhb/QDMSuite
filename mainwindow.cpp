@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createVerticalTab);
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this, &MainWindow::lockTabSplit);
-
+    connect(this->ui->splitTabWidget, &SplitTabsWidget::single, this, &MainWindow::unlockTabSplit);
 }
 
 MainWindow::~MainWindow()
@@ -131,11 +131,11 @@ void MainWindow::newWidget(QWidget *widget, MainWindow::WidgetType wt, const QSt
 void MainWindow::unlockTabSplit()
 {
     this->ui->splitTabPushButton->setEnabled(true);
-    this->ui->tabSplitButtonLayout->widget()->setVisible(true);
+    this->ui->splitTabPushButton->setVisible(true);
 }
 
 void MainWindow::lockTabSplit()
 {
-    this->ui->tabSplitButtonLayout->widget()->setVisible(false);
+    this->ui->splitTabPushButton->setVisible(false);
     this->ui->splitTabPushButton->setEnabled(false);
 }

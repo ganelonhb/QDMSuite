@@ -17,6 +17,8 @@ SOURCES += \
     diceroll.cpp \
     dicerolltracker.cpp \
     dicerollwidget.cpp \
+    draggabletabbar.cpp \
+    draggabletabwidget.cpp \
     exprtkengine.cpp \
     exprtkparseexception.cpp \
     fantasynamegeneratordownloadwidget.cpp \
@@ -27,6 +29,7 @@ SOURCES += \
     qclickablelabel.cpp \
     splittabswidget.cpp \
     swearchecker.cpp \
+    tabpressedeventfilter.cpp \
     welcomewidget.cpp
 
 HEADERS += \
@@ -37,6 +40,8 @@ HEADERS += \
     diceroll.h \
     dicerolltracker.h \
     dicerollwidget.h \
+    draggabletabbar.h \
+    draggabletabwidget.h \
     exprtkengine.h \
     exprtkparseexception.h \
     fantasynamegeneratordownloadwidget.h \
@@ -47,6 +52,7 @@ HEADERS += \
     qclickablelabel.h \
     splittabswidget.h \
     swearchecker.h \
+    tabpressedeventfilter.h \
     welcomewidget.h
 
 FORMS += \

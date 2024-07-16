@@ -1,5 +1,4 @@
 #include "splittabswidget.h"
-
 SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -7,8 +6,12 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
 
     this->setLayout(gridLayout);
 
-    QTabWidget *r = new QTabWidget(this);
+    this->tabPressedEventFilter = new TabPressedEventFilter(this);
+
+    connect(this->tabPressedEventFilter, &TabPressedEventFilter::tabClicked, this, &SplitTabsWidget::onTabClicked);
+    DraggableTabWidget *r = new DraggableTabWidget(this);
     r->setTabsClosable(true);
+    r->setMovable(true);
     this->_selected = r;
     QWidget *tab = new QWidget(r);
     QGridLayout *grid = new QGridLayout(tab);
@@ -16,10 +19,10 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     tab->setLayout(grid);
     tab->layout()->addWidget(w);
     r->addTab(tab, "Home");
-
+    installEventFilterRecursively(r, tabPressedEventFilter);
     this->layout()->addWidget(r);
 
-    connect(r, &QTabWidget::tabCloseRequested, this, [r, this](int index){
+    auto tabRemovedLambda = [r, this](int index){
         r->widget(index)->deleteLater();
 
         if (r->count() == 1) {
@@ -36,24 +39,129 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
             }
             else
             {
+                QGridLayout *thisGrid = qobject_cast<QGridLayout *>(this->layout());
+                int row, column, rowSpan, columnSpan;
+                thisGrid->getItemPosition(thisGrid->indexOf(r), &row, &column, &rowSpan, &columnSpan);
+
+                QPalette palette = this->selected()->palette();
+
                 this->layout()->removeWidget(r);
                 r->deleteLater();
-                QGridLayout *thisGrid = dynamic_cast<QGridLayout *>(this->layout());
-                QLayoutItem *item = thisGrid->itemAt(0);
-                this->_selected = dynamic_cast<QTabWidget *>(item->widget());
+
+                DraggableTabWidget *item = nullptr;
+
+                bool resetPos = false;
+
+                if (row == 0 && column == 0)
+                {
+                    if (this->mode == TabSplitMode::HORIZONTAL)
+                        item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,1)->widget());
+                    else
+                        item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(1,0)->widget());
+
+                    resetPos = true;
+                }
+                else
+                {
+                    item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,0)->widget());
+                }
+
+                if (resetPos)
+                {
+                    thisGrid->removeWidget(item);
+                    thisGrid->addWidget(item, 0, 0);
+                }
+
+
+                item->setPalette(palette);
+                this->_selected = item;
                 this->mode = TabSplitMode::SINGLE;
                 emit this->single();
             }
         }
-    });
+    };
+
+    auto dropRemoveLambda = [r, this]{
+        if (r->count() == 0)
+        {
+            QGridLayout *thisGrid = qobject_cast<QGridLayout *>(this->layout());
+            int row, column, rowSpan, columnSpan;
+            thisGrid->getItemPosition(thisGrid->indexOf(r), &row, &column, &rowSpan, &columnSpan);
+
+            QPalette palette = this->selected()->palette();
+
+            this->layout()->removeWidget(r);
+            r->deleteLater();
+
+            DraggableTabWidget *item = nullptr;
+
+            bool resetPos = false;
+
+            if (row == 0 && column == 0)
+            {
+                if (this->mode == TabSplitMode::HORIZONTAL)
+                    item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,1)->widget());
+                else
+                    item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(1,0)->widget());
+
+                resetPos = true;
+            }
+            else
+            {
+                item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,0)->widget());
+            }
+
+            if (resetPos)
+            {
+                thisGrid->removeWidget(item);
+                thisGrid->addWidget(item, 0, 0);
+            }
+
+
+            item->setPalette(palette);
+            this->_selected = item;
+            this->mode = TabSplitMode::SINGLE;
+            emit this->single();
+        }
+    };
+
+    auto dropAcceptedLambda = [r, this] {
+        if (r != this->_selected)
+        {
+            QPalette palette = this->_selected->palette();
+            QColor selectedTabColor = palette.color(QPalette::Highlight);
+            int lum = qGray(selectedTabColor.red(), selectedTabColor.green(), selectedTabColor.blue());
+            QColor gray = QColor(lum,lum,lum);
+            QPalette newPalette = palette;
+            newPalette.setColor(QPalette::Highlight, gray);
+            this->selected()->setPalette(newPalette);
+            r->setPalette(palette);
+            this->_selected = r;
+        }
+    };
+
+    connect(r, &DraggableTabWidget::tabCloseRequested, this, tabRemovedLambda);
+    connect(r, &DraggableTabWidget::dropRemoveEvent, this, dropRemoveLambda);
+    connect(r, &DraggableTabWidget::dropAccepted, this, dropAcceptedLambda);
 }
 
 void SplitTabsWidget::createNewTab(TabSplitType split)
 {
     if (this->mode == TabSplitMode::SINGLE)
     {
-        QTabWidget *r = new QTabWidget(this);
+        DraggableTabWidget *r = new DraggableTabWidget(this);
         r->setTabsClosable(true);
+        r->setMovable(true);
+
+        QPalette palette = this->selected()->palette();
+        QColor selectedTabColor = palette.color(QPalette::Highlight);
+        int lum = qGray(selectedTabColor.red(), selectedTabColor.green(), selectedTabColor.blue());
+        QColor gray = QColor(lum,lum,lum);
+        QPalette newPalette = palette;
+        newPalette.setColor(QPalette::Highlight, gray);
+        this->selected()->setPalette(newPalette);
+        r->setPalette(palette);
+
         this->_selected = r;
         QWidget *tab = new QWidget(r);
         QGridLayout *grid = new QGridLayout(tab);
@@ -61,10 +169,9 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
         tab->setLayout(grid);
         tab->layout()->addWidget(w);
         r->addTab(tab, "Home");
+        installEventFilterRecursively(r, tabPressedEventFilter);
 
-        // determine where to add and set mode
-        //this->layout()->addWidget(r);
-        if (QGridLayout *l = dynamic_cast<QGridLayout *>(this->layout()); split == TabSplitType::HORIZONTAL)
+        if (QGridLayout *l = qobject_cast<QGridLayout *>(this->layout()); split == TabSplitType::HORIZONTAL)
         {
             l->addWidget(r, 0, 1);
         }
@@ -75,7 +182,7 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
 
         this->mode = (split == TabSplitType::HORIZONTAL) ? TabSplitMode::HORIZONTAL : TabSplitMode::VERTICAL;
 
-        connect(r, &QTabWidget::tabCloseRequested, this, [r, this](int index){
+        auto tabRemovedLambda = [r, this](int index){
             r->widget(index)->deleteLater();
 
             if (r->count() == 1) {
@@ -92,19 +199,114 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
                 }
                 else
                 {
+                    QGridLayout *thisGrid = qobject_cast<QGridLayout *>(this->layout());
+                    int row, column, rowSpan, columnSpan;
+                    thisGrid->getItemPosition(thisGrid->indexOf(r), &row, &column, &rowSpan, &columnSpan);
+
+                    QPalette palette = this->selected()->palette();
+
                     this->layout()->removeWidget(r);
                     r->deleteLater();
-                    QGridLayout *thisGrid = dynamic_cast<QGridLayout *>(this->layout());
-                    this->_selected = dynamic_cast<QTabWidget *>(thisGrid->itemAt(0)->widget());
+
+                    DraggableTabWidget *item = nullptr;
+
+                    bool resetPos = false;
+
+                    if (row == 0 && column == 0)
+                    {
+                        if (this->mode == TabSplitMode::HORIZONTAL)
+                            item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,1)->widget());
+                        else
+                            item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(1,0)->widget());
+
+                        resetPos = true;
+                    }
+                    else
+                    {
+                        item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,0)->widget());
+                    }
+
+                    if (resetPos)
+                    {
+                        thisGrid->removeWidget(item);
+                        thisGrid->addWidget(item, 0, 0);
+                    }
+
+
+                    item->setPalette(palette);
+                    this->_selected = item;
                     this->mode = TabSplitMode::SINGLE;
                     emit this->single();
                 }
             }
-        });
+        };
+
+        auto dropRemoveLambda = [r, this] {
+            if (r->count() == 0)
+            {
+                QGridLayout *thisGrid = qobject_cast<QGridLayout *>(this->layout());
+                int row, column, rowSpan, columnSpan;
+                thisGrid->getItemPosition(thisGrid->indexOf(r), &row, &column, &rowSpan, &columnSpan);
+
+                QPalette palette = this->selected()->palette();
+
+                this->layout()->removeWidget(r);
+                r->deleteLater();
+
+                DraggableTabWidget *item = nullptr;
+
+                bool resetPos = false;
+
+                if (row == 0 && column == 0)
+                {
+                    if (this->mode == TabSplitMode::HORIZONTAL)
+                        item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,1)->widget());
+                    else
+                        item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(1,0)->widget());
+
+                    resetPos = true;
+                }
+                else
+                {
+                    item = qobject_cast<DraggableTabWidget *>(thisGrid->itemAtPosition(0,0)->widget());
+                }
+
+                if (resetPos)
+                {
+                    thisGrid->removeWidget(item);
+                    thisGrid->addWidget(item, 0, 0);
+                }
+
+
+                item->setPalette(palette);
+                this->_selected = item;
+                this->mode = TabSplitMode::SINGLE;
+                emit this->single();
+            }
+        };
+
+        auto dropAcceptedLambda = [r, this] {
+            if (r != this->_selected)
+            {
+                QPalette palette = this->_selected->palette();
+                QColor selectedTabColor = palette.color(QPalette::Highlight);
+                int lum = qGray(selectedTabColor.red(), selectedTabColor.green(), selectedTabColor.blue());
+                QColor gray = QColor(lum,lum,lum);
+                QPalette newPalette = palette;
+                newPalette.setColor(QPalette::Highlight, gray);
+                this->selected()->setPalette(newPalette);
+                r->setPalette(palette);
+                this->_selected = r;
+            }
+        };
+
+        connect(r, &DraggableTabWidget::tabCloseRequested, this, tabRemovedLambda);
+        connect(r, &DraggableTabWidget::dropRemoveEvent, this, dropRemoveLambda);
+        connect(r, &DraggableTabWidget::dropAccepted, this, dropAcceptedLambda);
     }
 }
 
-QTabWidget *SplitTabsWidget::selected()
+DraggableTabWidget *SplitTabsWidget::selected()
 {
     return this->_selected;
 }
@@ -117,4 +319,35 @@ void SplitTabsWidget::createHorizontalTab()
 void SplitTabsWidget::createVerticalTab()
 {
     this->createNewTab(TabSplitType::VERTICAL);
+}
+
+
+void SplitTabsWidget::onTabClicked(DraggableTabWidget *tabWidget)
+{
+    if (tabWidget != this->_selected)
+    {
+        QPalette palette = this->_selected->palette();
+        QColor selectedTabColor = palette.color(QPalette::Highlight);
+        int lum = qGray(selectedTabColor.red(), selectedTabColor.green(), selectedTabColor.blue());
+        QColor gray = QColor(lum,lum,lum);
+        QPalette newPalette = palette;
+        newPalette.setColor(QPalette::Highlight, gray);
+        this->selected()->setPalette(newPalette);
+        tabWidget->setPalette(palette);
+        this->_selected = tabWidget;
+    }
+}
+
+inline void SplitTabsWidget::installEventFilterRecursively(QWidget *widget, QObject *filter)
+{
+    widget->installEventFilter(filter);
+
+    const QList<QWidget *> children = widget->findChildren<QWidget *>();
+
+    if (!children.length()) return;
+
+    foreach(QWidget *child, children)
+    {
+        installEventFilterRecursively(child, filter);
+    }
 }

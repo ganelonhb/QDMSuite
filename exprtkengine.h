@@ -7,6 +7,7 @@
 #include <QRegularExpressionMatch>
 #include <QRegularExpressionMatchIterator>
 #include <QException>
+#include <QtTypes>
 
 #include "dice_roll.h"
 #include "exprtkparseexception.h"
@@ -16,7 +17,7 @@ class ExprTkEngine
 public:
     ExprTkEngine();
 
-    int evaluate(const QString& expression);
+    qint128 evaluate(const QString& expression);
 
     void setDiceRollTracker(DiceRollTracker* dt);
 

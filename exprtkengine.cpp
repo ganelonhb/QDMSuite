@@ -6,7 +6,7 @@ ExprTkEngine::ExprTkEngine()
     symbol_table.add_constants();
 }
 
-int ExprTkEngine::evaluate(const QString& expression)
+qint128 ExprTkEngine::evaluate(const QString& expression)
 {
     exprtk::expression<double> exp;
     exprtk::parser<double> parser;
@@ -33,7 +33,7 @@ int ExprTkEngine::evaluate(const QString& expression)
         throw ExprTkParseException();
 
 
-    return exp.value();
+    return static_cast<qint128>(exp.value());
 }
 
 void ExprTkEngine::setDiceRollTracker(DiceRollTracker* dt)

@@ -6,11 +6,13 @@
 #include <QGridLayout>
 #include <QLayoutItem>
 #include <QWidgetItem>
-#include <QTabWidget>
-
-#include <functional>
+#include <QFrame>
+#include <QPalette>
+#include <QColor>
 
 #include "welcomewidget.h"
+#include "draggabletabwidget.h"
+#include "tabpressedeventfilter.h"
 
 class SplitTabsWidget : public QWidget
 {
@@ -31,19 +33,22 @@ public:
     explicit SplitTabsWidget(QWidget *parent = nullptr);
 
     void createNewTab(TabSplitType split = TabSplitType::HORIZONTAL);
-    QTabWidget *selected();
+    DraggableTabWidget *selected();
 
 public slots:
     void createHorizontalTab();
     void createVerticalTab();
+    void onTabClicked(DraggableTabWidget *tab);
 
 signals:
     void single();
 
 private:
-    QTabWidget *_selected{nullptr};
+    DraggableTabWidget *_selected{nullptr};
     TabSplitMode mode{TabSplitMode::SINGLE};
+    TabPressedEventFilter *tabPressedEventFilter;
 
+    static inline void installEventFilterRecursively(QWidget *widget, QObject *filter);
 };
 
 #endif // SPLITTABSWIDGET_H

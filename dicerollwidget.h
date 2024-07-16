@@ -2,6 +2,11 @@
 #define DICEROLLWIDGET_H
 
 #include <QWidget>
+#include <QtTypes>
+
+#include <iostream>
+#include <string>
+#include <sstream>
 
 #include "exprtkengine.h"
 #include "dicerolltracker.h"
@@ -55,6 +60,8 @@ private:
     Ui::DiceRollWidget *ui;
     DiceRollTracker *dt;
     ExprTkEngine e;
+
+    static inline QString int128ToString(qint128 val);
 };
 
 #endif // DICEROLLWIDGET_H
