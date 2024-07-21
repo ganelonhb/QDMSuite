@@ -58,7 +58,7 @@ void DiceRollWidget::on_expressionsEnter_clicked()
     if (lineEditText.simplified().length())
     {
         try{
-            answer = currentText + lineEditText + ": " + int128ToString(this->e.evaluate(lineEditText.simplified())) + "\n";
+            answer = currentText + lineEditText + ": " + doubleToQString(this->e.evaluate(lineEditText.simplified())) + "\n";
         }
         catch (const ExprTkParseException &e){
             answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
@@ -145,7 +145,7 @@ inline void DiceRollWidget::quickDiceRoll_Helper(DiceRollWidget::DDWDice d)
     QString answer;
 
     try{
-        answer = currentText + dice + ": " + int128ToString(this->e.evaluate(fnFormat)) + "\n";
+        answer = currentText + dice + ": " + doubleToQString(this->e.evaluate(fnFormat)) + "\n";
     }
     catch (const ExprTkParseException &e){
         answer = currentText + "Could not parse: \"" + fnFormat + "\"\n";
@@ -184,4 +184,12 @@ inline QString DiceRollWidget::int128ToString(qint128 value)
     oss << result;
 
     return QString::fromStdString(oss.str());
+}
+
+inline QString DiceRollWidget::doubleToQString(double val)
+{
+    if (val == static_cast<qint128>(val))
+        return int128ToString(static_cast<qint128>(val));
+
+    return QString::number(val);
 }

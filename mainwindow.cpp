@@ -25,6 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabWidget, &SplitTabsWidget::single, this, &MainWindow::unlockTabSplit);
+
+    this->newWidget(new CalculatorWidget(&dt), WidgetType::WINDOW);
 }
 
 MainWindow::~MainWindow()
@@ -139,3 +141,15 @@ void MainWindow::lockTabSplit()
     this->ui->splitTabPushButton->setVisible(false);
     this->ui->splitTabPushButton->setEnabled(false);
 }
+
+void MainWindow::on_actionDice_Roller_2_triggered()
+{
+    this->newWidget(new DiceRollWidget(&dt), WidgetType::FLOATING_DOCK, "Dice Roller");
+}
+
+
+void MainWindow::on_actionName_Generator_triggered()
+{
+    this->newWidget(new FantasyNameGeneratorWidget, WidgetType::TAB, "Fantasy Name Generator");
+}
+

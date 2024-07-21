@@ -53,7 +53,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                     QString linkName = QString::fromStdString("https://www.fantasynamegenerators.com/" + a[0]->get_attr("href"));
 
                     //FantasyNameGeneratorItem * fngItem = new FantasyNameGeneratorItem(entryName, linkName, dynamic_cast<QObject *>(entryItem));
-                    entryItem->setData(0, Qt::UserRole, name + ">" + entryName + ":" + linkName);
+                    entryItem->setData(0, Qt::UserRole, name + ">" + entryName + "," + linkName);
 
                     item->addChild(entryItem);
                 }
@@ -82,7 +82,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                         std::vector<html::node *> a = subListNode->select("a");
                         QString linkName = QString::fromStdString("https://www.fantasynamegenerators.com/" + a[0]->get_attr("href"));
 
-                        entryItem->setData(0, Qt::UserRole, name + ">" + subListName + ">" + entryName + ":" + linkName);
+                        entryItem->setData(0, Qt::UserRole, name + ">" + subListName + ">" + entryName + "," + linkName);
 
                         subListItem->addChild(entryItem);
                     }
@@ -127,7 +127,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                                 QString linkName = QString::fromStdString("https://www.fantasynamegenerators.com/" + a[0]->get_attr("href"));
 
                                 //FantasyNameGeneratorItem * fngItem = new FantasyNameGeneratorItem(entryName, linkName, dynamic_cast<QObject *>(entryItem));
-                                entryItem->setData(0, Qt::UserRole, name + ">" + QString::fromStdString(subNavName) + ">" + entryName + ":" + linkName);
+                                entryItem->setData(0, Qt::UserRole, name + ">" + QString::fromStdString(subNavName) + ">" + entryName + "," + linkName);
 
                                 subNavTreeItem->addChild(entryItem);
                             }
@@ -156,7 +156,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                                     std::vector<html::node *> a = subListNode->select("a");
                                     QString linkName = QString::fromStdString("https://www.fantasynamegenerators.com/" + a[0]->get_attr("href"));
 
-                                    entryItem->setData(0, Qt::UserRole, name + ">" + QString::fromStdString(subNavName) + ">" + subListName + ">" + entryName + ":" + linkName);
+                                    entryItem->setData(0, Qt::UserRole, name + ">" + QString::fromStdString(subNavName) + ">" + subListName + ">" + entryName + "," + linkName);
 
                                     subListItem->addChild(entryItem);
                                 }

@@ -12,6 +12,8 @@
 #include "fantasynamegeneratorwidget.h"
 #include "welcomewidget.h"
 
+#include "calculatorwidget.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -52,7 +54,11 @@ private slots:
     void unlockTabSplit();
     void lockTabSplit();
 
-private:   
+    void on_actionDice_Roller_2_triggered();
+
+    void on_actionName_Generator_triggered();
+
+private:
     Ui::MainWindow *ui;
 
     DiceRollTracker dt;

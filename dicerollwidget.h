@@ -4,7 +4,6 @@
 #include <QWidget>
 #include <QtTypes>
 
-#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -62,6 +61,7 @@ private:
     ExprTkEngine e;
 
     static inline QString int128ToString(qint128 val);
+    static inline QString doubleToQString(double val);
 };
 
 #endif // DICEROLLWIDGET_H

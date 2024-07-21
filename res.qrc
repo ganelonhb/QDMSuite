@@ -38,5 +38,7 @@
         <file>icons/symbolic-light/fantasynamegenerators/real-names.svg</file>
         <file>icons/symbolic-dark/split-tabs.svg</file>
         <file>icons/symbolic-light/split-tabs.svg</file>
+        <file>fonts/nihonium113/Nihonium113-Console.ttf</file>
+        <file>fonts/nihonium113/Nihonium113.ttf</file>
     </qresource>
 </RCC>

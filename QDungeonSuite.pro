@@ -1,4 +1,4 @@
-QT       += core gui network
+QT       += core gui network svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,6 +11,9 @@ INCLUDEPATH += $$PWD/deps
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    calcmenupushbutton.cpp \
+    calculator2ndpushbutton.cpp \
+    calculatorwidget.cpp \
     clickmenupushbutton.cpp \
     contextmenupushbutton.cpp \
     deps/htmlparser/html.cpp \
@@ -33,6 +36,9 @@ SOURCES += \
     welcomewidget.cpp
 
 HEADERS += \
+    calcmenupushbutton.h \
+    calculator2ndpushbutton.h \
+    calculatorwidget.h \
     clickmenupushbutton.h \
     contextmenupushbutton.h \
     deps/htmlparser/html.hpp \
@@ -42,6 +48,7 @@ HEADERS += \
     dicerollwidget.h \
     draggabletabbar.h \
     draggabletabwidget.h \
+    exprtk_methods.h \
     exprtkengine.h \
     exprtkparseexception.h \
     fantasynamegeneratordownloadwidget.h \
@@ -56,6 +63,7 @@ HEADERS += \
     welcomewidget.h
 
 FORMS += \
+    calculatorwidget.ui \
     dicerollwidget.ui \
     fantasynamegeneratordownloadwidget.ui \
     fantasynamegeneratorwidget.ui \

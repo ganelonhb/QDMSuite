@@ -22,8 +22,8 @@ struct dice_roll : exprtk::ifunction<T>
     {
         T sum = T(0);
 
-        for (int i = 0; i < int(v1); ++i) {
-            T val = T(QRandomGenerator::global()->bounded(quint32(1), quint32(v2)));
+        for (quint32 i = 0; i < quint32(v1); ++i) {
+            T val = T(QRandomGenerator::global()->bounded(quint32(1), quint32(v2) + 1));
             if (tracker != nullptr) {
                 DiceRoll d = DiceRoll(v2, val);
                 tracker->append(d);

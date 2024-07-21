@@ -10,6 +10,7 @@
 #include <QtTypes>
 
 #include "dice_roll.h"
+#include "exprtk_methods.h"
 #include "exprtkparseexception.h"
 
 class ExprTkEngine
@@ -17,7 +18,7 @@ class ExprTkEngine
 public:
     ExprTkEngine();
 
-    qint128 evaluate(const QString& expression);
+    double evaluate(const QString& expression);
 
     void setDiceRollTracker(DiceRollTracker* dt);
 
@@ -25,9 +26,10 @@ private:
     exprtk::symbol_table<double> symbol_table;
 
     dice_roll<double> roll;
+    random_int<double> rand_int;
+    meemo_operation<double> meemo;
 
     QRegularExpression re{"\\b(?<number>\\d+)d(?<sides>\\d+)\\b"};
-
 };
 
 #endif // EXPRTKENGINE_H

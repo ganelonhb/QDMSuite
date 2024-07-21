@@ -17,6 +17,9 @@
    <iconset resource="res.qrc">
     <normaloff>:/ui/imgs/logo.svg</normaloff>:/ui/imgs/logo.svg</iconset>
   </property>
+  <property name="dockOptions">
+   <set>QMainWindow::DockOption::AllowNestedDocks|QMainWindow::DockOption::AllowTabbedDocks|QMainWindow::DockOption::AnimatedDocks|QMainWindow::DockOption::VerticalTabs</set>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="1">
@@ -186,13 +189,27 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionDice_Roller_2">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/ui/icons/symbolic-dark/dice.svg</normaloff>:/ui/icons/symbolic-dark/dice.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Dice Roller</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+D</string>
+   </property>
   </action>
   <action name="actionName_Generator">
+   <property name="icon">
+    <iconset resource="res.qrc">
+     <normaloff>:/ui/icons/symbolic-dark/fng.svg</normaloff>:/ui/icons/symbolic-dark/fng.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Name Generator</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+N</string>
    </property>
   </action>
  </widget>
