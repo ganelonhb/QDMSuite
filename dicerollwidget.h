@@ -4,13 +4,11 @@
 #include <QWidget>
 #include <QtTypes>
 
-#include <string>
-#include <sstream>
-
 #include "exprtkengine.h"
 #include "dicerolltracker.h"
-#include "exprtkparseexception.h"
+#include "exprtkexceptions.hpp"
 #include "qclickablelabel.h"
+#include "helper_functions.hpp"
 
 namespace Ui {
 class DiceRollWidget;
@@ -59,9 +57,6 @@ private:
     Ui::DiceRollWidget *ui;
     DiceRollTracker *dt;
     ExprTkEngine e;
-
-    static inline QString int128ToString(qint128 val);
-    static inline QString doubleToQString(double val);
 };
 
 #endif // DICEROLLWIDGET_H

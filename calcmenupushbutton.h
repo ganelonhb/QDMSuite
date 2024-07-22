@@ -26,6 +26,8 @@ public:
     QAction *action(const QString &name);
     QAction *operator[](const QString &name);
 
+    QMenu * getMenu();
+
 private:
     QMap<QString, QAction *> map;
 

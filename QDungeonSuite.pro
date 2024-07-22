@@ -2,7 +2,7 @@ QT       += core gui network svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++23
+CONFIG += c++20
 
 INCLUDEPATH += $$PWD/deps
 
@@ -23,7 +23,6 @@ SOURCES += \
     draggabletabbar.cpp \
     draggabletabwidget.cpp \
     exprtkengine.cpp \
-    exprtkparseexception.cpp \
     fantasynamegeneratordownloadwidget.cpp \
     fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
@@ -48,13 +47,14 @@ HEADERS += \
     dicerollwidget.h \
     draggabletabbar.h \
     draggabletabwidget.h \
-    exprtk_methods.h \
+    exprtk_methods.hpp \
     exprtkengine.h \
-    exprtkparseexception.h \
+    exprtkexceptions.hpp \
     fantasynamegeneratordownloadwidget.h \
     fantasynamegeneratorhtmlparser.h \
     fantasynamegeneratorwidget.h \
     genderflags.h \
+    helper_functions.hpp \
     mainwindow.h \
     qclickablelabel.h \
     splittabswidget.h \

@@ -9,6 +9,8 @@
 #include <QFontInfo>
 
 #include "dicerolltracker.h"
+#include "exprtkengine.h"
+#include "helper_functions.hpp"
 
 namespace Ui {
 class CalculatorWidget;
@@ -30,12 +32,15 @@ private slots:
 
     void on_delButton_clicked();
 
-    void on_sqrtButton_clicked();
+    void on_equalsPushButton_clicked();
+
+    void constMenuActionTriggered(QAction *action);
 
 private:
     Ui::CalculatorWidget *ui;
 
     bool secondButtonClicked;
+    ExprTkEngine e;
 
     DiceRollTracker *dt;
 };

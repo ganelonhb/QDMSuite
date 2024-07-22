@@ -45,3 +45,8 @@ QAction *CalcMenuPushButton::operator[](const QString &name)
 {
     return map[name];
 }
+
+QMenu *CalcMenuPushButton::getMenu()
+{
+    return this->menu;
+}

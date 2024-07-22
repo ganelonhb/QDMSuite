@@ -40,5 +40,9 @@
         <file>icons/symbolic-light/split-tabs.svg</file>
         <file>fonts/nihonium113/Nihonium113-Console.ttf</file>
         <file>fonts/nihonium113/Nihonium113.ttf</file>
+        <file>fonts/Unifont/unifont-15.1.05.otf</file>
+        <file>fonts/Unifont/unifont_upper-15.1.05.otf</file>
+        <file>fonts/Unifont/unifont_csur-15.1.05.otf</file>
+        <file>fonts/Unifont/LICENSE.txt</file>
     </qresource>
 </RCC>
