@@ -36,11 +36,14 @@ private slots:
 
     void constMenuActionTriggered(QAction *action);
 
+    void on_ansPushButton_clicked();
+
 private:
     Ui::CalculatorWidget *ui;
 
     bool secondButtonClicked;
     ExprTkEngine e;
+    QStringList history;
 
     DiceRollTracker *dt;
 };

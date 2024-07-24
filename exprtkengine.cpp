@@ -2,14 +2,18 @@
 
 ExprTkEngine::ExprTkEngine()
 {
-    symbol_table.add_function("dice", this->roll);
-    symbol_table.add_function("rand", this->rand_int);
-    symbol_table.add_function("meemo", this->meemo);
-    symbol_table.add_function("GCD", this->GCD);
-    symbol_table.add_function("LCM", this->LCM);
-    symbol_table.add_function("xrt", this->xrt_op);
-    symbol_table.add_function("fact", this->fact);
-    symbol_table.add_function("gamma", this->fact);
+    symbol_table.add_function("dice", this->m_roll);
+    symbol_table.add_function("rand", this->m_rand);
+    symbol_table.add_function("meemo", this->m_meemo);
+    symbol_table.add_function("GCD", this->m_GCD);
+    symbol_table.add_function("LCM", this->m_LCM);
+    symbol_table.add_function("xrt", this->m_xrt);
+    symbol_table.add_function("fact", this->m_fact);
+    symbol_table.add_function("gamma", this->m_fact);
+    symbol_table.add_function("atan2", this->m_atan2);
+    symbol_table.add_function("ln", this->m_ln);
+    symbol_table.add_function("log", this->m_log10);
+    symbol_table.add_function("logx", this->m_logx);
 
     symbol_table.add_constant("EULER", std::numbers::e);
     symbol_table.add_constant("TAU", 6.283185307179586);
@@ -52,7 +56,7 @@ long double ExprTkEngine::evaluate(const QString& expression)
 
 void ExprTkEngine::setDiceRollTracker(DiceRollTracker* dt)
 {
-    this->roll.tracker = dt;
+    this->m_roll.tracker = dt;
 }
 
 constexpr long double ExprTkEngine::f(long double x)

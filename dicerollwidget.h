@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QtTypes>
+#include <QFontDatabase>
+#include <QFontInfo>
+#include <QGuiApplication>
 
 #include "exprtkengine.h"
 #include "dicerolltracker.h"

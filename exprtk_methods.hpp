@@ -171,4 +171,64 @@ struct factorial : exprtk::ifunction<T>
     }
 };
 
+template <typename T>
+struct exprtk_atan2 : exprtk::ifunction<T>
+{
+    exprtk_atan2()
+        : exprtk::ifunction<T>(2)
+    {
+        exprtk::disable_has_side_effects(*this);
+    }
+
+    inline T operator()(const T& y, const T& x) override
+    {
+        return atan2(y, x);
+    }
+};
+
+template <typename T>
+struct ln : exprtk::ifunction<T>
+{
+    ln()
+        : exprtk::ifunction<T>(1)
+    {
+        exprtk::disable_has_side_effects(*this);
+    }
+
+    inline T operator()(const T& x) override
+    {
+        return log(x);
+    }
+};
+
+template <typename T>
+struct logb10 : exprtk::ifunction<T>
+{
+    logb10()
+        : exprtk::ifunction<T>(1)
+    {
+        exprtk::disable_has_side_effects(*this);
+    }
+
+    inline T operator()(const T& x) override
+    {
+        return log10(x);
+    }
+};
+
+template <typename T>
+struct logx : exprtk::ifunction<T>
+{
+    logx()
+        : exprtk::ifunction<T>(2)
+    {
+        exprtk::disable_has_side_effects(*this);
+    }
+
+    inline T operator()(const T& b, const T& x) override
+    {
+        return log10(x) / log10(b);
+    }
+};
+
 #endif // EXPRTK_METHODS_H

@@ -27,13 +27,17 @@ public:
 private:
     exprtk::symbol_table<long double> symbol_table;
 
-    dice_roll<long double> roll;
-    random_int<long double> rand_int;
-    meemo_operation<long double> meemo;
-    gcd<long double> GCD;
-    lcm<long double> LCM;
-    xrt<long double> xrt_op;
-    factorial<long double> fact;
+    dice_roll<long double> m_roll;
+    random_int<long double> m_rand;
+    meemo_operation<long double> m_meemo;
+    gcd<long double> m_GCD;
+    lcm<long double> m_LCM;
+    xrt<long double> m_xrt;
+    factorial<long double> m_fact;
+    exprtk_atan2<long double> m_atan2;
+    ln<long double> m_ln;
+    logb10<long double> m_log10;
+    logx<long double> m_logx;
 
     QRegularExpression re{"\\b(?<number>\\d+)d(?<sides>\\d+)\\b"};
 

@@ -10,6 +10,47 @@ DiceRollWidget::DiceRollWidget(DiceRollTracker *dt, QWidget *parent)
 
     e.setDiceRollTracker(this->dt);
 
+    int fontId = QFontDatabase::addApplicationFont(":/ui/fonts/vinque/vinque rg.otf");
+    this->e.setDiceRollTracker(dt);
+
+    QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
+    QFont fantasieFont = QFont(fontFamily);
+
+    QFontInfo fontInfo(fantasieFont);
+    int pointSize = 32;
+
+    if (fontInfo.pixelSize() > 0 && fontInfo.pointSize() == 0)
+    {
+        int dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+
+        int pixelSize = static_cast<int>((pointSize * dpi) / 72);
+
+        fantasieFont.setPixelSize(pixelSize);
+    }
+    else
+    {
+        fantasieFont.setPointSize(pointSize);
+    }
+
+    this->ui->resultLabel->setFont(fantasieFont);
+
+    pointSize = 14;
+
+    if (fontInfo.pixelSize() > 0 && fontInfo.pointSize() == 0)
+    {
+        int dpi = QGuiApplication::primaryScreen()->logicalDotsPerInch();
+
+        int pixelSize = static_cast<int>((pointSize * dpi) / 72);
+
+        fantasieFont.setPixelSize(pixelSize);
+    }
+    else
+    {
+        fantasieFont.setPointSize(pointSize);
+    }
+
+    this->ui->diceLabel->setFont(fantasieFont);
+
     connect(dt, &DiceRollTracker::changed, this, &DiceRollWidget::on_updated_dt);
 }
 
@@ -58,7 +99,11 @@ void DiceRollWidget::on_expressionsEnter_clicked()
     if (lineEditText.simplified().length())
     {
         try{
-            answer = currentText + lineEditText + ": " + doubleToQString(this->e.evaluate(lineEditText.simplified())) + "\n";
+            const QString result = doubleToQString(this->e.evaluate(lineEditText.simplified()));
+            answer = currentText + lineEditText + ": " + result + "\n";
+
+            this->ui->diceLabel->setText(lineEditText.simplified());
+            this->ui->resultLabel->setText(result.simplified());
         }
         catch (const ExprTkParseException &e){
             answer = currentText + "Could not parse: \"" + lineEditText + "\"\n";
@@ -68,6 +113,7 @@ void DiceRollWidget::on_expressionsEnter_clicked()
     {
         answer = currentText + "You haven't written anything in the expression field.\n";
     }
+
 
     this->ui->expressionHistoryTextEdit->setText(answer);
 
@@ -145,7 +191,11 @@ inline void DiceRollWidget::quickDiceRoll_Helper(DiceRollWidget::DDWDice d)
     QString answer;
 
     try{
-        answer = currentText + dice + ": " + doubleToQString(this->e.evaluate(fnFormat)) + "\n";
+        const QString result = doubleToQString(this->e.evaluate(fnFormat));
+        answer = currentText + dice + ": " + result + "\n";
+
+        this->ui->resultLabel->setText(result.simplified());
+        this->ui->diceLabel->setText(QString::number(num) + "d" + QString::number(sides));
     }
     catch (const ExprTkParseException &e){
         answer = currentText + "Could not parse: \"" + fnFormat + "\"\n";

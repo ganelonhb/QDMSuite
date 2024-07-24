@@ -108,23 +108,23 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     this->ui->xThRootButton->setProperty("first", "xrt(");
     this->ui->xThRootButton->setProperty("second", "1d8");
     // Log
-    this->ui->logButton->setProperty("first", "log(");
+    this->ui->logButton->setProperty("first", "log10(");
     this->ui->logButton->setProperty("second", "1d10");
     // Ln
     this->ui->lnButton->setProperty("first", "ln(");
     this->ui->lnButton->setProperty("second", "1d12");
     // LogX
-    this->ui->logXButton->setProperty("first", "logx(");
+    this->ui->logXButton->setProperty("first", "logn(");
     this->ui->logXButton->setProperty("second", "1d20");
     // Sin
     this->ui->sinButton->setProperty("first", "sin(");
-    this->ui->sinButton->setProperty("second", "asin(");
+    this->ui->sinButton->setProperty("second", "csc(");
     // Cos
     this->ui->cosButton->setProperty("first", "cos(");
-    this->ui->cosButton->setProperty("second", "acos(");
+    this->ui->cosButton->setProperty("second", "sec(");
     // Tan
     this->ui->tanButton->setProperty("first", "tan(");
-    this->ui->tanButton->setProperty("second", "atan(");
+    this->ui->tanButton->setProperty("second", "cot(");
     // Sinh
     this->ui->sinhButton->setProperty("first", "sinh(");
     this->ui->sinhButton->setProperty("second", "asinh(");
@@ -134,6 +134,9 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     // Tanh
     this->ui->tanhButton->setProperty("first", "tanh(");
     this->ui->tanhButton->setProperty("second", "atanh(");
+    // Percent
+    this->ui->percentButton->setProperty("first", "");
+    this->ui->percentButton->setProperty("second", "%");
 
     // Const Menu
     QPalette palette = this->ui->displayLineEdit->palette();
@@ -187,19 +190,31 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     tanAction->setData("tan(");
     trig->addAction(tanAction);
 
-    QAction *acosAction = new QAction("acos(x)", trig);
-    acosAction->setData("acos(");
-    trig->addAction(acosAction);
+    QAction *secAction = new QAction("sec(x)", trig);
+    secAction->setData("sec(");
+    trig->addAction(secAction);
+
+    QAction *cscAction = new QAction("csc(x)", trig);
+    cscAction->setData("csc(");
+    trig->addAction(cscAction);
+
+    QAction *cotAction = new QAction("cot(x)", trig);
+    cotAction->setData("cot(");
+    trig->addAction(cotAction);
 
     QAction *asinAction = new QAction("asin(x)", trig);
     asinAction->setData("asin(");
     trig->addAction(asinAction);
 
+    QAction *acosAction = new QAction("acos(x)", trig);
+    acosAction->setData("acos(");
+    trig->addAction(acosAction);
+
     QAction *atanAction = new QAction("atan(x)", trig);
     atanAction->setData("atan(");
     trig->addAction(atanAction);
 
-    QAction *atan2Action = new QAction("atan2(x)", trig);
+    QAction *atan2Action = new QAction("atan2(y, x)", trig);
     atan2Action->setData("atan2(");
     trig->addAction(atan2Action);
 
@@ -237,17 +252,36 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     // Exp and Log
     QMenu *expLog = new QMenu("Exponentiation and Logarithms", funcMenu);
 
-    QAction *exp = new QAction("exp(x)", expLog);
-    exp->setData("exp(");
-    expLog->addAction(exp);
+    QAction *expAction = new QAction("exp(x)", expLog);
+    expAction->setData("exp(");
+    expLog->addAction(expAction);
 
-    QAction *ln = new QAction("ln(x)", expLog);
-    exp->setData("ln(");
-    expLog->addAction(ln);
+    QAction *lnAction = new QAction("ln(x)", expLog);
+    lnAction->setData("ln(");
+    expLog->addAction(lnAction);
 
-    QAction *log = new QAction("log(x)", expLog);
-    log->setData("log(");
-    expLog->addAction(log);
+    QAction *logAction = new QAction("log10(x)", expLog);
+    logAction->setData("log10(");
+    expLog->addAction(logAction);
+
+    QAction *logxAction = new QAction("logn(b, x)", expLog);
+    logxAction->setData("logn(");
+    expLog->addAction(logAction);
+
+    QAction *sqrtAction = new QAction("sqrt(x)", expLog);
+    sqrtAction->setData("sqrt(");
+    expLog->addAction(sqrtAction);
+
+    QAction *cbrtAction = new QAction("cbrt(x)", expLog);
+    cbrtAction->setData("cbrt(");
+    expLog->addAction(cbrtAction);
+
+    QAction *rootAction = new QAction("xrt(b, x)", expLog);
+    rootAction->setData("xrt(");
+    expLog->addAction(rootAction);
+
+    funcMenu->addMenu(expLog);
+
 
     connect(funcMenu, &QMenu::triggered, this, &CalculatorWidget::constMenuActionTriggered);
 
@@ -283,22 +317,22 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     this->ui->percentButton->setSize(5);
     this->ui->percentButton->setOffset(QPoint(3,9));
 
-    this->ui->sinButton->setSecondaries("SIN⁻¹", c);
+    this->ui->sinButton->setSecondaries("CSC", c);
     this->ui->sinButton->setSize(5);
     this->ui->sinButton->setOffset(QPoint(3,9));
-    this->ui->cosButton->setSecondaries("COS⁻¹", c);
+    this->ui->cosButton->setSecondaries("SEC", c);
     this->ui->cosButton->setSize(5);
     this->ui->cosButton->setOffset(QPoint(3,9));
-    this->ui->tanButton->setSecondaries("TAN⁻¹", c);
+    this->ui->tanButton->setSecondaries("COT", c);
     this->ui->tanButton->setSize(5);
     this->ui->tanButton->setOffset(QPoint(3,9));
-    this->ui->sinhButton->setSecondaries("SINH⁻¹", c);
+    this->ui->sinhButton->setSecondaries("ASINH", c);
     this->ui->sinhButton->setSize(5);
     this->ui->sinhButton->setOffset(QPoint(3,9));
-    this->ui->coshButton->setSecondaries("COSH⁻¹", c);
+    this->ui->coshButton->setSecondaries("SCOSH", c);
     this->ui->coshButton->setSize(5);
     this->ui->coshButton->setOffset(QPoint(3,9));
-    this->ui->tanhButton->setSecondaries("TANH⁻¹", c);
+    this->ui->tanhButton->setSecondaries("ATANH", c);
     this->ui->tanhButton->setSize(5);
     this->ui->tanhButton->setOffset(QPoint(3,9));
 
@@ -329,6 +363,10 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     this->ui->spaceButton->setSecondaries("1d%", c);
     this->ui->spaceButton->setOffset(QPoint(2,2));
     this->ui->spaceButton->setSvg(":/ui/dice/symbolic-dark/dPercent.svg");
+
+    this->ui->ansPushButton->setSecondaries("PREV", c);
+    this->ui->ansPushButton->setSize(5);
+    this->ui->ansPushButton->setOffset(QPoint(3,9));
 
     connect(this->ui->regularButtons, &QButtonGroup::buttonClicked, this, &CalculatorWidget::regularButtonClicked);
 }
@@ -388,8 +426,12 @@ void CalculatorWidget::on_delButton_clicked()
 
 void CalculatorWidget::on_equalsPushButton_clicked()
 {
-    const QString lineEditText = this->ui->displayLineEdit->text()
-                                     .replace("π", "(PI)")
+    if (history.length() > 99)
+        history.removeFirst();
+    QString l = this->ui->displayLineEdit->text();
+    history.append(l);
+
+    const QString lineEditText =    l.replace("π", "(PI)")
                                      .replace("τ", "(TAU)")
                                      .replace("ℯ", "(EULER)")
                                      .replace("φ", "(GOLDEN)")
@@ -443,5 +485,25 @@ void CalculatorWidget::constMenuActionTriggered(QAction *action)
     this->ui->displayLineEdit->setText(currentText + actionData);
     this->ui->secondIndicator->setText("");
     this->secondButtonClicked = false;
+}
+
+
+void CalculatorWidget::on_ansPushButton_clicked()
+{
+    if (!secondButtonClicked)
+    {
+        QString currentText = this->ui->displayLineEdit->text();
+
+        this->ui->displayLineEdit->setText(currentText + this->ui->ansPushButton->property("first").toString());
+        return;
+    }
+
+    if (history.isEmpty())
+    {
+        this->ui->displayLineEdit->setText("42");
+        return;
+    }
+
+    this->ui->displayLineEdit->setText(history.last());
 }
 
