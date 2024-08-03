@@ -7,6 +7,8 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QTreeWidgetItem>
+#include <QCloseEvent>
+#include <QShowEvent>
 #include <QIcon>
 #include <QList>
 #include <QVariant>
@@ -35,6 +37,13 @@ public:
 signals:
     void downloadComplete(bool success);
 
+    void closeRequested();
+    void shown();
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+
 private slots:
     void finished(QNetworkReply *q);
 
@@ -55,6 +64,9 @@ private slots:
 
     void on_downloadAllButton_clicked();
 
+    void onCloseRequested();
+    void onShow();
+
 private:
     static inline void iterateTreeItems(QTreeWidgetItem *item, Qt::CheckState state = Qt::Unchecked);
     static inline void setAllCheckStates(QTreeWidget *widget, Qt::CheckState state = Qt::Unchecked);
@@ -62,8 +74,8 @@ private:
     static inline bool allChecked(QTreeWidget *widget);
     static inline void iterateTreeCheck(QTreeWidgetItem *item, bool& allChecked);
 
-    static inline QTreeWidgetItemPtrList items(QTreeWidget *widget);
-    static inline void addTreeWidgetItemsToList(QTreeWidgetItem *item, QTreeWidgetItemPtrList &list);
+    static inline QTreeWidgetItemPtrList items(QTreeWidget *widget, bool onlyChecked = false);
+    static inline void addTreeWidgetItemsToList(QTreeWidgetItem *item, QTreeWidgetItemPtrList &list, bool onlyChecked = false);
 
     inline void downloadItems(QTreeWidgetItemPtrList items);
     Ui::FantasyNameGeneratorDownloadWidget *ui;
@@ -71,6 +83,10 @@ private:
     QNetworkAccessManager *nw;
 
     FantasyNameGeneratorHtmlParser *parseHtml;
+
+    QList<QNetworkReply *> activeReplies;
+
+    QAtomicInt cancelRequest{0};
 };
 
 #endif // FANTASYNAMEGENERATORDOWNLOADWIDGET_H

@@ -1,6 +1,8 @@
 #include "fantasynamegeneratordownloadwidget.h"
 #include "ui_fantasynamegeneratordownloadwidget.h"
 
+#include <iostream>
+
 FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , ui(new Ui::FantasyNameGeneratorDownloadWidget)
@@ -14,13 +16,20 @@ FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *
     nw = new QNetworkAccessManager(this);
 
     connect(nw, &QNetworkAccessManager::finished, this, &FantasyNameGeneratorDownloadWidget::finished);
-
+    connect(this, &FantasyNameGeneratorDownloadWidget::closeRequested, this, &FantasyNameGeneratorDownloadWidget::onCloseRequested);
+    connect(this, &FantasyNameGeneratorDownloadWidget::shown, this, &FantasyNameGeneratorDownloadWidget::onShow);
 }
 
 FantasyNameGeneratorDownloadWidget::~FantasyNameGeneratorDownloadWidget()
 {
     delete ui;
     delete parseHtml;
+
+    if (activeReplies.length() > 0)
+    {
+        foreach(QNetworkReply * reply, activeReplies)
+            reply->deleteLater();
+    }
 }
 
 void FantasyNameGeneratorDownloadWidget::download()
@@ -48,6 +57,12 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
 
 void FantasyNameGeneratorDownloadWidget::on_cancelButton_clicked()
 {
+    ui->downloadWidget->setVisible(false);
+    ui->downloadAllButton->setEnabled(true);
+    ui->downloadSelectedButton->setEnabled(true);
+
+    cancelRequest = 1;
+
     this->close();
 }
 
@@ -200,27 +215,28 @@ inline void FantasyNameGeneratorDownloadWidget::setAllChildCheckStates(QTreeWidg
     iterateTreeItems(item, state);
 }
 
-inline FantasyNameGeneratorDownloadWidget::QTreeWidgetItemPtrList FantasyNameGeneratorDownloadWidget::items(QTreeWidget *widget)
+inline FantasyNameGeneratorDownloadWidget::QTreeWidgetItemPtrList FantasyNameGeneratorDownloadWidget::items(QTreeWidget *widget, bool onlyChecked)
 {
     QTreeWidgetItemPtrList p;
 
     for (int i = 0; i < widget->topLevelItemCount(); ++i)
-        addTreeWidgetItemsToList(widget->topLevelItem(i), p);
+        addTreeWidgetItemsToList(widget->topLevelItem(i), p, onlyChecked);
 
     return p;
 }
 
-inline void FantasyNameGeneratorDownloadWidget::addTreeWidgetItemsToList(QTreeWidgetItem * item, FantasyNameGeneratorDownloadWidget::QTreeWidgetItemPtrList &items)
+inline void FantasyNameGeneratorDownloadWidget::addTreeWidgetItemsToList(QTreeWidgetItem * item, FantasyNameGeneratorDownloadWidget::QTreeWidgetItemPtrList &items, bool onlyChecked)
 {
     if (!item) return;
 
-    items.append(item);
+    if (!onlyChecked || (onlyChecked && item->checkState(0) == Qt::Checked))
+        items.append(item);
 
     if (!item->childCount()) return;
 
 
     for (int i = 0; i < item->childCount(); ++i)
-        addTreeWidgetItemsToList(item->child(i), items);
+        addTreeWidgetItemsToList(item->child(i), items, onlyChecked);
 }
 
 void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemChanged(QTreeWidgetItem *item, int column)
@@ -256,13 +272,22 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
 
     ui->downloadProgressBar->setMaximum(fngItems.size());
     ui->downloadProgressBar->setValue(0);
-    ui->downloadAllButton->setVisible(true);
+    ui->downloadWidget->setVisible(true);
+    ui->downloadAllButton->setEnabled(false);
+    ui->downloadSelectedButton->setEnabled(false);
 
     foreach(FNGGeneratorItem item , fngItems)
     {
-        QNetworkAccessManager manager;
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return;
+        }
+
+
         QNetworkRequest request(QUrl(item.pageUrl));
-        QNetworkReply * reply = manager.get(request);
+        QNetworkReply * reply = nw->get(request);
+        activeReplies.push_back(reply);
 
         QEventLoop eventLoop;
         connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
@@ -279,9 +304,16 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
         }
 
         reply->deleteLater();
+        activeReplies.pop_front();
+
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return;
+        }
 
         FNGGeneratePageHTMLParser p;
-        p.parse(response);
+        p.parse(response, item);
 
         QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
@@ -297,6 +329,8 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
         if (!fngDir.exists())
             fngDir.mkpath(".");
 
+        item.folders.removeAll("rlSelect");
+
         QString thisItemPath = fngPath + QDir::separator() + item.folders.join(QDir::separator());
 
         QDir thisItemDir(thisItemPath);
@@ -305,12 +339,21 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
 
         ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
 
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return;
+        }
     }
+
+    ui->downloadWidget->setVisible(false);
+    ui->downloadAllButton->setEnabled(true);
+    ui->downloadSelectedButton->setEnabled(true);
 }
 
 void FantasyNameGeneratorDownloadWidget::on_downloadSelectedButton_clicked()
 {
-    downloadItems(ui->treeWidget->selectedItems());
+    downloadItems(items(ui->treeWidget, true));
 }
 
 
@@ -319,3 +362,28 @@ void FantasyNameGeneratorDownloadWidget::on_downloadAllButton_clicked()
     downloadItems(items(ui->treeWidget));
 }
 
+void FantasyNameGeneratorDownloadWidget::closeEvent(QCloseEvent *event)
+{
+    emit closeRequested();
+    QWidget::closeEvent(event);
+}
+
+void FantasyNameGeneratorDownloadWidget::showEvent(QShowEvent *event)
+{
+    emit shown();
+    QWidget::showEvent(event);
+}
+
+void FantasyNameGeneratorDownloadWidget::onCloseRequested()
+{
+    ui->downloadWidget->setVisible(false);
+    ui->downloadAllButton->setEnabled(true);
+    ui->downloadSelectedButton->setEnabled(true);
+
+    cancelRequest = 1;
+}
+
+void FantasyNameGeneratorDownloadWidget::onShow()
+{
+    cancelRequest = 0;
+}

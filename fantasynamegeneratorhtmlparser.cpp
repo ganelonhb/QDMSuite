@@ -60,7 +60,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                 else if (entry->get_attr("class") == "subList")
                 {
                     QString subListName = QString::fromStdString(entry->to_text()).split('\n')[0].simplified();
-                    subListName = subListName.replace(" - New!", "").replace(" >", "").simplified();
+                    subListName = subListName.replace(" - New!", "").replace(" >", "").replace("/", "and").simplified();
 
                     QTreeWidgetItem* subListItem = new QTreeWidgetItem(0);
                     subListItem->setText(0, subListName);

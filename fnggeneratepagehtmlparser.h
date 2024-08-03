@@ -2,6 +2,7 @@
 #define FNGGENERATEPAGEHTMLPARSER_H
 
 #include <QNetworkReply>
+#include <QRegularExpression>
 #include <QString>
 
 #include <vector>
@@ -15,6 +16,10 @@ struct FNGGeneratorItem
     QString name;
     QString pageUrl;
     QStringList folders;
+
+    Genders genders;
+    QString scriptUrl;
+    QString scriptName;
 };
 
 class FNGGeneratePageHTMLParser
@@ -22,7 +27,7 @@ class FNGGeneratePageHTMLParser
 public:
     FNGGeneratePageHTMLParser();
 
-    void parse(const QString &body);
+    void parse(const QString &body, FNGGeneratorItem& item);
 
 private:
     html::parser p;
