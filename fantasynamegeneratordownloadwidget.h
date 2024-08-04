@@ -77,7 +77,7 @@ private:
     static inline QTreeWidgetItemPtrList items(QTreeWidget *widget, bool onlyChecked = false);
     static inline void addTreeWidgetItemsToList(QTreeWidgetItem *item, QTreeWidgetItemPtrList &list, bool onlyChecked = false);
 
-    inline void downloadItems(QTreeWidgetItemPtrList items);
+    inline QList<FNGGeneratorItem> downloadItems(QTreeWidgetItemPtrList items);
     Ui::FantasyNameGeneratorDownloadWidget *ui;
 
     QNetworkAccessManager *nw;

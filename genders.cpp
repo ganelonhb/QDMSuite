@@ -7,7 +7,7 @@ void Genders::insert(const QString &index, const QString &str)
     QString i = index;
 
     if (i == "" || i == "namesMale")
-        i = "void";
+        i = "0";
     else if (i == "namesFemale")
     {
         i = "1";
@@ -17,7 +17,7 @@ void Genders::insert(const QString &index, const QString &str)
         i = "2";
     }
 
-    m.insert(index, str);
+    m.insert(i, str);
 }
 
 void Genders::insert(int index, const QString& str)
@@ -37,5 +37,10 @@ QString Genders::operator[](int idx)
 
 QString Genders::operator[]()
 {
-    return m["void"];
+    return m["0"];
+}
+
+QMap<QString, QString> &Genders::getMap()
+{
+    return m;
 }

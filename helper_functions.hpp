@@ -1,8 +1,10 @@
 #ifndef HELPER_FUNCTIONS_HPP
 #define HELPER_FUNCTIONS_HPP
 
+#include <QStringList>
 #include <QString>
 #include <QtTypes>
+#include <QRegularExpression>
 
 #include <string>
 #include <iomanip>
@@ -58,6 +60,36 @@ inline QString doubleToQString(long double val, int precision = 15)
         return int128ToString(static_cast<qint128>(val));
 
     return longDoubleToQString(val, precision);
+}
+
+inline QString minifyJS(const QString &js)
+{
+    QString minified = js;
+
+    // Remove newline characters, comments, and unnecessary whitespace
+    minified = minified
+                   .remove(QRegularExpression(R"([\n\r])"))
+                   .remove(QRegularExpression(R"(//.*)"))
+                   .remove(QRegularExpression(R"(/\*.*?\*/)"))
+                   .trimmed()
+                   .simplified()
+                   .replace(QRegularExpression(R"(\s+)"), " ");
+
+    // List of operators and syntax elements to remove spaces around
+    QStringList operators = {
+        R"(;)", R"(=)", R"(\+)", R"(-)", R"(\*)", R"(/)", R"(%)", R"(!)", R"(==)", R"(!=)", R"(===)", R"(!==)",
+        R"(<)", R"(>)", R"(<=)", R"(>=)", R"(&&)", R"(\|\|)", R"(\?)", R"(:)", R"(\()", R"(\))", R"(\{)",
+        R"(\})", R"(\[)", R"(\])", R"(,)", R"(\.)"
+    };
+
+    // Remove spaces around the operators and syntax elements
+    foreach (const QString &op, operators) {
+        QString opmin = op;
+        opmin = opmin.replace(R"(\)", "");
+        minified = minified.replace(QRegularExpression(R"(\s*)" + op + R"(\s*)"), opmin);
+    }
+
+    return minified.remove(QRegularExpression("[\x00-\x1F\x7F]"));
 }
 
 #endif // HELPER_FUNCTIONS_HPP

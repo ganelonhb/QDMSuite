@@ -1,8 +1,5 @@
 #include "fnggeneratepagehtmlparser.h"
 
-#include <iostream>
-#include <fstream>
-
 FNGGeneratePageHTMLParser::FNGGeneratePageHTMLParser()
 {}
 
@@ -22,35 +19,16 @@ void FNGGeneratePageHTMLParser::parse(const QString &body, FNGGeneratorItem &ite
     Genders g;
     std::vector<html::node *> buttons = node->select("div#nameGen>input");
 
-
-    std::ofstream out;
-
-    out.open("/home/donquixote/.local/share/qdms/log.txt");
-
     for(html::node * node : buttons)
     {
         QString onclick = QString::fromStdString(node->get_attr("onclick"));
         QRegularExpression re("nameGen\\(([^)]*)\\)");
         QRegularExpressionMatch match = re.match(onclick);
 
-        QString value = QString::fromStdString(node->get_attr("value")).remove("(?i)\bget\b").toLower().simplified();
-        QRegularExpression capitalize("(\\b\\w");
-        QRegularExpressionMatchIterator i = capitalize.globalMatch(value);
-
-        while (i.hasNext())
-        {
-            QRegularExpressionMatch match = i.next();
-            int pos = match.capturedStart();
-            value[pos] = value[pos].toUpper();
-        }
+        QString value = QString::fromStdString(node->get_attr("value")).toLower().remove("get").simplified();
 
         g.insert(match.captured(1), value);
-
-
-        std::cout << item.pageUrl.toStdString() << " - " << match.captured(1).toStdString() << " : " << node->get_attr("value") << std::endl;
-        out <<item.pageUrl.toStdString() << " - " << match.captured(1).toStdString() << " : " << node->get_attr("value") << std::endl;
     }
-    out.close();
 
     item.genders = g;
 }

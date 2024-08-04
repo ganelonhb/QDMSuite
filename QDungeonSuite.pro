@@ -21,6 +21,7 @@ SOURCES += \
     diceroll.cpp \
     dicerolltracker.cpp \
     dicerollwidget.cpp \
+    downloadsfaileddialogwidget.cpp \
     draggabletabbar.cpp \
     draggabletabwidget.cpp \
     exprtkengine.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     diceroll.h \
     dicerolltracker.h \
     dicerollwidget.h \
+    downloadsfaileddialogwidget.h \
     draggabletabbar.h \
     draggabletabwidget.h \
     exprtk_methods.hpp \
@@ -69,6 +71,7 @@ HEADERS += \
 FORMS += \
     calculatorwidget.ui \
     dicerollwidget.ui \
+    downloadsfaileddialogwidget.ui \
     fantasynamegeneratordownloadwidget.ui \
     fantasynamegeneratorwidget.ui \
     mainwindow.ui \

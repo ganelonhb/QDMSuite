@@ -46,5 +46,7 @@
         <file>fonts/Unifont/LICENSE.txt</file>
         <file>fonts/vinque/vinque rg.otf</file>
         <file>fonts/vinque/Typodermic Desktop EULA 2023.pdf</file>
+        <file>icons/symbolic-dark/question.svg</file>
+        <file>icons/symbolic-light/question.svg</file>
     </qresource>
 </RCC>

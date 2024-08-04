@@ -16,6 +16,8 @@ public:
     QString operator[](int idx);
     QString operator[]();
 
+    QMap<QString, QString> &getMap();
+
 private:
     QMap<QString, QString> m;
 };

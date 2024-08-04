@@ -3,6 +3,7 @@
 
 #include <QNetworkReply>
 #include <QRegularExpression>
+#include <QTreeWidgetItem>
 #include <QString>
 
 #include <vector>
@@ -20,6 +21,9 @@ struct FNGGeneratorItem
     Genders genders;
     QString scriptUrl;
     QString scriptName;
+
+    QString err;
+    QTreeWidgetItem *errItem;
 };
 
 class FNGGeneratePageHTMLParser

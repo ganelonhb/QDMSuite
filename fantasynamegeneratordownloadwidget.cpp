@@ -1,4 +1,5 @@
 #include "fantasynamegeneratordownloadwidget.h"
+#include "helper_functions.hpp"
 #include "ui_fantasynamegeneratordownloadwidget.h"
 
 #include <iostream>
@@ -247,9 +248,10 @@ void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemChanged(QTreeWidgetIt
     this->ui->treeWidget->blockSignals(false);
 }
 
-inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetItem *> items)
+inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetItem *> items)
 {
     QList<FNGGeneratorItem> fngItems;
+    QList<FNGGeneratorItem> fails;
 
     foreach(QTreeWidgetItem *item , items)
     {
@@ -265,10 +267,12 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
 
         g.name = g.folders.last();
 
+        g.errItem = item;
+
         fngItems.push_back(g);
     }
 
-    if (fngItems.empty()) return;
+    if (fngItems.empty()) return fails;
 
     ui->downloadProgressBar->setMaximum(fngItems.size());
     ui->downloadProgressBar->setValue(0);
@@ -281,17 +285,23 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
-            return;
+            return fails;
         }
 
-
+        QNetworkAccessManager m(this);
         QNetworkRequest request(QUrl(item.pageUrl));
-        QNetworkReply * reply = nw->get(request);
+        QNetworkReply * reply = m.get(request);
         activeReplies.push_back(reply);
 
-        QEventLoop eventLoop;
-        connect(reply, &QNetworkReply::finished, &eventLoop, &QEventLoop::quit);
-        eventLoop.exec();
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return fails;
+        }
+
+        QEventLoop pauseUntilPageReplies;
+        connect(reply, &QNetworkReply::finished, &pauseUntilPageReplies, &QEventLoop::quit);
+        pauseUntilPageReplies.exec();
 
         QString response;
         if (reply->error() == QNetworkReply::NoError)
@@ -300,16 +310,19 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
         }
         else
         {
+            item.err = "network error";
+            fails.append(item);
+            ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
             continue;
         }
 
         reply->deleteLater();
-        activeReplies.pop_front();
+        activeReplies.pop_back();
 
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
-            return;
+            return fails;
         }
 
         FNGGeneratePageHTMLParser p;
@@ -337,18 +350,111 @@ inline void FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetI
         if (!thisItemDir.exists())
             thisItemDir.mkpath(".");
 
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return fails;
+        }
+
+        QNetworkRequest requestScript(QUrl(item.scriptUrl));
+        QNetworkReply * replyScript = m.get(requestScript);
+        activeReplies.push_back(replyScript);
+
+        QEventLoop pauseUntilScriptReplies;
+        connect(replyScript, &QNetworkReply::finished, &pauseUntilScriptReplies, &QEventLoop::quit);
+        pauseUntilScriptReplies.exec();
+
+        QString responseScript;
+        if (replyScript->error() == QNetworkReply::NoError)
+        {
+            responseScript = replyScript->readAll();
+        }
+        else
+        {
+            ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
+            item.err = "network error";
+            fails.append(item);
+            continue;
+        }
+
+        replyScript->deleteLater();
+        activeReplies.pop_back();
+
+        QFile scriptFile(thisItemPath + QDir::separator() + item.scriptName);
+        if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
+            item.err = "could not open " + thisItemPath + QDir::separator() + item.scriptName + ", " + scriptFile.errorString();
+            fails.append(item);
+            continue;
+        }
+
+        QTextStream scriptOut(&scriptFile);
+        scriptOut.setEncoding(QStringConverter::Utf8);
+        scriptOut.setGenerateByteOrderMark(false);
+        scriptOut << minifyJS(responseScript).replace("\n", "")
+                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return names;")
+                         .replace(R"(if(document.getElementById("result")){document.getElementById("placeholder").removeChild(document.getElementById("result"));})", "")
+                         .replace(R"(element.appendChild(br);)", "")
+                         .replace(R"(element.appendChild(document.createTextNode(names));)", "")
+                         .replace(R"(br=document.createElement('br');)", "")
+                         .replace(R"(element.setAttribute("id","result");)", "")
+                         .replace(R"(var element=document.createElement("div");)", "")
+                         .replace(R"(var br="";)", "")
+                         .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
+                         .replace(QRegularExpression(R"(\b(nMs)\b)"), "names")
+                         .replace(R"(testSwear(names);)", "");
+
+        scriptFile.close();
+
+        QFile metaDataFile(thisItemPath + QDir::separator() + "meta.toml");
+        if (!metaDataFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
+            item.err = "could not open " + thisItemPath + QDir::separator() + "meta.toml" + ", " + scriptFile.errorString();
+            fails.append(item);
+            continue;
+        }
+
+        QTextStream metaOut(&metaDataFile);
+
+        // meoooow
+
+        metaOut << "name = \"" << item.name << "\"\n"
+                << "script = \"" << item.scriptName << "\"\n"
+                << "src = \"" << item.pageUrl << "\"\n"
+                << "entrypoint = \"nameGen\"\n"
+                << "\n[genders]\n";
+
+        QMap<QString, QString> &map = item.genders.getMap();
+
+        foreach(QString str, map.keys())  //for(QMap<QString, QString>::const_iterator it = map.cbegin(); it != map.cend(); ++it)
+        {
+            metaOut << str << " = \"" << map[str] << "\"\n";
+        }
+
+        metaDataFile.close();
+
+        if (cancelRequest > 0)
+        {
+            cancelRequest = 0;
+            return fails;
+        }
+
         ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
 
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
-            return;
+            return fails;
         }
     }
 
     ui->downloadWidget->setVisible(false);
     ui->downloadAllButton->setEnabled(true);
     ui->downloadSelectedButton->setEnabled(true);
+
+    return fails;
 }
 
 void FantasyNameGeneratorDownloadWidget::on_downloadSelectedButton_clicked()
