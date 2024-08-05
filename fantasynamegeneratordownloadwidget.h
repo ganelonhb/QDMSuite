@@ -15,6 +15,7 @@
 #include <QStandardPaths>
 #include <QDir>
 
+#include "downloadsfaileddialogwidget.h"
 #include "fnggeneratepagehtmlparser.h"
 #include "fantasynamegeneratorhtmlparser.h"
 

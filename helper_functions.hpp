@@ -66,6 +66,26 @@ inline QString minifyJS(const QString &js)
 {
     QString minified = js;
 
+    //minified = minified.replace(QRegularExpression(R"((?<![;\{\}\[\(])\n(?![\s]*$))"), ";\n");
+    QRegularExpression reNl("(.)(?<![;{}()\[])\n");
+    QRegularExpressionMatchIterator i = reNl.globalMatch(minified);
+
+    int offset = 0;
+
+    while(i.hasNext())
+    {
+        QRegularExpressionMatch match = i.next();
+
+        QString group1 = match.captured(1);
+        QString group2 = "\n";
+
+        QString replacement = group1 + ";" + group2;
+
+        minified = minified.replace(match.capturedStart(0) + offset, match.capturedLength(0), replacement);
+
+        offset += replacement.length() - match.capturedLength(0);
+    }
+
     // Remove newline characters, comments, and unnecessary whitespace
     minified = minified
                    .remove(QRegularExpression(R"([\n\r])"))

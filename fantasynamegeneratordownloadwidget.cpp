@@ -389,21 +389,59 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
             continue;
         }
 
+        QRegularExpression reNames(R"(\bnames\b)");
+        QRegularExpression renMs(R"(\bnMs\b)");
+        QRegularExpression renm(R"(\bnm\b)");
+        QRegularExpression reName(R"(\bname\b)");
+        QRegularExpressionMatch matchNames = reNames.match(responseScript);
+        QRegularExpressionMatch matchnMs = renMs.match(responseScript);
+        QRegularExpressionMatch matchnm = renm.match(responseScript);
+        QRegularExpressionMatch matchName = reName.match(responseScript);
+
+        QString returnNames;
+
+        if (matchNames.hasMatch()){
+            returnNames = "names";
+            std::cout << "File uses names." << std::endl;
+        }
+        else if (matchnMs.hasMatch())
+        {
+            returnNames = "nMs";
+            std::cout << "File uses nMs." << std::endl;
+        }
+        else if (matchnm.hasMatch())
+        {
+            returnNames = "nm";
+            std::cout << "File uses nm." << std::endl;
+        }
+        else if (matchName.hasMatch())
+        {
+            returnNames = "name";
+            std::cout << "File uses name." << std::endl;
+        }
+        else{
+            std::cout << item.scriptName.toStdString() << std::endl << std::endl << responseScript.toStdString() << std::endl;
+            throw std::exception();
+        }
+
         QTextStream scriptOut(&scriptFile);
         scriptOut.setEncoding(QStringConverter::Utf8);
         scriptOut.setGenerateByteOrderMark(false);
         scriptOut << minifyJS(responseScript).replace("\n", "")
-                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return names;")
+                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return " + returnNames + ";")
                          .replace(R"(if(document.getElementById("result")){document.getElementById("placeholder").removeChild(document.getElementById("result"));})", "")
                          .replace(R"(element.appendChild(br);)", "")
-                         .replace(R"(element.appendChild(document.createTextNode(names));)", "")
+                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "")
                          .replace(R"(br=document.createElement('br');)", "")
                          .replace(R"(element.setAttribute("id","result");)", "")
                          .replace(R"(var element=document.createElement("div");)", "")
                          .replace(R"(var br="";)", "")
+                         .replace(R"(var br=[];)", "")
+                         .replace(R"(br[i]=document.createElement('br');)", "")
+                         .replace(R"(element.appendChild(br[i]);)", "")
                          .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
-                         .replace(QRegularExpression(R"(\b(nMs)\b)"), "names")
-                         .replace(R"(testSwear(names);)", "");
+                         .replace(QRegularExpression(R"(testSwear(.*);)"), "")
+                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "");
 
         scriptFile.close();
 
@@ -459,7 +497,19 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
 void FantasyNameGeneratorDownloadWidget::on_downloadSelectedButton_clicked()
 {
-    downloadItems(items(ui->treeWidget, true));
+    QList<FNGGeneratorItem> fails = downloadItems(items(ui->treeWidget, true));
+
+    if (fails.size())
+    {
+        QList<QTreeWidgetItem *> selected = DownloadMessageBox::dlfailed(fails, this);
+
+        while (selected.size())
+        {
+            QList<FNGGeneratorItem> failedRedownload = downloadItems(selected);
+
+            selected = DownloadMessageBox::dlfailed(failedRedownload, this);
+        }
+    }
 }
 
 
