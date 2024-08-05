@@ -428,10 +428,10 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         scriptOut.setEncoding(QStringConverter::Utf8);
         scriptOut.setGenerateByteOrderMark(false);
         scriptOut << minifyJS(responseScript).replace("\n", "")
-                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return " + returnNames + ";")
+                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "")
                          .replace(R"(if(document.getElementById("result")){document.getElementById("placeholder").removeChild(document.getElementById("result"));})", "")
                          .replace(R"(element.appendChild(br);)", "")
-                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "")
+                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "return " + returnNames + ";")
                          .replace(R"(br=document.createElement('br');)", "")
                          .replace(R"(element.setAttribute("id","result");)", "")
                          .replace(R"(var element=document.createElement("div");)", "")
@@ -440,8 +440,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"(br[i]=document.createElement('br');)", "")
                          .replace(R"(element.appendChild(br[i]);)", "")
                          .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
-                         .replace(QRegularExpression(R"(testSwear(.*);)"), "")
-                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "");
+                         .replace(QRegularExpression(R"(testSwear(.*);)"), "");
 
         scriptFile.close();
 
