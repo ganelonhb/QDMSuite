@@ -47,6 +47,10 @@ private slots:
     void newFNGWindow();
     void newFNGDock();
 
+    void newCalcTab();
+    void newCalcWindow();
+    void newCalcDock();
+
     void on_fantasyNameGenerator_clicked();
 
     void newWidget(QWidget *widget, WidgetType wt = WidgetType::WINDOW, const QString &title = "Q.D.M.S.");
@@ -57,6 +61,8 @@ private slots:
     void on_actionDice_Roller_2_triggered();
 
     void on_actionName_Generator_triggered();
+
+    void on_calculatorPushButton_clicked();
 
 private:
     Ui::MainWindow *ui;

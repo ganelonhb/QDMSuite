@@ -48,5 +48,7 @@
         <file>fonts/vinque/Typodermic Desktop EULA 2023.pdf</file>
         <file>icons/symbolic-dark/question.svg</file>
         <file>icons/symbolic-light/question.svg</file>
+        <file>icons/symbolic-light/calculator.svg</file>
+        <file>icons/symbolic-dark/calculator.svg</file>
     </qresource>
 </RCC>

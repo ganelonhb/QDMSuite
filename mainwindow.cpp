@@ -20,13 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->fantasyNameGenerator->newWindow(), &QAction::triggered, this, &MainWindow::newFNGWindow);
     connect(this->ui->fantasyNameGenerator->newTab(), &QAction::triggered, this, &MainWindow::newFNGTab);
 
+    connect(this->ui->calculatorPushButton->newDock(), &QAction::triggered, this, &MainWindow::newCalcDock);
+    connect(this->ui->calculatorPushButton->newWindow(), &QAction::triggered, this, &MainWindow::newCalcWindow);
+    connect(this->ui->calculatorPushButton->newTab(), &QAction::triggered, this, &MainWindow::newCalcTab);
+
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createHorizontalTab);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createVerticalTab);
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabWidget, &SplitTabsWidget::single, this, &MainWindow::unlockTabSplit);
-
-    this->newWidget(new CalculatorWidget(&dt), WidgetType::WINDOW);
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +81,20 @@ void MainWindow::newFNGDock()
     this->newWidget(new FantasyNameGeneratorWidget, WidgetType::FLOATING_DOCK, "Fantasy Name Generator");
 }
 
+void MainWindow::newCalcTab()
+{
+    this->newWidget(new CalculatorWidget(&dt), WidgetType::TAB, "Calculator");
+}
+
+void MainWindow::newCalcWindow()
+{
+    this->newWidget(new CalculatorWidget(&dt), WidgetType::WINDOW, "Calculator");
+}
+
+void MainWindow::newCalcDock()
+{
+    this->newWidget(new CalculatorWidget(&dt), WidgetType::FLOATING_DOCK, "Calculator");
+}
 
 void MainWindow::on_fantasyNameGenerator_clicked()
 {
@@ -151,5 +167,11 @@ void MainWindow::on_actionDice_Roller_2_triggered()
 void MainWindow::on_actionName_Generator_triggered()
 {
     this->newWidget(new FantasyNameGeneratorWidget, WidgetType::TAB, "Fantasy Name Generator");
+}
+
+
+void MainWindow::on_calculatorPushButton_clicked()
+{
+    this->newWidget(new CalculatorWidget(&dt), WidgetType::FLOATING_DOCK, "Calculator");
 }
 
