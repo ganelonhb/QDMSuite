@@ -439,8 +439,18 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"(var br=[];)", "")
                          .replace(R"(br[i]=document.createElement('br');)", "")
                          .replace(R"(element.appendChild(br[i]);)", "")
+                         .replace(R"(var choice=$("#radioChoice input[type='radio']:checked").val();)", "")
+                         .replace(R"(element.appendChild(document.createTextNode(nm));)", "")
+                         .replace(R"(element.appendChild(document.createTextNode(nMs));)", "")
+                         .replace(R"(element.appendChild(document.createTextNode(name));)", "")
+                         .replace(R"($('#firChange').is(':checked'))", "false")
+                         .replace(R"($('#secChange').is(':checked'))", "false")
+                         .replace(R"($("#firChange").val())", "false")
+                         .replace(R"(element.appendChild(document.createTextNode(names[i]));)", "")
+                         .replace(R"(element.appendChild(document.createTextNode(names));)", "")
+                         .replace(R"(br[0]=document.createElement('br');)", "")
                          .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
-                         .replace(QRegularExpression(R"(testSwear(.*);)"), "");
+                         .replace(QRegularExpression(R"(testSwear\(.*?\);)"), "");
 
         scriptFile.close();
 
