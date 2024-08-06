@@ -52,6 +52,15 @@ DiceRollWidget::DiceRollWidget(DiceRollTracker *dt, QWidget *parent)
     this->ui->diceLabel->setFont(fantasieFont);
 
     connect(dt, &DiceRollTracker::changed, this, &DiceRollWidget::on_updated_dt);
+
+    constexpr QColor diceColor(255,255,255, 255 / 5);
+    ui->d4Icon->setAnimationColor(diceColor);
+    ui->d6Icon->setAnimationColor(diceColor);
+    ui->d8Icon->setAnimationColor(diceColor);
+    ui->d10Icon->setAnimationColor(diceColor);
+    ui->d12Icon->setAnimationColor(diceColor);
+    ui->d20Icon->setAnimationColor(diceColor);
+    ui->dPercentIcon->setAnimationColor(diceColor);
 }
 
 DiceRollWidget::~DiceRollWidget()
@@ -203,3 +212,45 @@ inline void DiceRollWidget::quickDiceRoll_Helper(DiceRollWidget::DDWDice d)
 
     this->ui->expressionHistoryTextEdit->setText(answer);
 }
+
+void DiceRollWidget::on_d4Spin_valueChanged(int sides)
+{
+    ui->d4Icon->setToolTip("Roll " + QString::number(sides) + "d4");
+}
+
+
+void DiceRollWidget::on_d6Spin_valueChanged(int sides)
+{
+    ui->d6Icon->setToolTip("Roll " + QString::number(sides) + "d6");
+}
+
+
+void DiceRollWidget::on_d8Spin_valueChanged(int sides)
+{
+    ui->d8Icon->setToolTip("Roll " + QString::number(sides) + "d8");
+}
+
+
+void DiceRollWidget::on_d10Spin_valueChanged(int sides)
+{
+    ui->d10Icon->setToolTip("Roll " + QString::number(sides) + "d10");
+}
+
+
+void DiceRollWidget::on_d12Spin_valueChanged(int sides)
+{
+    ui->d12Icon->setToolTip("Roll " + QString::number(sides) + "d12");
+}
+
+
+void DiceRollWidget::on_d20Spin_valueChanged(int sides)
+{
+    ui->d20Icon->setToolTip("Roll " + QString::number(sides) + "d20");
+}
+
+
+void DiceRollWidget::on_dPercentSpin_valueChanged(int sides)
+{
+    ui->dPercentIcon->setToolTip("Roll " + QString::number(sides) + "d100");
+}
+

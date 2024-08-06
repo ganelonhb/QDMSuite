@@ -45,6 +45,20 @@ private slots:
     void on_d20Icon_clicked();
     void on_dPercentIcon_clicked();
 
+    void on_d4Spin_valueChanged(int sides);
+
+    void on_d6Spin_valueChanged(int sides);
+
+    void on_d8Spin_valueChanged(int sides);
+
+    void on_d10Spin_valueChanged(int sides);
+
+    void on_d12Spin_valueChanged(int sides);
+
+    void on_d20Spin_valueChanged(int sides);
+
+    void on_dPercentSpin_valueChanged(int sides);
+
 private:
     enum DDWDice {
         d4 = 4,

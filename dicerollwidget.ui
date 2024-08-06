@@ -15,15 +15,27 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="5" column="0">
-    <widget class="QTextEdit" name="expressionHistoryTextEdit"/>
+    <widget class="QTextEdit" name="expressionHistoryTextEdit">
+     <property name="frameShape">
+      <enum>QFrame::Shape::Panel</enum>
+     </property>
+    </widget>
    </item>
    <item row="5" column="1">
-    <widget class="QListWidget" name="rollsHistoryList"/>
+    <widget class="QListWidget" name="rollsHistoryList">
+     <property name="frameShape">
+      <enum>QFrame::Shape::Panel</enum>
+     </property>
+    </widget>
    </item>
    <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QLineEdit" name="expressionsLineEdit"/>
+      <widget class="QLineEdit" name="expressionsLineEdit">
+       <property name="frame">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="expressionsEnter">
@@ -176,6 +188,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Roll 1d4</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -242,6 +257,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Roll 1d6</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -289,6 +307,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Roll 1d100</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -322,6 +343,9 @@
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Roll 1d8</string>
        </property>
        <property name="text">
         <string/>
@@ -370,6 +394,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Roll 1d10</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -404,6 +431,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Roll 1d12</string>
+       </property>
        <property name="text">
         <string/>
        </property>
@@ -437,6 +467,9 @@
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Roll 1d20</string>
        </property>
        <property name="text">
         <string/>
