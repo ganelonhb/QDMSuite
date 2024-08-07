@@ -30,6 +30,7 @@ SOURCES += \
     fantasynamegeneratorwidget.cpp \
     fnggeneratepagehtmlparser.cpp \
     genders.cpp \
+    keypresseventfilter.cpp \
     main.cpp \
     mainwindow.cpp \
     qclickablelabel.cpp \
@@ -61,6 +62,7 @@ HEADERS += \
     fnggeneratepagehtmlparser.h \
     genders.h \
     helper_functions.hpp \
+    keypresseventfilter.h \
     mainwindow.h \
     qclickablelabel.h \
     splittabswidget.h \

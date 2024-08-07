@@ -369,6 +369,11 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     this->ui->ansPushButton->setOffset(QPoint(3,9));
 
     connect(this->ui->regularButtons, &QButtonGroup::buttonClicked, this, &CalculatorWidget::regularButtonClicked);
+
+    KeyPressEventFilter *enterPressed = new KeyPressEventFilter({Qt::Key_Return, Qt::Key_Enter}, this);
+    this->installEventFilter(enterPressed);
+
+    connect(enterPressed, &KeyPressEventFilter::triggered, this, &CalculatorWidget::on_equalsPushButton_clicked);
 }
 
 CalculatorWidget::~CalculatorWidget()
@@ -506,4 +511,3 @@ void CalculatorWidget::on_ansPushButton_clicked()
 
     this->ui->displayLineEdit->setText(history.last());
 }
-

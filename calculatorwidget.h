@@ -11,6 +11,7 @@
 #include "dicerolltracker.h"
 #include "exprtkengine.h"
 #include "helper_functions.hpp"
+#include "keypresseventfilter.h"
 
 namespace Ui {
 class CalculatorWidget;

@@ -1071,6 +1071,9 @@
            <property name="text">
             <string>=</string>
            </property>
+           <property name="default">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
         </layout>
