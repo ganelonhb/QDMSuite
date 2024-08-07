@@ -28,6 +28,7 @@ SOURCES += \
     fantasynamegeneratordownloadwidget.cpp \
     fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
+    fngfilesystemmodel.cpp \
     fnggeneratepagehtmlparser.cpp \
     genders.cpp \
     keypresseventfilter.cpp \
@@ -59,6 +60,7 @@ HEADERS += \
     fantasynamegeneratordownloadwidget.h \
     fantasynamegeneratorhtmlparser.h \
     fantasynamegeneratorwidget.h \
+    fngfilesystemmodel.h \
     fnggeneratepagehtmlparser.h \
     genders.h \
     helper_functions.hpp \
@@ -92,3 +94,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     res.qrc
+
+DISTFILES += \
+    deps/erbsland-qt-toml/src/erbsland/qt/CMakeLists.txt \
+    deps/erbsland-qt-toml/src/erbsland/qt/toml/CMakeLists.txt \
+    deps/erbsland-qt-toml/src/erbsland/qt/toml/impl/CMakeLists.txt

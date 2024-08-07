@@ -33,6 +33,7 @@ FantasyNameGeneratorDownloadWidget::~FantasyNameGeneratorDownloadWidget()
 
 void FantasyNameGeneratorDownloadWidget::download()
 {
+    m_dlInProgress = true;
     nw->get(QNetworkRequest(QUrl("https://www.fantasynamegenerators.com/")));
 }
 
@@ -42,6 +43,7 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
     if (r->error() != QNetworkReply::NoError) {
         emit downloadComplete(false);
         r->deleteLater();
+        m_dlInProgress = false;
         return;
     }
 
@@ -51,6 +53,7 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
     r->deleteLater();
 
     this->ui->treeWidget->blockSignals(false);
+    m_dlInProgress = false;
     emit downloadComplete(true);
 }
 
@@ -248,6 +251,7 @@ void FantasyNameGeneratorDownloadWidget::on_treeWidget_itemChanged(QTreeWidgetIt
 
 inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems(QList<QTreeWidgetItem *> items)
 {
+    m_dlInProgress = true;
     QList<FNGGeneratorItem> fngItems;
     QList<FNGGeneratorItem> fails;
 
@@ -283,6 +287,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
 
@@ -294,6 +299,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
 
@@ -320,6 +326,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
 
@@ -351,6 +358,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
 
@@ -460,7 +468,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
         foreach(QString str, map.keys())  //for(QMap<QString, QString>::const_iterator it = map.cbegin(); it != map.cend(); ++it)
         {
-            metaOut << str << " = \"" << map[str] << "\"\n";
+            metaOut << '"' << str << "\" = \"" << map[str] << "\"\n";
         }
 
         metaDataFile.close();
@@ -468,6 +476,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
 
@@ -476,6 +485,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         if (cancelRequest > 0)
         {
             cancelRequest = 0;
+            m_dlInProgress = false;
             return fails;
         }
     }
@@ -484,6 +494,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
     ui->downloadAllButton->setEnabled(true);
     ui->downloadSelectedButton->setEnabled(true);
 
+    m_dlInProgress = false;
     return fails;
 }
 
@@ -529,9 +540,15 @@ void FantasyNameGeneratorDownloadWidget::onCloseRequested()
     ui->downloadSelectedButton->setEnabled(true);
 
     cancelRequest = 1;
+    m_dlInProgress = false;
 }
 
 void FantasyNameGeneratorDownloadWidget::onShow()
 {
     cancelRequest = 0;
+}
+
+bool FantasyNameGeneratorDownloadWidget::dlInProgress() const
+{
+    return m_dlInProgress;
 }

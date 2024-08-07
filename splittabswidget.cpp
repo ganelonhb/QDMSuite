@@ -1,4 +1,7 @@
 #include "splittabswidget.h"
+
+#include <iostream>
+
 SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -183,6 +186,7 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
         this->mode = (split == TabSplitType::HORIZONTAL) ? TabSplitMode::HORIZONTAL : TabSplitMode::VERTICAL;
 
         auto tabRemovedLambda = [r, this](int index){
+
             r->widget(index)->deleteLater();
 
             if (r->count() == 1) {

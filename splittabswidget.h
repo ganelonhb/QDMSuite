@@ -9,10 +9,12 @@
 #include <QFrame>
 #include <QPalette>
 #include <QColor>
+#include <QMessageBox>
 
 #include "welcomewidget.h"
 #include "draggabletabwidget.h"
 #include "tabpressedeventfilter.h"
+#include "fantasynamegeneratorwidget.h"
 
 class SplitTabsWidget : public QWidget
 {
