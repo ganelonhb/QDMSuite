@@ -23,6 +23,7 @@ struct FNGGeneratorItem
     QString scriptName;
 
     QString err;
+    QString testSignature;
     QTreeWidgetItem *errItem;
 };
 

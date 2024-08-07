@@ -2,8 +2,6 @@
 #include "helper_functions.hpp"
 #include "ui_fantasynamegeneratordownloadwidget.h"
 
-#include <iostream>
-
 FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , ui(new Ui::FantasyNameGeneratorDownloadWidget)
@@ -400,29 +398,14 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
         QString returnNames;
 
-        if (matchNames.hasMatch()){
+        if (matchNames.hasMatch())
             returnNames = "names";
-            std::cout << "File uses names." << std::endl;
-        }
         else if (matchnMs.hasMatch())
-        {
             returnNames = "nMs";
-            std::cout << "File uses nMs." << std::endl;
-        }
         else if (matchnm.hasMatch())
-        {
             returnNames = "nm";
-            std::cout << "File uses nm." << std::endl;
-        }
         else if (matchName.hasMatch())
-        {
             returnNames = "name";
-            std::cout << "File uses name." << std::endl;
-        }
-        else{
-            std::cout << item.scriptName.toStdString() << std::endl << std::endl << responseScript.toStdString() << std::endl;
-            throw std::exception();
-        }
 
         QTextStream scriptOut(&scriptFile);
         scriptOut.setEncoding(QStringConverter::Utf8);

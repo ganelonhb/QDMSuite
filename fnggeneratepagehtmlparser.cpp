@@ -1,5 +1,7 @@
 #include "fnggeneratepagehtmlparser.h"
 
+#include <iostream>
+
 FNGGeneratePageHTMLParser::FNGGeneratePageHTMLParser()
 {}
 
