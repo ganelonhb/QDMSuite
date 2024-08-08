@@ -1,4 +1,7 @@
 #include "splittabswidget.h"
+#include <iostream>
+#include "fantasynamegeneratorwidget.h"
+
 SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     : QWidget{parent}
 {
@@ -23,6 +26,12 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     this->layout()->addWidget(r);
 
     auto tabRemovedLambda = [r, this](int index){
+        if(qobject_cast<QDMSWidget *>(r->widget(index)->layout()->itemAt(0)->widget())->isCloseBlocked())
+        {
+            QMessageBox::warning(this, "Could not Remove Tab", "Cannot remove tab while a download is in progress\nYou can cancel the download, if you would like.");
+            return;
+        }
+
         r->widget(index)->deleteLater();
 
         if (r->count() == 1) {
@@ -183,6 +192,12 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
         this->mode = (split == TabSplitType::HORIZONTAL) ? TabSplitMode::HORIZONTAL : TabSplitMode::VERTICAL;
 
         auto tabRemovedLambda = [r, this](int index){
+            if(qobject_cast<QDMSWidget *>(r->widget(index)->layout()->itemAt(0)->widget())->isCloseBlocked())
+            {
+                QMessageBox::warning(this, "Could not Remove Tab", "Cannot remove tab while a download is in progress\nYou can cancel the download, if you would like.");
+                return;
+            }
+
             r->widget(index)->deleteLater();
 
             if (r->count() == 1) {

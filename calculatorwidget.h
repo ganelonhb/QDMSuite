@@ -12,12 +12,13 @@
 #include "exprtkengine.h"
 #include "helper_functions.hpp"
 #include "keypresseventfilter.h"
+#include "qdmswidget.hpp"
 
 namespace Ui {
 class CalculatorWidget;
 }
 
-class CalculatorWidget : public QWidget
+class CalculatorWidget : public QDMSWidget
 {
     Q_OBJECT
 

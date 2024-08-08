@@ -6,13 +6,15 @@
 #include <QDir>
 #include <QTimer>
 
+#include "qdmswidget.hpp"
 #include "fantasynamegeneratordownloadwidget.h"
+#include "fngitemmodel.h"
 
 namespace Ui {
 class FantasyNameGeneratorWidget;
 }
 
-class FantasyNameGeneratorWidget : public QWidget
+class FantasyNameGeneratorWidget : public QDMSWidget
 {
     Q_OBJECT
 
@@ -25,12 +27,15 @@ private slots:
     void on_fngDone(bool success);
     void timer_timeout();
 
+    void onDlBlockClose();
+    void onDlUnblockClose();
+
 private:
     Ui::FantasyNameGeneratorWidget *ui;
 
     FantasyNameGeneratorDownloadWidget *dl;
     QTimer *timer;
-
+    FNGItemModel *model;
 };
 
 #endif // FANTASYNAMEGENERATORWIDGET_H

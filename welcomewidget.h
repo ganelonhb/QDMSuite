@@ -2,12 +2,13 @@
 #define WELCOMEWIDGET_H
 
 #include <QWidget>
+#include "qdmswidget.hpp"
 
 namespace Ui {
 class WelcomeWidget;
 }
 
-class WelcomeWidget : public QWidget
+class WelcomeWidget : public QDMSWidget
 {
     Q_OBJECT
 

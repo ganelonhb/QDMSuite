@@ -2,7 +2,7 @@
 #include "ui_calculatorwidget.h"
 
 CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
-    : QWidget(parent)
+    : QDMSWidget(parent)
     , ui(new Ui::CalculatorWidget)
     , secondButtonClicked(false)
     , dt(dt)

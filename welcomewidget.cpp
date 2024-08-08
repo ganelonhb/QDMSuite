@@ -2,7 +2,7 @@
 #include "ui_welcomewidget.h"
 
 WelcomeWidget::WelcomeWidget(QWidget *parent)
-    : QWidget(parent)
+    : QDMSWidget(parent)
     , ui(new Ui::WelcomeWidget)
 {
     ui->setupUi(this);

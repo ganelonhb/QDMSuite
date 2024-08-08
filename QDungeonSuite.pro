@@ -29,6 +29,7 @@ SOURCES += \
     fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
     fnggeneratepagehtmlparser.cpp \
+    fngitemmodel.cpp \
     genders.cpp \
     keypresseventfilter.cpp \
     main.cpp \
@@ -60,11 +61,13 @@ HEADERS += \
     fantasynamegeneratorhtmlparser.h \
     fantasynamegeneratorwidget.h \
     fnggeneratepagehtmlparser.h \
+    fngitemmodel.h \
     genders.h \
     helper_functions.hpp \
     keypresseventfilter.h \
     mainwindow.h \
     qclickablelabel.h \
+    qdmswidget.hpp \
     splittabswidget.h \
     swearchecker.h \
     tabpressedeventfilter.h \

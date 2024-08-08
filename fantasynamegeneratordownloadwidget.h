@@ -41,6 +41,9 @@ signals:
     void closeRequested();
     void shown();
 
+    void blockClose();
+    void unblockClose();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
     void showEvent(QShowEvent *event) override;

@@ -2,7 +2,7 @@
 #include "ui_dicerollwidget.h"
 
 DiceRollWidget::DiceRollWidget(DiceRollTracker *dt, QWidget *parent)
-    : QWidget(parent)
+    : QDMSWidget(parent)
     , ui(new Ui::DiceRollWidget)
     , dt(dt)
 {

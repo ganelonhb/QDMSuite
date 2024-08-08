@@ -13,6 +13,7 @@
 #include "welcomewidget.h"
 #include "draggabletabwidget.h"
 #include "tabpressedeventfilter.h"
+#include "qdmswidget.hpp"
 
 class SplitTabsWidget : public QWidget
 {

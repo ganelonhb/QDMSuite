@@ -12,12 +12,13 @@
 #include "exprtkexceptions.hpp"
 #include "qclickablelabel.h"
 #include "helper_functions.hpp"
+#include "qdmswidget.hpp"
 
 namespace Ui {
 class DiceRollWidget;
 }
 
-class DiceRollWidget : public QWidget
+class DiceRollWidget : public QDMSWidget
 {
     Q_OBJECT
 
