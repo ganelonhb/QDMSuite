@@ -6,7 +6,15 @@
 #include <QDir>
 #include <QTimer>
 #include <QFileSystemModel>
-#include <QAtomicInt>
+#include <QItemSelection>
+#include <QMap>
+#include <QFile>
+#include <QMessageBox>
+#include <QButtonGroup>
+#include <QRadioButton>
+#include <QJSEngine>
+
+#include <cpptoml/cpptoml.h>
 
 #include "qdmswidget.hpp"
 #include "fantasynamegeneratordownloadwidget.h"
@@ -15,6 +23,15 @@
 namespace Ui {
 class FantasyNameGeneratorWidget;
 }
+
+struct FNG
+{
+    QString name;
+    QString script;
+    QString entryPoint;
+
+    QMap<QString, QString> genders;
+};
 
 class FantasyNameGeneratorWidget : public QDMSWidget
 {
@@ -34,12 +51,20 @@ private slots:
     void onDlBlockClose();
     void onDlUnblockClose();
 
+    void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+
 private:
     Ui::FantasyNameGeneratorWidget *ui;
 
     FantasyNameGeneratorDownloadWidget *dl;
     QTimer *timer;
     FNGItemModel *model;
+
+    QButtonGroup *buttonGroup;
+
+    QJSEngine *jse;
+
+    FNG *fng;
 };
 
 #endif // FANTASYNAMEGENERATORWIDGET_H

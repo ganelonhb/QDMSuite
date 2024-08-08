@@ -495,6 +495,22 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
     ui->downloadSelectedButton->setEnabled(true);
 
     emit unblockClose();
+
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    QDir appDataDir(appDataPath);
+
+    if (!appDataDir.exists())
+        appDataDir.mkpath(".");
+
+    QString fngPath = appDataPath + QDir::separator() + "fng";
+
+    QDir fngDir(fngPath);
+
+    if (!fngDir.exists())
+        fngDir.mkpath(".");
+
+    emit dlItemsCompleteUpdateFileSystem(fngDir.absolutePath());
     return fails;
 }
 

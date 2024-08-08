@@ -5,6 +5,7 @@ FNGItemModel::FNGItemModel(QObject *parent)
     , rootNode(new FileNode{"Root", "", {}, nullptr})
 {
     fileSystemWatcher = new QFileSystemWatcher(this);
+
     connect(fileSystemWatcher, &QFileSystemWatcher::directoryChanged, this, &FNGItemModel::directoryChanged);
 }
 
@@ -100,17 +101,13 @@ void FNGItemModel::setRootDirectory(const QString &path)
 
 void FNGItemModel::directoryChanged(const QString &path)
 {
-    FileNode *node = findNode(path, rootNode);
+    beginResetModel();
+    fileSystemWatcher->removePaths(fileSystemWatcher->directories());
 
-    if (node)
-    {
-        beginResetModel();
-        node->children.clear();
-        traverseDirectory(path, node);
-        endResetModel();
-
-        emit changed();
-    }
+    rootNode->children.clear();
+    traverseDirectory(path, rootNode);
+    fileSystemWatcher->addPath(path);
+    endResetModel();
 }
 
 bool FNGItemModel::directoryContainsToml(const QString &directoryPath) {
@@ -164,7 +161,8 @@ void FNGItemModel::traverseDirectory(const QString &directoryPath, FileNode *par
 
 
 
-FNGItemModel::FileNode* FNGItemModel::findNode(const QString &path, FileNode *parentNode) const {
+FileNode* FNGItemModel::findNode(const QString &path, FileNode *parentNode) const {
+
     foreach (FileNode *node , parentNode->children)
     {
         if (node->path == path)

@@ -37,6 +37,8 @@ public:
     void download();
     bool dlInProgress() const;
 
+
+
 signals:
     void downloadComplete(bool success);
 
@@ -45,6 +47,8 @@ signals:
 
     void blockClose();
     void unblockClose();
+
+    void dlItemsCompleteUpdateFileSystem(const QString &path);
 
 protected:
     void closeEvent(QCloseEvent *event) override;

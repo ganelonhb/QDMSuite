@@ -9,6 +9,14 @@
 #include <QDir>
 #include <QStandardPaths>
 
+struct FileNode
+{
+    QString name;
+    QString path;
+    QList<FileNode *> children;
+    FileNode *parent{nullptr};
+};
+
 class FNGItemModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -24,21 +32,10 @@ public:
 
     void setRootDirectory(const QString &path);
 
-signals:
-    void changed();
-
 private slots:
     void directoryChanged(const QString &path);
 
 private:
-    struct FileNode
-    {
-        QString name;
-        QString path;
-        QList<FileNode *> children;
-        FileNode *parent{nullptr};
-    };
-
     bool directoryContainsToml(const QString &directoryPath);
     void traverseDirectory(const QString &directoryPath, FileNode *parentNode);
     FileNode *findNode(const QString &path, FileNode *parentNode) const;

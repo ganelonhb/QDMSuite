@@ -1,4 +1,4 @@
-QT       += core gui network svg
+QT       += core gui network svg qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +28,6 @@ SOURCES += \
     fantasynamegeneratordownloadwidget.cpp \
     fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
-    fngfilesystemmodel.cpp \
     fnggeneratepagehtmlparser.cpp \
     fngitemmodel.cpp \
     genders.cpp \
@@ -61,7 +60,6 @@ HEADERS += \
     fantasynamegeneratordownloadwidget.h \
     fantasynamegeneratorhtmlparser.h \
     fantasynamegeneratorwidget.h \
-    fngfilesystemmodel.h \
     fnggeneratepagehtmlparser.h \
     fngitemmodel.h \
     genders.h \
