@@ -14,6 +14,7 @@
 #include <QVariant>
 #include <QStandardPaths>
 #include <QDir>
+#include <QAtomicInt>
 
 #include "downloadsfaileddialogwidget.h"
 #include "fnggeneratepagehtmlparser.h"
@@ -88,6 +89,8 @@ private:
     QNetworkAccessManager *nw;
 
     FantasyNameGeneratorHtmlParser *parseHtml;
+
+    QAtomicInt cancelRequest{0};
 
     QList<QNetworkReply *> activeReplies;
 };

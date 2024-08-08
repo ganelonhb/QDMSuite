@@ -35,7 +35,6 @@ FantasyNameGeneratorDownloadWidget::~FantasyNameGeneratorDownloadWidget()
 
 void FantasyNameGeneratorDownloadWidget::download()
 {
-    m_dlInProgress = true;
     nw->get(QNetworkRequest(QUrl("https://www.fantasynamegenerators.com/")));
 }
 
@@ -46,7 +45,6 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
     if (r->error() != QNetworkReply::NoError) {
         emit downloadComplete(false);
         r->deleteLater();
-        m_dlInProgress = false;
         return;
     }
 
@@ -54,7 +52,6 @@ void FantasyNameGeneratorDownloadWidget::finished(QNetworkReply *r)
     r->deleteLater();
 
     this->ui->treeWidget->blockSignals(false);
-    m_dlInProgress = false;
     emit downloadComplete(true);
 }
 
@@ -544,15 +541,9 @@ void FantasyNameGeneratorDownloadWidget::onCloseRequested()
     ui->downloadSelectedButton->setEnabled(true);
 
     cancelRequest = 1;
-    m_dlInProgress = false;
 }
 
 void FantasyNameGeneratorDownloadWidget::onShow()
 {
     cancelRequest = 0;
-}
-
-bool FantasyNameGeneratorDownloadWidget::dlInProgress() const
-{
-    return m_dlInProgress;
 }

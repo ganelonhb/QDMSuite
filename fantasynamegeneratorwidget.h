@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QTimer>
 #include <QFileSystemModel>
+#include <QAtomicInt>
 
 #include "qdmswidget.hpp"
 #include "fantasynamegeneratordownloadwidget.h"
