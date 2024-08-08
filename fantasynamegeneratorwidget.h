@@ -5,6 +5,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QTimer>
+#include <QFileSystemModel>
 
 #include "qdmswidget.hpp"
 #include "fantasynamegeneratordownloadwidget.h"
@@ -21,6 +22,8 @@ class FantasyNameGeneratorWidget : public QDMSWidget
 public:
     explicit FantasyNameGeneratorWidget(QWidget *parent = nullptr);
     ~FantasyNameGeneratorWidget();
+
+    FantasyNameGeneratorDownloadWidget *fngDlWidget();
 
 private slots:
     void on_downloadPushButton_clicked();

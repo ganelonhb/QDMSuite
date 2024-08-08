@@ -34,6 +34,7 @@ public:
     ~FantasyNameGeneratorDownloadWidget();
 
     void download();
+    bool dlInProgress() const;
 
 signals:
     void downloadComplete(bool success);
@@ -89,8 +90,6 @@ private:
     FantasyNameGeneratorHtmlParser *parseHtml;
 
     QList<QNetworkReply *> activeReplies;
-
-    QAtomicInt cancelRequest{0};
 };
 
 #endif // FANTASYNAMEGENERATORDOWNLOADWIDGET_H

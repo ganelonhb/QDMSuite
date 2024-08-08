@@ -1,6 +1,5 @@
 #include "splittabswidget.h"
-#include <iostream>
-#include "fantasynamegeneratorwidget.h"
+
 
 SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     : QWidget{parent}
