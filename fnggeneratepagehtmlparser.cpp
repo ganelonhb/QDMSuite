@@ -1,6 +1,6 @@
 #include "fnggeneratepagehtmlparser.h"
+#include "helper_functions.hpp"
 
-#include <iostream>
 
 FNGGeneratePageHTMLParser::FNGGeneratePageHTMLParser()
 {}
@@ -19,7 +19,16 @@ void FNGGeneratePageHTMLParser::parse(const QString &body, FNGGeneratorItem &ite
     item.scriptName = scriptName;
 
     Genders g;
+
+    bool large = false;
     std::vector<html::node *> buttons = node->select("div#nameGen>input");
+
+    if (buttons.empty())
+    {
+        buttons = node->select("div#nameGenLarge>input");
+        large = true;
+    }
+
 
     for(html::node * node : buttons)
     {
@@ -27,10 +36,12 @@ void FNGGeneratePageHTMLParser::parse(const QString &body, FNGGeneratorItem &ite
         QRegularExpression re("nameGen\\(([^)]*)\\)");
         QRegularExpressionMatch match = re.match(onclick);
 
-        QString value = QString::fromStdString(node->get_attr("value")).toLower().remove("get").simplified();
+        QString value = makeCaps(QString::fromStdString(node->get_attr("value"))).simplified();
 
         g.insert(match.captured(1), value);
     }
 
     item.genders = g;
+
+    item.large = large;
 }

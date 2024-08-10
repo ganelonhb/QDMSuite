@@ -38,6 +38,7 @@ SOURCES += \
     splittabswidget.cpp \
     swearchecker.cpp \
     tabpressedeventfilter.cpp \
+    treesortfilterproxymodel.cpp \
     welcomewidget.cpp
 
 HEADERS += \
@@ -71,6 +72,7 @@ HEADERS += \
     splittabswidget.h \
     swearchecker.h \
     tabpressedeventfilter.h \
+    treesortfilterproxymodel.h \
     welcomewidget.h
 
 FORMS += \

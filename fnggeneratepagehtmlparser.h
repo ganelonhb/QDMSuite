@@ -25,6 +25,8 @@ struct FNGGeneratorItem
     QString err;
     QString testSignature;
     QTreeWidgetItem *errItem;
+
+    bool large;
 };
 
 class FNGGeneratePageHTMLParser

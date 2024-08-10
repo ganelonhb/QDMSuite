@@ -408,18 +408,18 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
         if (matchNames.hasMatch())
             returnNames = "names";
-        else if (matchnMs.hasMatch())
-            returnNames = "nMs";
-        else if (matchnm.hasMatch())
-            returnNames = "nm";
         else if (matchName.hasMatch())
             returnNames = "name";
+        else if (matchnm.hasMatch())
+            returnNames = "nm";
+        else if (matchnMs.hasMatch())
+            returnNames = "nMs";
 
         QTextStream scriptOut(&scriptFile);
         scriptOut.setEncoding(QStringConverter::Utf8);
         scriptOut.setGenerateByteOrderMark(false);
         scriptOut << minifyJS(responseScript).replace("\n", "")
-                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "")
+                         .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return " + returnNames + ";")
                          .replace(R"(if(document.getElementById("result")){document.getElementById("placeholder").removeChild(document.getElementById("result"));})", "")
                          .replace(R"(element.appendChild(br);)", "")
                          .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "return " + returnNames + ";")
@@ -441,7 +441,9 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"(element.appendChild(document.createTextNode(names));)", "")
                          .replace(R"(br[0]=document.createElement('br');)", "")
                          .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
-                         .replace(QRegularExpression(R"(testSwear\(.*?\);)"), "");
+                         .replace(QRegularExpression(R"(testSwear\(.*?\);)"), "")
+                         .replace(QRegularExpression(R"(console.log\(.*?\);)"), "");
+
 
         scriptFile.close();
 
@@ -462,6 +464,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                 << "script = \"" << item.scriptName << "\"\n"
                 << "src = \"" << item.pageUrl << "\"\n"
                 << "entrypoint = \"nameGen\"\n"
+                << "large = " + QString(item.large ? "true" : "false")
                 << "\n[genders]\n";
 
         QMap<QString, QString> &map = item.genders.getMap();

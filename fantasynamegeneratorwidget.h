@@ -13,25 +13,22 @@
 #include <QButtonGroup>
 #include <QRadioButton>
 #include <QJSEngine>
+#include <QFont>
+#include <QFontDatabase>
+#include <QLineEdit>
+#include <QTreeView>
+#include <QCompleter>
 
 #include <cpptoml/cpptoml.h>
 
 #include "qdmswidget.hpp"
 #include "fantasynamegeneratordownloadwidget.h"
 #include "fngitemmodel.h"
+#include "treesortfilterproxymodel.h"
 
 namespace Ui {
 class FantasyNameGeneratorWidget;
 }
-
-struct FNG
-{
-    QString name;
-    QString script;
-    QString entryPoint;
-
-    QMap<QString, QString> genders;
-};
 
 class FantasyNameGeneratorWidget : public QDMSWidget
 {
@@ -53,18 +50,22 @@ private slots:
 
     void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
+    void on_generateButton_clicked();
+
+    void on_clearPushButton_clicked();
+
 private:
     Ui::FantasyNameGeneratorWidget *ui;
 
     FantasyNameGeneratorDownloadWidget *dl;
     QTimer *timer;
     FNGItemModel *model;
+    TreeSortFilterProxyModel *proxyModel;
 
     QButtonGroup *buttonGroup;
 
     QJSEngine *jse;
-
-    FNG *fng;
+    QJSValue *module;
 };
 
 #endif // FANTASYNAMEGENERATORWIDGET_H

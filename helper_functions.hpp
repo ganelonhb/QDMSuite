@@ -96,4 +96,49 @@ inline QString minifyJS(const QString &js)
     return minified.remove(QRegularExpression("[\x00-\x1F\x7F]"));
 }
 
+inline QString makeCaps(const QString& string)
+{
+    QString newString;
+
+    bool lastWhite = true;
+    for (int i = 0; i < string.size(); ++i)
+    {
+        QString ch = QString(string.at(i));
+
+        if (ch == " " || ch == "\t" || ch == "\n")
+        {
+            lastWhite = true;
+            newString = newString + ch;
+            continue;
+        }
+
+        newString = newString + (lastWhite ? ch.toUpper() : ch);
+        lastWhite = false;
+    }
+
+    return newString;
+}
+
+inline QString addSpacesToNameAndSimplify(const QString& string)
+{
+    QString result;
+    for (int i = 0; i < string.size(); ++i)
+    {
+        QChar currentChar = string[i];
+
+        if (currentChar.isPunct() && currentChar != '-' && currentChar != '"' && currentChar != '\'')
+            result.append(currentChar).append(' ');
+        else if (currentChar == '(' || currentChar == '[' || currentChar == '{')
+            result.append(' ').append(currentChar);
+        else if (currentChar == ')' || currentChar == ']' || currentChar == '}')
+            result.append(currentChar).append(' ');
+        else if (currentChar.isUpper() && (i == 0 || (!string[i-1].isSpace() && !string[i-1].isUpper() && !string[i-1].isNumber() && string[i-1] != '-' && string[i-1] != '"' && string[i-1] != '\'')))
+            result.append(' ').append(currentChar);
+        else
+            result.append(currentChar);
+    }
+
+    return result.simplified();
+}
+
 #endif // HELPER_FUNCTIONS_HPP

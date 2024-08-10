@@ -50,5 +50,11 @@
         <file>icons/symbolic-light/question.svg</file>
         <file>icons/symbolic-light/calculator.svg</file>
         <file>icons/symbolic-dark/calculator.svg</file>
+        <file>fonts/cardinal/Cardinal-Alternate.ttf</file>
+        <file>fonts/cardinal/Cardinal.ttf</file>
+        <file>fonts/Berylium/Berylium Bd It.otf</file>
+        <file>fonts/Berylium/Berylium Bd.otf</file>
+        <file>fonts/Berylium/Berylium Rg It.otf</file>
+        <file>fonts/Berylium/Berylium Rg.otf</file>
     </qresource>
 </RCC>
