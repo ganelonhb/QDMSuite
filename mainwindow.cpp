@@ -29,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this, &MainWindow::lockTabSplit);
     connect(this->ui->splitTabWidget, &SplitTabsWidget::single, this, &MainWindow::unlockTabSplit);
+
+    diceRoll = new DiceRoll3DWidget(this);
+    diceRoll->show();
+    diceRoll->raise();
+
+    ui->horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
 }
 
 MainWindow::~MainWindow()
@@ -175,3 +181,10 @@ void MainWindow::on_calculatorPushButton_clicked()
     this->newWidget(new CalculatorWidget(&dt), WidgetType::FLOATING_DOCK, "Calculator");
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    QMainWindow::resizeEvent(event);
+
+    if (diceRoll)
+        diceRoll->setGeometry(rect());
+}

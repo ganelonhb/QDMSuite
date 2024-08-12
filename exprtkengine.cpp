@@ -50,8 +50,10 @@ long double ExprTkEngine::evaluate(const QString& expression)
     if (!parser.compile(result.join(' ').toStdString(), exp))
         throw ExprTkParseException();
 
+    long double value = exp.value();
+    long double roundedValue = std::round(value);
 
-    return exp.value();
+    return std::fabsl(value - roundedValue) < ROUNDTHRESH ? roundedValue : value;
 }
 
 void ExprTkEngine::setDiceRollTracker(DiceRollTracker* dt)

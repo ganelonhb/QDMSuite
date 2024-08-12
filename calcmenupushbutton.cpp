@@ -22,9 +22,11 @@ void CalcMenuPushButton::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        this->menu->exec(event->globalPosition().toPoint());
-        QPushButton::mousePressEvent(event);
+        if (!this->menu->actions().empty())
+            this->menu->exec(event->globalPosition().toPoint());
     }
+
+    QPushButton::mousePressEvent(event);
 }
 
 void CalcMenuPushButton::addMenuAction(const QString &name, QAction *action)

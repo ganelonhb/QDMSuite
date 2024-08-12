@@ -1,4 +1,4 @@
-QT       += core gui network svg qml
+QT       += core gui network svg qml openglwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,6 +19,7 @@ SOURCES += \
     contextmenupushbutton.cpp \
     deps/htmlparser/html.cpp \
     diceroll.cpp \
+    diceroll3dwidget.cpp \
     dicerolltracker.cpp \
     dicerollwidget.cpp \
     downloadsfaileddialogwidget.cpp \
@@ -34,6 +35,7 @@ SOURCES += \
     keypresseventfilter.cpp \
     main.cpp \
     mainwindow.cpp \
+    markdowneditorwidget.cpp \
     qclickablelabel.cpp \
     splittabswidget.cpp \
     swearchecker.cpp \
@@ -50,6 +52,7 @@ HEADERS += \
     deps/htmlparser/html.hpp \
     dice_roll.h \
     diceroll.h \
+    diceroll3dwidget.h \
     dicerolltracker.h \
     dicerollwidget.h \
     downloadsfaileddialogwidget.h \
@@ -67,6 +70,7 @@ HEADERS += \
     helper_functions.hpp \
     keypresseventfilter.h \
     mainwindow.h \
+    markdowneditorwidget.h \
     qclickablelabel.h \
     qdmswidget.hpp \
     splittabswidget.h \
@@ -82,6 +86,7 @@ FORMS += \
     fantasynamegeneratordownloadwidget.ui \
     fantasynamegeneratorwidget.ui \
     mainwindow.ui \
+    markdowneditorwidget.ui \
     welcomewidget.ui
 
 TRANSLATIONS += \

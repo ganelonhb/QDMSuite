@@ -40,6 +40,8 @@ private slots:
 
     void on_ansPushButton_clicked();
 
+    void on_statsButton_clicked();
+
 private:
     Ui::CalculatorWidget *ui;
 

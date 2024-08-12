@@ -10,6 +10,8 @@ FantasyNameGeneratorWidget::FantasyNameGeneratorWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->choicesWidget->setVisible(false);
+
     this->dl = new FantasyNameGeneratorDownloadWidget(this, Qt::WindowFlags() | Qt::Window);
     this->ui->downloadPushButton->setEnabled(false);
 
@@ -41,11 +43,10 @@ FantasyNameGeneratorWidget::FantasyNameGeneratorWidget(QWidget *parent)
     model->setRootDirectory(fngDir.absolutePath());
 
     buttonGroup = new QButtonGroup(this);
+    choicesButtonGroup = new QButtonGroup(this);
 
     jse = nullptr;
     ui->generateButton->setEnabled(false);
-
-    module = nullptr;
 
     int fontId = QFontDatabase::addApplicationFont(":/ui/fonts/Berylium/Berylium Rg.otf");
 
@@ -125,7 +126,6 @@ void FantasyNameGeneratorWidget::timer_timeout()
 FantasyNameGeneratorWidget::~FantasyNameGeneratorWidget()
 {
     delete ui;
-    if (module) delete module;
 }
 
 void FantasyNameGeneratorWidget::on_downloadPushButton_clicked()
@@ -154,6 +154,14 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
 
     QModelIndexList selectedIndexes = selected.indexes();
 
+    if (&selectedIndexes == lastIndeces)
+    {
+        ui->generateButton->setEnabled(false);
+        ui->generatorNameLabel->setText("No Generator Selected");
+    }
+
+    lastIndeces = &selectedIndexes;
+
     for (int i = 0; i < buttonGroup->buttons().size(); ++i)
     {
         QAbstractButton *button = buttonGroup->buttons().at(i);
@@ -161,8 +169,19 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
         button->deleteLater();
     }
 
+    for (int i = 0; i < choicesButtonGroup->buttons().size(); ++i)
+    {
+        QAbstractButton *button = choicesButtonGroup->buttons().at(i);
+        ui->choicesLayout->removeWidget(button);
+        button->deleteLater();
+    }
+
+
     delete buttonGroup;
     buttonGroup = new QButtonGroup(this);
+
+    delete choicesButtonGroup;
+    choicesButtonGroup = new QButtonGroup(this);
 
     if (jse) delete jse;
     jse = new QJSEngine(this);
@@ -173,18 +192,19 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
     jse->globalObject().setProperty("name", "");
 
 
+    ui->choicesWidget->setVisible(false);
+
     if (!selectedIndexes.isEmpty())
     {
         QModelIndex proxyIndex = selectedIndexes.first();
         QModelIndex index = proxyModel->mapToSource(proxyIndex);
 
         QString path = static_cast<FileNode *>(index.internalPointer())->path;
-        QString file = path + QDir::separator() + "meta.toml";
+        QString file = path + QDir::separator() + "meta.qoml";
         if (QFile(file).exists())
         {
             try
             {
-                if (module) delete module;
                 std::shared_ptr<cpptoml::table> meta_toml = cpptoml::parse_file(file.toStdString());
 
                 QString name = QString::fromStdString(*meta_toml->get_as<std::string>("name"));
@@ -212,14 +232,32 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
 
                 bool large = *meta_toml->get_as<bool>("large");
 
+                QList<QPair<QString, QString>> qGenders;
                 for (const std::pair<const std::basic_string<char>, std::shared_ptr<cpptoml::base>> &element : *genders)
                 {
-                    QString buttonText = QString::fromStdString(element.second->as<std::string>()->get());
+                    QPair<QString, QString> q(QString::fromStdString(element.first),QString::fromStdString(element.second->as<std::string>()->get()));
+                    qGenders.append(q);
+                }
+
+                std::reverse(qGenders.begin(), qGenders.end());
+
+                for (const QPair<QString, QString> &element : qGenders)
+                {
+                    QString buttonText = element.second;
+
+                    if (!buttonText.startsWith("Get "))
+                        buttonText.prepend("Get ");
+
+                    if (
+                        buttonText.toLower() == "get names"
+                        || buttonText.toLower() == "get secchange"
+                        || buttonText.toLower() == "get scchange")
+                        buttonText = "Get " + name;
 
                     QRadioButton *button = new QRadioButton(this);
                     button->setText(buttonText);
 
-                    button->setProperty("gender", QString::fromStdString(element.first));
+                    button->setProperty("gender", element.first);
                     button->setProperty("script", script);
                     button->setProperty("large", large);
 
@@ -229,22 +267,47 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
 
                 buttonGroup->buttons().at(0)->setChecked(true);
 
+                cpptoml::array_of_trait<std::basic_string<char>>::return_type array =
+                    meta_toml->get_array_of<std::string>("choices");
+
+                QList<QString> choices;
+
+
+
+                bool first = true;
+                for (const std::basic_string<char> &item : *array)
+                {
+                    QString choice = QString::fromStdString(item);
+
+                    QRadioButton *button = new QRadioButton(this);
+                    button->setText(makeCaps(choice));
+                    button->setProperty("choice", choice);
+
+                    if (first)
+                    {
+                        button->setChecked(true);
+                        first = false;
+                    }
+
+                    choicesButtonGroup->addButton(button);
+                    ui->choiceVLayout->addWidget(button);
+                }
+
+                if (!array->empty())
+                    ui->choicesWidget->setVisible(true);
+
                 ui->generateButton->setEnabled(true);
             }
             catch (const cpptoml::parse_exception &e)
             {
-                QMessageBox::warning(this, "Could not parse .toml", "Could not parse the toml file " + file + ".\nError: " + QString::fromLatin1(e.what()));
+                QMessageBox::warning(this, "Could not parse .qoml", "Could not parse the toml file " + file + ".\nError: " + QString::fromLatin1(e.what()));
                 ui->generateButton->setEnabled(false);
-                if (module) delete module;
-                module = nullptr;
             }
         }
         else
         {
             ui->generateButton->setEnabled(false);
             ui->generatorNameLabel->setText("No Generator Selected");
-            if (module) delete module;
-            module = nullptr;
         }
 
         return;
@@ -273,6 +336,27 @@ void FantasyNameGeneratorWidget::on_generateButton_clicked()
             large = button->property("large").toBool();
             break;
         }
+    }
+
+    QList<QAbstractButton *> choiceButtons = choicesButtonGroup->buttons();
+
+    if (!choiceButtons.isEmpty())
+    {
+        bool err = true;
+        QString chosen;
+        foreach(const QAbstractButton *button, choiceButtons)
+        {
+            if (button->isChecked())
+            {
+                err = false;
+                chosen = button->property("choice").toString();
+                break;
+            }
+        }
+
+        QString choice = err ? "" : chosen;
+
+        jse->globalObject().setProperty("choice", choice);
     }
 
     QStringList namesList;

@@ -175,6 +175,22 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
 
     // Func menu
     QMenu *funcMenu = this->ui->funcButton->getMenu();
+
+    // Basic
+    QMenu *basic = new QMenu("Basic", funcMenu);
+
+    QAction *basicMod = new QAction("mod(x)", basic);
+    basicMod->setData("mod(");
+    basic->addAction(basicMod);
+
+    QAction *basicMul = new QAction("mul(x, y, ...)", basic);
+    basicMul->setData("mul(");
+    basic->addAction(basicMul);
+
+    QAction *basicSum = new QAction("sum(x, y, ...)", basic);
+    basicSum->setData("sum(");
+    basic->addAction(basicSum);
+
     // Trig
     QMenu *trig = new QMenu("Trigonometry", funcMenu);
 
@@ -217,6 +233,14 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     QAction *atan2Action = new QAction("atan2(y, x)", trig);
     atan2Action->setData("atan2(");
     trig->addAction(atan2Action);
+
+    QAction *degreesAction = new QAction("rad2deg(x radians)", trig);
+    degreesAction->setData("rad2deg(");
+    trig->addAction(degreesAction);
+
+    QAction *radiansAction = new QAction("deg2rad(x°)", trig);
+    radiansAction->setData("deg2rad(");
+    trig->addAction(radiansAction);
 
     funcMenu->addMenu(trig);
 
@@ -282,6 +306,89 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
 
     funcMenu->addMenu(expLog);
 
+    // Statistics
+
+    // Rounding
+
+    QMenu *manips = new QMenu("Rounding", funcMenu);
+
+    QAction *manipAbs = new QAction("abs(x)", manips);
+    manipAbs->setData("abs(");
+    manips->addAction(manipAbs);
+
+    QAction *manipCiel = new QAction("ciel(x)", manips);
+    manipCiel->setData("ciel(");
+    manips->addAction(manipCiel);
+
+    QAction *manipFloor = new QAction("floor(x)", manips);
+    manipFloor->setData("floor(");
+    manips->addAction(manipFloor);
+
+    QAction *manipRound = new QAction("round(x)", manips);
+    manipAbs->setData("round(");
+    manips->addAction(manipRound);
+
+    funcMenu->addMenu(manips);
+
+    // Equalities & Inequalities
+
+    QMenu *eq = new QMenu("Equalities & Inequalities", funcMenu);
+
+    QAction *eqEq = new QAction("x == y", eq);
+    eqEq->setData(" == ");
+    eq->addAction(eqEq);
+
+    QAction *eqNeq = new QAction("x != y", eq);
+    eqNeq->setData(" != ");
+    eq->addAction(eqNeq);
+
+    QAction *eqLt = new QAction("x < y", eq);
+    eqLt->setData(" < ");
+    eq->addAction(eqLt);
+
+    QAction *eqLtEq = new QAction("x <= y", eq);
+    eqLtEq->setData(" <= ");
+    eq->addAction(eqLtEq);
+
+    QAction *eqGt = new QAction("x > y", eq);
+    eqGt->setData("> ");
+    eq->addAction(eqGt);
+
+    QAction *eqGtEq = new QAction("x >= y", eq);
+    eqGtEq->setData(" >= ");
+    eq->addAction(eqGtEq);
+
+    funcMenu->addMenu(eq);
+
+    // Bitwise
+
+    QMenu *bitwise = new QMenu("Bitwise", funcMenu);
+
+    QAction *bitwiseAnd = new QAction("x and y", bitwise);
+    bitwiseAnd->setData(" and ");
+    bitwise->addAction(bitwiseAnd);
+
+    QAction *bitwiseNand = new QAction("x nand y", bitwise);
+    bitwiseNand->setData(" nand ");
+    bitwise->addAction(bitwiseNand);
+
+    QAction *bitwiseOr = new QAction("x or y", bitwise);
+    bitwiseOr->setData(" or ");
+    bitwise->addAction(bitwiseOr);
+
+    QAction *bitwiseNor = new QAction("x nor y", bitwise);
+    bitwiseNor->setData(" nor ");
+    bitwise->addAction(bitwiseNor);
+
+    QAction *bitwiseXor = new QAction("x xor y", bitwise);
+    bitwiseXor->setData(" xor ");
+    bitwise->addAction(bitwiseXor);
+
+    QAction *bitwiseXnor = new QAction("x xnor y", bitwise);
+    bitwiseXnor->setData(" xnor ");
+    bitwise->addAction(bitwiseXnor);
+
+    funcMenu->addMenu(bitwise);
 
     connect(funcMenu, &QMenu::triggered, this, &CalculatorWidget::constMenuActionTriggered);
 
@@ -511,3 +618,9 @@ void CalculatorWidget::on_ansPushButton_clicked()
 
     this->ui->displayLineEdit->setText(history.last());
 }
+
+void CalculatorWidget::on_statsButton_clicked()
+{
+    QMessageBox::information(this->parentWidget(), "Not Yet Implemented", "User-defined functions are coming soon!");
+}
+

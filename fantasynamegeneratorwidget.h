@@ -63,9 +63,11 @@ private:
     TreeSortFilterProxyModel *proxyModel;
 
     QButtonGroup *buttonGroup;
+    QButtonGroup *choicesButtonGroup;
 
     QJSEngine *jse;
-    QJSValue *module;
+
+    QModelIndexList *lastIndeces{nullptr};
 };
 
 #endif // FANTASYNAMEGENERATORWIDGET_H

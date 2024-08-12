@@ -25,6 +25,8 @@ public:
     void setDiceRollTracker(DiceRollTracker* dt);
 
 private:
+    const long double ROUNDTHRESH = 1e-15;
+
     exprtk::symbol_table<long double> symbol_table;
 
     dice_roll<long double> m_roll;

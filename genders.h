@@ -2,6 +2,7 @@
 #define GENDERS_H
 
 #include <QMap>
+#include <QList>
 #include <QString>
 
 class Genders
@@ -20,6 +21,20 @@ public:
 
 private:
     QMap<QString, QString> m;
+};
+
+class Choices
+
+{
+public:
+    Choices();
+
+    void insert(const QString &str);
+
+    QList<QString> &getList();
+
+private:
+    QList<QString> l;
 };
 
 #endif // GENDERS_H

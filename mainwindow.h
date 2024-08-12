@@ -11,6 +11,7 @@
 #include "dicerollwidget.h"
 #include "fantasynamegeneratorwidget.h"
 #include "welcomewidget.h"
+#include "diceroll3dwidget.h"
 
 #include "calculatorwidget.h"
 
@@ -64,12 +65,17 @@ private slots:
 
     void on_calculatorPushButton_clicked();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
 
     DiceRollTracker dt;
 
     const QMenuBar* menu;
+
+    DiceRoll3DWidget *diceRoll;
 
 };
 #endif // MAINWINDOW_H

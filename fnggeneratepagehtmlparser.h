@@ -19,6 +19,7 @@ struct FNGGeneratorItem
     QStringList folders;
 
     Genders genders;
+    Choices choices;
     QString scriptUrl;
     QString scriptName;
 

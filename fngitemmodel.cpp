@@ -120,7 +120,7 @@ bool FNGItemModel::directoryContainsToml(const QString &directoryPath) {
         {
             if (directoryContainsToml(entry.filePath()))
                 return true;
-        } else if (entry.isFile() && entry.suffix() == "toml")
+        } else if (entry.isFile() && entry.suffix() == "qoml")
             return true;
     }
     return false;

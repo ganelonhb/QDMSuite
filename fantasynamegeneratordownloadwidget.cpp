@@ -197,7 +197,7 @@ inline bool FantasyNameGeneratorDownloadWidget::allChecked(QTreeWidget* widget)
 
     return allChecked;
 }
-inline void FantasyNameGeneratorDownloadWidget::iterateTreeCheck(QTreeWidgetItem* item, bool& allChecked)
+inline void FantasyNameGeneratorDownloadWidget::iterateTreeCheck(QTreeWidgetItem* item, bool &allChecked)
 {
     if (!item || !allChecked) return;
 
@@ -386,7 +386,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
         replyScript->deleteLater();
         activeReplies.pop_back();
 
-        QFile scriptFile(thisItemPath + QDir::separator() + item.scriptName);
+        QFile scriptFile(thisItemPath + QDir::separator() + item.scriptName.replace(".js", ".qs"));
         if (!scriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
@@ -422,7 +422,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"(document.getElementById("placeholder").appendChild(element);)", "return " + returnNames + ";")
                          .replace(R"(if(document.getElementById("result")){document.getElementById("placeholder").removeChild(document.getElementById("result"));})", "")
                          .replace(R"(element.appendChild(br);)", "")
-                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "return " + returnNames + ";")
+                         .replace(R"(element.appendChild(document.createTextNode()" + returnNames + R"());)", "")
                          .replace(R"(br=document.createElement('br');)", "")
                          .replace(R"(element.setAttribute("id","result");)", "")
                          .replace(R"(var element=document.createElement("div");)", "")
@@ -440,18 +440,24 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"(element.appendChild(document.createTextNode(names[i]));)", "")
                          .replace(R"(element.appendChild(document.createTextNode(names));)", "")
                          .replace(R"(br[0]=document.createElement('br');)", "")
+                         .replace(R"(var element=document.createElement("div");)", "")
                          .replace(QRegularExpression(R"(\$\('#.+?'\)\.css\('.+?'\,'.+?'\);)"), "")
                          .replace(QRegularExpression(R"(testSwear\(.*?\);)"), "")
-                         .replace(QRegularExpression(R"(console.log\(.*?\);)"), "");
+                         .replace(QRegularExpression(R"(testSwear\(.*?\);)"), "")
+                         .replace(QRegularExpression(R"(console.log\(.*?\);)"), "")
+                         .replace(QRegularExpression(R"(var\s+([a-zA-Z_]\w*)=document\.createElement\(\s*(['"][^'"]+['"])\s*\);)"), "")
+                         .replace(QRegularExpression(R"(element\.setAttribute\(\s*(['"][^'"]+['"])\s*\);)"), "")
+                         .replace(QRegularExpression(R"(element\.appendChild\(\s*([a-zA-Z_]\w*)\s*\);)"), "")
+                         .replace(QRegularExpression(R"(element\.appendChild\(document\.createTextNode\(\s*([a-zA-Z_]\w*)\s*\)\);)"), "");
 
 
         scriptFile.close();
 
-        QFile metaDataFile(thisItemPath + QDir::separator() + "meta.toml");
+        QFile metaDataFile(thisItemPath + QDir::separator() + "meta.qoml");
         if (!metaDataFile.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             ui->downloadProgressBar->setValue(ui->downloadProgressBar->value() + 1);
-            item.err = "could not open " + thisItemPath + QDir::separator() + "meta.toml" + ", " + scriptFile.errorString();
+            item.err = "could not open " + thisItemPath + QDir::separator() + "meta.qoml" + ", " + scriptFile.errorString();
             fails.append(item);
             continue;
         }
@@ -464,15 +470,23 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                 << "script = \"" << item.scriptName << "\"\n"
                 << "src = \"" << item.pageUrl << "\"\n"
                 << "entrypoint = \"nameGen\"\n"
-                << "large = " + QString(item.large ? "true" : "false")
-                << "\n[genders]\n";
+                << "large = " + QString(item.large ? "true" : "false") << '\n'
+                << "choices = [";
+        QList<QString> &list = item.choices.getList();
+
+        foreach(QString str, list)
+            metaOut << '"' << str << "\", ";
+
+        metaOut << "]\n[genders]\n";
 
         QMap<QString, QString> &map = item.genders.getMap();
 
-        foreach(QString str, map.keys())  //for(QMap<QString, QString>::const_iterator it = map.cbegin(); it != map.cend(); ++it)
+        foreach(QString str, map.keys())
         {
             metaOut << '"' << str << "\" = \"" << map[str] << "\"\n";
         }
+
+
 
         metaDataFile.close();
 

@@ -41,6 +41,22 @@ void FNGGeneratePageHTMLParser::parse(const QString &body, FNGGeneratorItem &ite
         g.insert(match.captured(1), value);
     }
 
+    std::vector<html::node *> choices = node->select("form#radioChoice>input");
+
+    if (!choices.empty())
+    {
+        Choices c;
+
+        for (html::node * node : choices)
+        {
+            QString value = QString::fromStdString(node->get_attr("value"));
+
+            c.insert(value);
+        }
+
+        item.choices = c;
+    }
+
     item.genders = g;
 
     item.large = large;

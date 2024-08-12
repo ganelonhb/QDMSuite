@@ -1,5 +1,7 @@
 #include "genders.h"
 
+// Genders
+
 Genders::Genders() {}
 
 void Genders::insert(const QString &index, const QString &str)
@@ -43,4 +45,18 @@ QString Genders::operator[]()
 QMap<QString, QString> &Genders::getMap()
 {
     return m;
+}
+
+// Choices
+
+Choices::Choices() {}
+
+void Choices::insert(const QString &str)
+{
+    l.append(str);
+}
+
+QList<QString> &Choices::getList()
+{
+    return l;
 }
