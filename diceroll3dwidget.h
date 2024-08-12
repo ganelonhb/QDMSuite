@@ -5,6 +5,7 @@
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
 #include <QResizeEvent>
+#include <QMatrix4x4>
 
 class DiceRoll3DWidget : public QOpenGLWidget, public QOpenGLExtraFunctions
 {
@@ -15,14 +16,12 @@ public:
 protected:
     void initializeGL() override;
     void paintGL() override;
-
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeGL(int w, int h) override;
 
 private:
     QOpenGLShaderProgram *shaderProgram;
     GLuint VAO;
     GLuint VBO;
-
 };
 
 #endif // DICEROLL3DWIDGET_H

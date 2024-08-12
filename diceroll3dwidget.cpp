@@ -2,6 +2,9 @@
 
 DiceRoll3DWidget::DiceRoll3DWidget(QWidget *parent)
     : QOpenGLWidget{parent}
+    , shaderProgram(nullptr)
+    , VAO(0)
+    , VBO(0)
 {
     setAttribute(Qt::WA_TranslucentBackground);
     setAttribute(Qt::WA_TransparentForMouseEvents);
@@ -19,6 +22,8 @@ void DiceRoll3DWidget::initializeGL()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    shaderProgram = new QOpenGLShaderProgram(this);
+    //shaderProgram->addShaderFromSourceFile()
 }
 
 void DiceRoll3DWidget::paintGL()
@@ -29,15 +34,9 @@ void DiceRoll3DWidget::paintGL()
 
 }
 
-void DiceRoll3DWidget::resizeEvent(QResizeEvent *event)
+void DiceRoll3DWidget::resizeGL(int w, int h)
 {
-    QOpenGLWidget::resizeEvent(event);
+    QOpenGLWidget::resizeGL(w, h);
 
-    int width = event->size().width();
-    int height = event->size().height();
-
-    // Example: Adjust the OpenGL viewport
-    glViewport(0, 0, width, height);
-
-    // Update any other aspects of the scene that depend on size
+    glViewport(0,0, w, h);
 }
