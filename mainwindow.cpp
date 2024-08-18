@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     diceRoll->raise();
 
     ui->horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
+
+    this->newWidget(new MarkdownEditorWidget, WidgetType::TAB, "MarkdownTest");
 }
 
 MainWindow::~MainWindow()

@@ -1,6 +1,9 @@
 #ifndef DICEROLL3DWIDGET_H
 #define DICEROLL3DWIDGET_H
 
+#define FREE_IF_NNULL(X) if (X) delete X
+#define Q_FREE_IF_NNULL(X) if (X) X->deleteLater()
+
 #include <QOpenGLWidget>
 #include <QOpenGLExtraFunctions>
 #include <QOpenGLShaderProgram>
@@ -12,15 +15,20 @@
 #include <QOpenGLTexture>
 #include <QTimer>
 #include <QElapsedTimer>
+#include <QImage>
+#include <QFile>
+#include <QBuffer>
+#include <QVector3D>
+#include <QVector2D>
+
+#include "model3d.h"
+
+#include <vector>
+#include <string>
 
 class DiceRoll3DWidget : public QOpenGLWidget, protected QOpenGLExtraFunctions
 {
     Q_OBJECT
-    using vboint = quint32;
-    using vaoint = quint32;
-    using vshader = quint32;
-    using fshader = quint32;
-    using shaderprogram = quint32;
 
 public:
     DiceRoll3DWidget(QWidget *parent = nullptr);
@@ -32,14 +40,17 @@ protected:
     void resizeGL(int w, int h) override;
 
 private:
+    void setupShaders();
+    void setupLighting();
 
-    vboint VBO;
-    vaoint VAO;
-    vshader shader;
-    fshader fragment;
-    shaderprogram shaderProgram;
+    QOpenGLShaderProgram shaderProgram;
+    QList<Model3D> models;
 
     QElapsedTimer timer;
+
+    QVector3D lightPos;
+    QVector3D lightColor;
+    QVector3D viewPos;
 };
 
 #endif // DICEROLL3DWIDGET_H

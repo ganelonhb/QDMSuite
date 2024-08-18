@@ -1,29 +1,5 @@
 #include "diceroll3dwidget.h"
 
-static float vertices[] = {
-    -0.5f, -0.5f, 0.0f, 1.f, 0.f, 0.f,
-    0.5f, -0.5f, 0.0f, 0.f, 1.f, 0.f,
-    0.0f,  0.5f, 0.0f, 0.f, 0.f, 1.f
-};
-
-const char *vertexShader ="#version 330 core\n"
-                                 "layout (location = 0) in vec3 aPos;\n"
-                                 "layout (location = 1) in vec3 aColor;\n"
-                                 "out vec3 ourColor;\n"
-                                 "void main()\n"
-                                 "{\n"
-                                 "   gl_Position = vec4(aPos, 1.0);\n"
-                                 "   ourColor = aColor;\n"
-                                 "}\0";
-
-const char *fragShader = "#version 330 core\n"
-                                   "out vec4 FragColor;\n"
-                                   "in vec3 ourColor;\n"
-                                   "void main()\n"
-                                   "{\n"
-                                   "   FragColor = vec4(ourColor, 1.0f);\n"
-                                   "}\n\0";
-
 DiceRoll3DWidget::DiceRoll3DWidget(QWidget *parent)
     : QOpenGLWidget{parent}
 {
@@ -44,11 +20,7 @@ DiceRoll3DWidget::DiceRoll3DWidget(QWidget *parent)
 }
 
 DiceRoll3DWidget::~DiceRoll3DWidget()
-{
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
-}
+{}
 
 
 
@@ -57,71 +29,92 @@ void DiceRoll3DWidget::initializeGL()
     initializeOpenGLFunctions();
 
     glEnable(GL_BLEND);
+    glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0,0, parentWidget()->width(), parentWidget()->height());
 
-    shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(shader, 1, &vertexShader, NULL);
-    glCompileShader(shader);
+    setupShaders();
 
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment, 1, &fragShader, NULL);
-    glCompileShader(fragment);
+    setupLighting();
 
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, shader);
-    glAttachShader(shaderProgram, fragment);
-    glLinkProgram(shaderProgram);
+    Model3D testModel;
+    if(testModel.loadModel(":/ui/3DAssets/testCube/cube.glb"))
+        models.append(testModel);
 
-    glDeleteShader(shader);
-    glDeleteShader(fragment);
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(0);
-
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
 }
 
 void DiceRoll3DWidget::paintGL()
 {
-    glUseProgram(shaderProgram);
-
     glClearColor(0.f,0.f,0.f,0.f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    QMatrix4x4 view, projection;
+    projection.ortho(0.f, float(width()), float(height()), 0.f, 0.1f, 100.f);
+    view.lookAt(QVector3D(0.f, 0.f, 0.f), QVector3D(0.f, 0.f, 0.f), QVector3D(0.f, 0.f, 0.f));
 
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    shaderProgram.bind();
+    shaderProgram.setUniformValue("view", view);
+    shaderProgram.setUniformValue("projection", projection);
+    shaderProgram.setUniformValue("lightPos", lightPos);
+    shaderProgram.setUniformValue("lightColor", lightColor);
+    shaderProgram.setUniformValue("viewPos", viewPos);
+
+    for (const auto &model : models) {
+        QMatrix4x4 modelMatrix;
+
+        modelMatrix.translate(0.f, 0.f, 0.f);
+
+        shaderProgram.setUniformValue("model", modelMatrix);
+
+        // Bind textures and draw the model
+        const QMap<QString, QImage> &textures = model.getTextures();
+        if (textures.contains("diffuse")) {
+            QOpenGLTexture texture(textures["diffuse"]);
+            texture.bind();
+        }
+
+        // Bind vertex data
+        const QVector<float> &vertices = model.getVertices();
+        const QVector<float> &normals = model.getNormals();
+        const QVector<float> &texCoords = model.getTexCoords();
+
+        shaderProgram.enableAttributeArray(0);
+        shaderProgram.setAttributeArray(0, vertices.constData(), 3);
+
+        shaderProgram.enableAttributeArray(1);
+        shaderProgram.setAttributeArray(1, normals.constData(), 3);
+
+        shaderProgram.enableAttributeArray(2);
+        shaderProgram.setAttributeArray(2, texCoords.constData(), 2);
+
+        // Draw the model
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size() / 3);
+
+        shaderProgram.disableAttributeArray(0);
+        shaderProgram.disableAttributeArray(1);
+        shaderProgram.disableAttributeArray(2);
+    }
+
+    shaderProgram.release();
 }
 
 void DiceRoll3DWidget::resizeGL(int w, int h)
 {
     glViewport(0,0, w, h);
+}
 
-    int w2, h2;
+void DiceRoll3DWidget::setupShaders()
+{
+    shaderProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/ui/shaders/verts.vs");
+    shaderProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/ui/shaders/frag.fs");
+    shaderProgram.link();
+}
 
-    w2 = 2;
-    h2 = !h ? 1: h;
-
-    float aspect = float(w2) / float(h2);
-
-    if (w2 >= h)
-        glOrtho(-aspect, aspect, -1.f, 1.f, -1.f, 1.f);
-    else
-        glOrtho(-1.f, 1.f, -1.f / aspect, 1.f / aspect, -1.f, 1.f);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    //QOpenGLWidget::resizeGL(w, h);
+void DiceRoll3DWidget::setupLighting()
+{
+    // Define initial lighting parameters
+    lightPos = QVector3D(5.0f, 5.0f, 5.0f);
+    lightColor = QVector3D(1.0f, 1.0f, 1.0f);
+    viewPos = QVector3D(0.0f, 5.0f, 10.0f);
 }

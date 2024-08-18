@@ -2,7 +2,7 @@
 #include "ui_markdowneditorwidget.h"
 
 MarkdownEditorWidget::MarkdownEditorWidget(QWidget *parent)
-    : QWidget(parent)
+    : QDMSWidget(parent)
     , ui(new Ui::MarkdownEditorWidget)
 {
     ui->setupUi(this);

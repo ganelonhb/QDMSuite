@@ -56,7 +56,8 @@
         <file>fonts/Berylium/Berylium Bd.otf</file>
         <file>fonts/Berylium/Berylium Rg It.otf</file>
         <file>fonts/Berylium/Berylium Rg.otf</file>
-        <file>shaders/vertex_shader.glsl</file>
-        <file>shaders/fragment_shader.glsl</file>
+        <file>shaders/frag.fs</file>
+        <file>shaders/verts.vs</file>
+        <file>3DAssets/testCube/cube.glb</file>
     </qresource>
 </RCC>

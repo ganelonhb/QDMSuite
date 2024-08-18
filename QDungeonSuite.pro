@@ -32,9 +32,12 @@ SOURCES += \
     fngitemmodel.cpp \
     genders.cpp \
     keypresseventfilter.cpp \
+    linenumberarea.cpp \
     main.cpp \
     mainwindow.cpp \
+    markdownedit.cpp \
     markdowneditorwidget.cpp \
+    model3d.cpp \
     qclickablelabel.cpp \
     splittabswidget.cpp \
     swearchecker.cpp \
@@ -68,8 +71,11 @@ HEADERS += \
     genders.h \
     helper_functions.hpp \
     keypresseventfilter.h \
+    linenumberarea.h \
     mainwindow.h \
+    markdownedit.h \
     markdowneditorwidget.h \
+    model3d.h \
     qclickablelabel.h \
     qdmswidget.hpp \
     splittabswidget.h \
@@ -106,3 +112,5 @@ DISTFILES += \
     deps/erbsland-qt-toml/src/erbsland/qt/CMakeLists.txt \
     deps/erbsland-qt-toml/src/erbsland/qt/toml/CMakeLists.txt \
     deps/erbsland-qt-toml/src/erbsland/qt/toml/impl/CMakeLists.txt
+
+unix: LIBS += -lassimp

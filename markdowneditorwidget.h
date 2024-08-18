@@ -2,12 +2,13 @@
 #define MARKDOWNEDITORWIDGET_H
 
 #include <QWidget>
+#include "qdmswidget.hpp"
 
 namespace Ui {
 class MarkdownEditorWidget;
 }
 
-class MarkdownEditorWidget : public QWidget
+class MarkdownEditorWidget : public QDMSWidget
 {
     Q_OBJECT
 

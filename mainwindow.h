@@ -12,8 +12,9 @@
 #include "fantasynamegeneratorwidget.h"
 #include "welcomewidget.h"
 #include "diceroll3dwidget.h"
-
 #include "calculatorwidget.h"
+#include "markdowneditorwidget.h"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
