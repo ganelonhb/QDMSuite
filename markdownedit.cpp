@@ -11,7 +11,8 @@ MarkdownEdit::MarkdownEdit(QWidget *parent)
     defaultFontSize = font().pointSize();
 
     updateLineNumberAreaWidth();
-    highlightCurrentLine();
+
+    highlighter = new MarkdownHighlighter(this->document());
 }
 
 MarkdownEdit::MarkdownEdit(const QString &text, QWidget *parent)
@@ -25,7 +26,6 @@ MarkdownEdit::MarkdownEdit(const QString &text, QWidget *parent)
     defaultFontSize = font().pointSize();
 
     updateLineNumberAreaWidth();
-    highlightCurrentLine();
 }
 
 void MarkdownEdit::resizeEvent(QResizeEvent *event)
@@ -56,7 +56,7 @@ void MarkdownEdit::highlightCurrentLine()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
-    if(!isReadOnly())
+    if (!isReadOnly())
     {
         QTextEdit::ExtraSelection selection;
         QColor lineColor = QColor(Qt::blue).lighter(130);
@@ -64,8 +64,10 @@ void MarkdownEdit::highlightCurrentLine()
         selection.format.setBackground(lineColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);
 
-        selection.cursor = textCursor();
-        selection.cursor.clearSelection();
+        QTextCursor cursor = textCursor();
+        cursor.clearSelection(); // Clear any existing selection
+        selection.cursor = cursor; // Assign the cursor to the selection
+
         extraSelections.append(selection);
     }
 
@@ -107,4 +109,57 @@ void MarkdownEdit::wheelEvent(QWheelEvent *event)
     }
 
     QTextEdit::wheelEvent(event);
+}
+
+void MarkdownEdit::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->modifiers() & Qt::ControlModifier)
+    {
+        if (event->key() == Qt::Key_Plus || event->key() == Qt::Key_Equal)
+        {
+            QFont f = font();
+            int newSize = f.pointSize() + 1;
+
+            f.setPointSize(newSize);
+            setFont(f);
+            lineNumberArea->update();
+            updateLineNumberAreaWidth();
+            event->accept();
+            return;
+        }
+
+        if (event->key() == Qt::Key_Minus || event->key() == Qt::Key_Underscore)
+        {
+            QFont f = font();
+            int newSize = f.pointSize() - 1;
+            if (newSize > 4)
+            {
+                f.setPointSize(newSize);
+                setFont(f);
+                lineNumberArea->update();
+                updateLineNumberAreaWidth();
+            }
+            event->accept();
+            return;
+        }
+    }
+
+    QTextEdit::keyPressEvent(event);
+}
+
+void MarkdownEdit::focusInEvent(QFocusEvent *event)
+{
+    QTextEdit::focusInEvent(event);
+    highlightCurrentLine();
+}
+
+void MarkdownEdit::focusOutEvent(QFocusEvent *event)
+{
+    QTextEdit::focusOutEvent(event);
+    clearLineHighlighting();
+}
+
+void MarkdownEdit::clearLineHighlighting()
+{
+    setExtraSelections(QList<QTextEdit::ExtraSelection>()); // Clear all extra selections
 }

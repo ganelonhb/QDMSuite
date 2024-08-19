@@ -37,6 +37,7 @@ SOURCES += \
     mainwindow.cpp \
     markdownedit.cpp \
     markdowneditorwidget.cpp \
+    markdownhighlighter.cpp \
     model3d.cpp \
     qclickablelabel.cpp \
     splittabswidget.cpp \
@@ -75,6 +76,7 @@ HEADERS += \
     mainwindow.h \
     markdownedit.h \
     markdowneditorwidget.h \
+    markdownhighlighter.h \
     model3d.h \
     qclickablelabel.h \
     qdmswidget.hpp \
@@ -108,9 +110,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     res.qrc
 
-DISTFILES += \
-    deps/erbsland-qt-toml/src/erbsland/qt/CMakeLists.txt \
-    deps/erbsland-qt-toml/src/erbsland/qt/toml/CMakeLists.txt \
-    deps/erbsland-qt-toml/src/erbsland/qt/toml/impl/CMakeLists.txt
+# Specify the path to the Assimp library and include directory
+INCLUDEPATH += $$PWD/deps/assimp/include
+LIBS += -L$$PWD/deps/assimp -lassimp
 
-unix: LIBS += -lassimp
+# Statically link libassimp.a
+LIBS += $$PWD/deps/assimp/libassimp.a
+
+# Dynamically link the dependencies of libassimp.a
+LIBS += -lz -lpthread -ldl -lminizip

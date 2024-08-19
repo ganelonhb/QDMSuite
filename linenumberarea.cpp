@@ -16,11 +16,10 @@ QSize LineNumberArea::sizeHint() const
 void LineNumberArea::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
-
-    painter.fillRect(event->rect(), palette().base().color().darker(32));
+    painter.fillRect(event->rect(), palette().base().color().darker(64));
 
     QTextBlock block = textEdit->document()->begin();
-    int blockNumber = block.blockNumber();
+    int lineNumber = 1;
     int top = static_cast<int>(textEdit->document()->documentLayout()->blockBoundingRect(block).translated(0, -textEdit->verticalScrollBar()->value()).top());
     int bottom = top + static_cast<int>(textEdit->document()->documentLayout()->blockBoundingRect(block).height());
 
@@ -28,15 +27,29 @@ void LineNumberArea::paintEvent(QPaintEvent *event)
     {
         if (block.isVisible() && bottom >= event->rect().top())
         {
-            QString number = QString::number(blockNumber + 1);
-            painter.setPen(textEdit->palette().text().color());
-            painter.drawText(0, top, width(), textEdit->fontMetrics().height(), Qt::AlignRight, number);
+            QTextLayout *layout = block.layout();
+            const int lineCount = layout->lineCount();
+
+            for (int i = 0; i < lineCount; ++i)
+            {
+                QTextLine line = layout->lineAt(i);
+                int lineTop = static_cast<int>(line.y()) + top;
+                int lineBottom = lineTop + static_cast<int>(line.height());
+
+                if (lineTop >= event->rect().top() && lineBottom <= event->rect().bottom())
+                {
+                    QString number = QString::number(lineNumber);
+                    painter.setPen(textEdit->palette().text().color());
+                    painter.drawText(0, lineTop, width(), textEdit->fontMetrics().height(), Qt::AlignCenter, number);
+
+                    ++lineNumber;
+                }
+            }
         }
 
         block = block.next();
         top = bottom;
         bottom = top + static_cast<int>(textEdit->document()->documentLayout()->blockBoundingRect(block).height());
-        ++blockNumber;
     }
 }
 

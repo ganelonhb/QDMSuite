@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include <QTextEdit>
 
+#include "markdownhighlighter.h"
 #include "linenumberarea.h"
 
 class MarkdownEdit : public QTextEdit
@@ -24,21 +25,20 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
     void scrollContentsBy(int dx, int dy) override;
+    void keyReleaseEvent(QKeyEvent *event) override;
 
-    void keyReleaseEvent(QKeyEvent *event) override {
-        QTextEdit::keyReleaseEvent(event);
-        if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-            updateLineNumberArea();
-        }
-    }
+    void focusInEvent(QFocusEvent *event) override;
+    void focusOutEvent(QFocusEvent *event) override;
 private:
     void updateLineNumberAreaWidth();
     void updateLineNumberArea();
     void lineNumberAreaPaintEvent(QPaintEvent *event);
+    MarkdownHighlighter *highlighter;
 
     LineNumberArea *lineNumberArea;
     void highlightCurrentLine();
     int defaultFontSize;
+    void clearLineHighlighting();
 };
 
 #endif // MARKDOWNEDIT_H
