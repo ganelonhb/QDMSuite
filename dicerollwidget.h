@@ -7,7 +7,7 @@
 #include <QFontInfo>
 #include <QGuiApplication>
 
-#include "exprtkengine.h"
+#include "exprtkengine.hpp"
 #include "dicerolltracker.h"
 #include "exprtkexceptions.hpp"
 #include "qclickablelabel.h"
@@ -74,7 +74,7 @@ private:
     inline void quickDiceRoll_Helper(DDWDice d);
     Ui::DiceRollWidget *ui;
     DiceRollTracker *dt;
-    ExprTkEngine e;
+    ExprTkEngine<long double> e;
 };
 
 #endif // DICEROLLWIDGET_H

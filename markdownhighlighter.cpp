@@ -27,15 +27,15 @@ void MarkdownHighlighter::initializeMarkdownRules()
 {
     QTextCharFormat headerFormat;
     headerFormat.setFontWeight(QFont::ExtraBold);
-    markdownRules.append({ QRegularExpression(R"(^\s{0,3}#{1,6} .*)"), headerFormat });
+    markdownRules.append({QRegularExpression(R"(^\s*#{1,6} .*)"), headerFormat});
 
     QTextCharFormat boldFormat;
     boldFormat.setFontWeight(QFont::Bold);
-    markdownRules.append({ QRegularExpression(R"((\*\*|__)(.*?)\1)"), boldFormat });
+    markdownRules.append({QRegularExpression(R"((\*\*|__)(.*?)\1)"), boldFormat});
 
     QTextCharFormat italicFormat;
     italicFormat.setFontItalic(true);
-    markdownRules.append({ QRegularExpression(R"((\*|_)(.*?)\1)"), italicFormat });
+    markdownRules.append({QRegularExpression(R"((\*|_)(.*?)\1)"), italicFormat});
 
     QTextCharFormat codeFormat;
     codeFormat.setFontFamilies(
@@ -55,7 +55,11 @@ void MarkdownHighlighter::initializeMarkdownRules()
          "Bitstream Vera Sans Mono"
         }
     );
-    markdownRules.append({ QRegularExpression(R"(`([^`]*)`)"), codeFormat });
+    markdownRules.append({QRegularExpression(R"(`([^`]*)`)"), codeFormat});
+
+    QTextCharFormat blockQuoteFormat;
+    blockQuoteFormat.setForeground(Qt::green);
+    markdownRules.append({QRegularExpression(R"(^\s*>+\s*.*)"), blockQuoteFormat});
 }
 
 void MarkdownHighlighter::initializeHtmlRules()

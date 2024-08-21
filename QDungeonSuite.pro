@@ -24,7 +24,6 @@ SOURCES += \
     downloadsfaileddialogwidget.cpp \
     draggabletabbar.cpp \
     draggabletabwidget.cpp \
-    exprtkengine.cpp \
     fantasynamegeneratordownloadwidget.cpp \
     fantasynamegeneratorhtmlparser.cpp \
     fantasynamegeneratorwidget.cpp \
@@ -62,7 +61,7 @@ HEADERS += \
     draggabletabbar.h \
     draggabletabwidget.h \
     exprtk_methods.hpp \
-    exprtkengine.h \
+    exprtkengine.hpp \
     exprtkexceptions.hpp \
     fantasynamegeneratordownloadwidget.h \
     fantasynamegeneratorhtmlparser.h \

@@ -59,32 +59,20 @@ struct gcd : exprtk::ifunction<T>
         T a = std::abs(v1);
         T b = std::abs(v2);
 
-        if (a == T(0) && b == T(0))
+        if (a == 0 && b == 0)
             return 0;
         else if (a == 0)
             return b;
         else if (b == 0)
             return a;
 
-        if (std::is_integral<T>::value)
-        {
-            while (b != 0)
-            {
-                T temp = b;
-                b = static_cast<qint128>(a) % static_cast<qint128>(b);
-                a = temp;
-            }
-        }
-        else if (std::is_floating_point<T>::value)
-        {
-            const T tol = sizeof(T) >= 16 ? 1e-4500l : 1e-250;
+        const T tol = sizeof(T) >= 16 ? 1e-4500l : 1e-250;
 
-            while (std::abs(b) > tol)
-            {
-                T temp = b;
-                b = sizeof(T) >= 16 ? std::fmodl(a, b) : std::fmod(a, b);
-                a = temp;
-            }
+        while (std::abs(b) > tol)
+        {
+            T temp = b;
+            b = sizeof(T) >= 16 ? std::fmodl(a, b) : std::fmod(a, b);
+            a = temp;
         }
 
         return a;

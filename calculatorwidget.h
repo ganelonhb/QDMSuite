@@ -9,7 +9,7 @@
 #include <QFontInfo>
 
 #include "dicerolltracker.h"
-#include "exprtkengine.h"
+#include "exprtkengine.hpp"
 #include "helper_functions.hpp"
 #include "keypresseventfilter.h"
 #include "qdmswidget.hpp"
@@ -46,7 +46,7 @@ private:
     Ui::CalculatorWidget *ui;
 
     bool secondButtonClicked;
-    ExprTkEngine e;
+    ExprTkEngine<long double> e;
     QStringList history;
 
     DiceRollTracker *dt;
