@@ -11,16 +11,11 @@
 
 #include <cmath>
 #include <numbers>
-#include <concepts>
 
 #include "dice_roll.h"
 #include "exprtk_methods.hpp"
 
-template <typename T>
-concept arithmetic = std::floating_point<T>;
-
-template <typename number_t>
-    requires arithmetic<number_t>
+template <std::floating_point number_t>
 class ExprTkEngine
 {
 public:
@@ -186,7 +181,12 @@ private:
 
     constexpr number_t constexpr_abs(number_t x)
     {
-        return x < 0. ? -x : x;
+        if constexpr(std::is_same_v<number_t, long double>)
+            return x < 0.L ? -x : x;
+        else if constexpr(std::is_same_v<number_t, double>)
+            return x < 0. ? -x : x;
+        else
+            return x < 0.f ? -x : x;
     }
 };
 

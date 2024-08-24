@@ -9,6 +9,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QTabWidget>
+#include <QPalette>
 
 class DraggableTabBar : public QTabBar
 {

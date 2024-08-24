@@ -24,6 +24,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->ui->calculatorPushButton->newWindow(), &QAction::triggered, this, &MainWindow::newCalcWindow);
     connect(this->ui->calculatorPushButton->newTab(), &QAction::triggered, this, &MainWindow::newCalcTab);
 
+    connect(this->ui->markdownEditor->newDock(), &QAction::triggered, this, &MainWindow::newMarkdownDock);
+    connect(this->ui->markdownEditor->newWindow(), &QAction::triggered, this, &MainWindow::newMarkdownWindow);
+    connect(this->ui->markdownEditor->newTab(), &QAction::triggered, this, &MainWindow::newMarkdownTab);
+
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createHorizontalTab);
     connect(this->ui->splitTabPushButton->newVertical(), &QAction::triggered, this->ui->splitTabWidget, &SplitTabsWidget::createVerticalTab);
     connect(this->ui->splitTabPushButton->newHorizontal(), &QAction::triggered, this, &MainWindow::lockTabSplit);
@@ -35,8 +39,6 @@ MainWindow::MainWindow(QWidget *parent)
     diceRoll->raise();
 
     ui->horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
-
-    this->newWidget(new MarkdownEditorWidget, WidgetType::TAB, "MarkdownTest");
 }
 
 MainWindow::~MainWindow()
@@ -190,3 +192,24 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if (diceRoll)
         diceRoll->setGeometry(rect());
 }
+
+void MainWindow::on_markdownEditor_clicked()
+{
+    this->newWidget(new MarkdownEditorWidget, WidgetType::TAB, "Document Viewer (New)");
+}
+
+void MainWindow::newMarkdownTab()
+{
+    this->newWidget(new MarkdownEditorWidget, WidgetType::TAB, "Document Viewer (New)");
+}
+
+void MainWindow::newMarkdownWindow()
+{
+    this->newWidget(new MarkdownEditorWidget, WidgetType::WINDOW, "Document Viewer (New)");
+}
+
+void MainWindow::newMarkdownDock()
+{
+    this->newWidget(new MarkdownEditorWidget, WidgetType::FLOATING_DOCK, "Document Viewer (New)");
+}
+

@@ -59,5 +59,12 @@
         <file>shaders/frag.fs</file>
         <file>shaders/verts.vs</file>
         <file>3DAssets/testCube/cube.glb</file>
+        <file>qmarkdown/index.qtml</file>
+        <file>qmarkdown/MARKED-LICENSE.txt</file>
+        <file>qmarkdown/marked.qs</file>
+        <file>qmarkdown/MARKDOWN-LICENSE.txt</file>
+        <file>qmarkdown/markdown.qss</file>
+        <file>icons/symbolic-dark/editor.svg</file>
+        <file>icons/symbolic-light/editor.svg</file>
     </qresource>
 </RCC>

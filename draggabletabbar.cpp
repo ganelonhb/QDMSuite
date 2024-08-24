@@ -4,7 +4,32 @@ DraggableTabBar::DraggableTabBar(QWidget *parent)
     : QTabBar(parent)
     , dragging(false)
     , draggedTabIndex(-1)
-{}
+{
+    setElideMode(Qt::ElideRight);
+    setExpanding(false);
+
+    QPalette palette = QApplication::palette();
+
+    QString normalBg = palette.color(QPalette::Mid).name(QColor::HexArgb);
+    QString normalBorder = palette.color(QPalette::Button).darker(64).name(QColor::HexArgb);
+    QString altBg = palette.color(QPalette::Button).name(QColor::HexArgb);
+
+    setStyleSheet(QString(
+        "QTabBar::tab { "
+        "  background: %1; "
+        "  border: 1px solid %2; "
+        "  padding: 5px; "
+        "} "
+        "QTabBar::tab:selected { "
+        "  background: %3; "
+        "  border: none;"
+        "}"
+        )
+        .arg(normalBg)
+        .arg(normalBorder)
+        .arg(altBg)
+    );
+}
 
 void DraggableTabBar::mousePressEvent(QMouseEvent *event)
 {

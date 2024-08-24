@@ -25,10 +25,31 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item row="1" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <widget class="SplitTabsWidget" name="splitTabWidget" native="true">
           <property name="sizePolicy">
@@ -42,6 +63,9 @@
         </item>
         <item>
          <layout class="QVBoxLayout" name="tabSplitButtonLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <widget class="ClickMenuPushButton" name="splitTabPushButton">
             <property name="text">
@@ -77,6 +101,29 @@
     </item>
     <item row="0" column="0" colspan="3">
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="ContextMenuPushButton" name="markdownEditor">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="res.qrc">
+          <normaloff>:/ui/icons/symbolic-dark/editor.svg</normaloff>:/ui/icons/symbolic-dark/editor.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="ContextMenuPushButton" name="diceRollerToolButton">
         <property name="sizePolicy">

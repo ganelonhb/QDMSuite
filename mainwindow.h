@@ -53,6 +53,10 @@ private slots:
     void newCalcWindow();
     void newCalcDock();
 
+    void newMarkdownTab();
+    void newMarkdownWindow();
+    void newMarkdownDock();
+
     void on_fantasyNameGenerator_clicked();
 
     void newWidget(QWidget *widget, WidgetType wt = WidgetType::WINDOW, const QString &title = "Q.D.M.S.");
@@ -65,6 +69,8 @@ private slots:
     void on_actionName_Generator_triggered();
 
     void on_calculatorPushButton_clicked();
+
+    void on_markdownEditor_clicked();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

@@ -8,6 +8,7 @@
 #include <QTextEdit>
 #include <QTextCharFormat>
 #include <QList>
+#include <QMap>
 
 class MarkdownHighlighter : public QSyntaxHighlighter
 {
@@ -27,6 +28,8 @@ private:
 
     QList<HighlightingRule> markdownRules;
     QList<HighlightingRule> htmlRules;
+
+    QMap<QString, QTextCharFormat> multilineRules;
 
     void initializeMarkdownRules();
     void initializeHtmlRules();

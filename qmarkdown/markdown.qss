@@ -1,0 +1,132 @@
+body{
+    margin: 0 auto;
+    font-family: <FONT>;
+    background-color: <BACKGROUND_COLOR>;
+    color: <DEFAULT_TEXT>;
+    line-height: 1;
+    max-width: 100%;
+    margin-top: 0 !important;
+    padding: 2%;
+    padding-top: 0 !important;
+}
+
+h1, h2, h3, h4 {
+    color: <DEFAULT_TEXT>;
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, p {
+    margin-bottom: 0.33em;
+    padding: 0;
+}
+
+h1 {
+    font-size: 3em;
+}
+
+h2 {
+    font-size: 2.25em;
+    /* The bottom margin is small. It's designed to be used with gray meta text
+     * below a post title. */
+    margin: 24px 0 6px;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+h4 {
+    font-size: 1.3125em;
+}
+
+h5 {
+    font-size: 1.125em;
+}
+
+    color: <LINK>;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+a:hover {
+    text-decoration: none;
+    color: <LINK>;
+}
+
+a:visited {
+    color: <LINK_VISITED>;
+}
+
+ul, ol {
+    padding-left: 1.5em;
+    margin: 0;
+    list-style-position: inside; /* Or 'outside' based on preference */
+    }
+
+ul {
+    list-style-type: disc; /* For bullets */
+}
+
+ol {
+    list-style-type: decimal; /* For numbers */
+}
+
+li {
+    line-height: 1.5em;
+}
+li ul, li ul {
+    margin-left: 1.5em;
+}
+
+p, ul, ol {
+    font-size: 1em;
+    line-height: 1.5em;
+    max-width: 100%;
+}
+
+pre {
+    padding: 0% 3%;
+    max-width: 100%;
+    white-space: pre-wrap;
+}
+
+code {
+    font-family: Consolas, Monaco, Andale Mono, monospace;
+    line-height: 1.5em;
+    font-size: 0.8125em;
+}
+
+aside {
+    display: block;
+    float: right;
+    width: 100%;
+}
+
+blockquote {
+    border-left:.5em solid <BLOCK_QUOTE_COLOR>;
+    padding: 0 2em;
+    margin-left:0;
+    max-width: 100%;
+}
+
+blockquote  cite {
+    font-size:0.9375em;
+    line-height:1.25em;
+    color: <BLOCK_QUOTE_CITE>;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: <DEFAULT_TEXT>;
+    max-width: 100%;
+}
+hr {
+    width: 100%;
+    text-align: left;
+    margin: 0 auto 0 0;
+    color: <DEFAULT_TEXT>;
+}
+

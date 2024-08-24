@@ -1,4 +1,4 @@
-QT       += core gui network svg qml openglwidgets
+QT       += core gui network svg qml openglwidgets webenginecore webenginewidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,6 +21,7 @@ SOURCES += \
     diceroll3dwidget.cpp \
     dicerolltracker.cpp \
     dicerollwidget.cpp \
+    document.cpp \
     downloadsfaileddialogwidget.cpp \
     draggabletabbar.cpp \
     draggabletabwidget.cpp \
@@ -37,6 +38,8 @@ SOURCES += \
     markdownedit.cpp \
     markdowneditorwidget.cpp \
     markdownhighlighter.cpp \
+    markdownthemegetter.cpp \
+    markdownwebenginepage.cpp \
     model3d.cpp \
     qclickablelabel.cpp \
     splittabswidget.cpp \
@@ -57,6 +60,7 @@ HEADERS += \
     diceroll3dwidget.h \
     dicerolltracker.h \
     dicerollwidget.h \
+    document.h \
     downloadsfaileddialogwidget.h \
     draggabletabbar.h \
     draggabletabwidget.h \
@@ -76,6 +80,8 @@ HEADERS += \
     markdownedit.h \
     markdowneditorwidget.h \
     markdownhighlighter.h \
+    markdownthemegetter.h \
+    markdownwebenginepage.h \
     model3d.h \
     qclickablelabel.h \
     qdmswidget.hpp \

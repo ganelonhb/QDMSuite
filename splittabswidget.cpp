@@ -5,6 +5,8 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
     : QWidget{parent}
 {
     QGridLayout *gridLayout = new QGridLayout(this);
+    gridLayout->setContentsMargins(0,0,0,0);
+    gridLayout->setSpacing(0);
 
     this->setLayout(gridLayout);
 
@@ -12,6 +14,7 @@ SplitTabsWidget::SplitTabsWidget(QWidget *parent)
 
     connect(this->tabPressedEventFilter, &TabPressedEventFilter::tabClicked, this, &SplitTabsWidget::onTabClicked);
     DraggableTabWidget *r = new DraggableTabWidget(this);
+    r->setDocumentMode(true);
     r->setTabsClosable(true);
     r->setMovable(true);
     this->_selected = r;
@@ -160,6 +163,7 @@ void SplitTabsWidget::createNewTab(TabSplitType split)
         DraggableTabWidget *r = new DraggableTabWidget(this);
         r->setTabsClosable(true);
         r->setMovable(true);
+        r->setDocumentMode(true);
 
         QPalette palette = this->selected()->palette();
         QColor selectedTabColor = palette.color(QPalette::Highlight);

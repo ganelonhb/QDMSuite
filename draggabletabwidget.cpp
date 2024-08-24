@@ -9,8 +9,6 @@ DraggableTabWidget::DraggableTabWidget(QWidget *parent)
 
     setTabBar(tabBar);
     connect(tabBar, &DraggableTabBar::startDrag, this, &DraggableTabWidget::onStartDrag);
-
-
 }
 
 void DraggableTabWidget::onStartDrag(QWidget *w, const QPoint &pos, const QPixmap pix)
