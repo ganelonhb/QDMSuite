@@ -8,16 +8,16 @@ void Genders::insert(const QString &index, const QString &str)
 {
     QString i = index;
 
-    if (i == "" || i == "namesMale")
+    if (i == "")
         i = "0";
-    else if (i == "namesFemale")
+    /* else if (i == "namesFemale")
     {
         i = "1";
     }
     else if (i == "namesNeutral")
     {
         i = "2";
-    }
+    } */
 
     m.insert(i, str);
 }

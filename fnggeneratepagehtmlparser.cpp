@@ -1,7 +1,7 @@
 #include "fnggeneratepagehtmlparser.h"
 #include "helper_functions.hpp"
 
-
+#include <iostream>
 FNGGeneratePageHTMLParser::FNGGeneratePageHTMLParser()
 {}
 
@@ -38,6 +38,7 @@ void FNGGeneratePageHTMLParser::parse(const QString &body, FNGGeneratorItem &ite
 
         QString value = makeCaps(QString::fromStdString(node->get_attr("value"))).simplified();
 
+        std::cout << match.captured(1).toStdString() << std::endl;
         g.insert(match.captured(1), value);
     }
 

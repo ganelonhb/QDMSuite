@@ -48,7 +48,7 @@ FantasyNameGeneratorWidget::FantasyNameGeneratorWidget(QWidget *parent)
     jse = nullptr;
     ui->generateButton->setEnabled(false);
 
-    int fontId = QFontDatabase::addApplicationFont(":/ui/fonts/Berylium/Berylium Rg.otf");
+    int fontId = QFontDatabase::addApplicationFont(":/ui/fonts/EB Garamond/EBGaramond-VariableFont_wght.ttf");
 
     QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     QFont fantasieFont = QFont(fontFamily);
@@ -113,6 +113,24 @@ FantasyNameGeneratorWidget::FantasyNameGeneratorWidget(QWidget *parent)
     searchView->setCompleter(completer);
 
     connect(ui->treeView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &FantasyNameGeneratorWidget::onSelectionChanged);
+
+    KeyPressEventFilter *enterPressed = new KeyPressEventFilter({Qt::Key_Return, Qt::Key_Enter}, this);
+    this->installEventFilter(enterPressed);
+
+    connect(enterPressed, &KeyPressEventFilter::triggered, this, &FantasyNameGeneratorWidget::on_generateButton_clicked);
+
+    QColor accent = palette().accent().color();
+
+    float h, s, v;
+    accent.getHsvF(&h, &s, &v);
+
+    h = 0.f;
+
+    QColor redAccent;
+    redAccent.setHsvF(h, s, v);
+
+    ui->swearCheck->setNewPillColor(redAccent);
+    ui->swearCheck->setIcon(QIcon(":/ui/icons/symbolic-dark/swear.svg"));
 }
 
 void FantasyNameGeneratorWidget::timer_timeout()
@@ -190,7 +208,11 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
     jse->globalObject().setProperty("nMs", "");
     jse->globalObject().setProperty("nm", "");
     jse->globalObject().setProperty("name", "");
-
+    jse->globalObject().setProperty("namesMale", "");
+    jse->globalObject().setProperty("namesFemale", "");
+    jse->globalObject().setProperty("names2", "");
+    jse->globalObject().setProperty("names3", "");
+    jse->globalObject().setProperty("namesNeutral", "");
 
     ui->choicesWidget->setVisible(false);
 
@@ -207,30 +229,47 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
             {
                 std::shared_ptr<cpptoml::table> meta_toml = cpptoml::parse_file(file.toStdString());
 
+                if (
+                    !meta_toml->contains("name") ||
+                    !meta_toml->contains("script") ||
+                    !meta_toml->contains("genders")
+                    )
+                {
+                    QMessageBox::information(this, "Invalid meta.qoml", "Could not find a either a name or a script, or both.\n\nEvery meta QOML must contain both of these keys to be usable with\nQ.D.M.S. Fantasy Name Generator.");
+                    return;
+                }
+
                 QString name = QString::fromStdString(*meta_toml->get_as<std::string>("name"));
                 ui->generatorNameLabel->setText(name);
 
-                QString script = path + QDir::separator() + QString::fromStdString(*meta_toml->get_as<std::string>("script"));
+                QString entryPoint = meta_toml->contains("entrypoint") ? QString::fromStdString(*meta_toml->get_as<std::string>("entrypoint")) : "nameGen";
 
+                QString script = path + QDir::separator() + QString::fromStdString(*meta_toml->get_as<std::string>("script"));
 
                 QFile scriptFile(script);
 
-                if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
+                if (!scriptFile.exists())
+                {
+                    jse->evaluate(script);
+                }
+                else if (!scriptFile.open(QIODevice::ReadOnly | QIODevice::Text))
                 {
                     QMessageBox::warning(this, "Could not Read", "The script file:\n" + script + "\ncould not be read.");
                     ui->nameTextEdit->setText("No Generator Selected");
                     return;
                 }
+                else
+                {
+                    QTextStream stream(&scriptFile);
 
-                QTextStream stream(&scriptFile);
+                    QString contents = stream.readAll();
 
-                QString contents = stream.readAll();
-
-                jse->evaluate(contents);
+                    jse->evaluate(contents);
+                }
 
                 std::shared_ptr<cpptoml::table> genders = meta_toml->get_table("genders");
 
-                bool large = *meta_toml->get_as<bool>("large");
+                bool large = meta_toml->contains("large") ? *meta_toml->get_as<bool>("large") : false;
 
                 QList<QPair<QString, QString>> qGenders;
                 for (const std::pair<const std::basic_string<char>, std::shared_ptr<cpptoml::base>> &element : *genders)
@@ -260,6 +299,7 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
                     button->setProperty("gender", element.first);
                     button->setProperty("script", script);
                     button->setProperty("large", large);
+                    button->setProperty("entrypoint", entryPoint);
 
                     buttonGroup->addButton(button);
                     ui->genderLayout->addWidget(button);
@@ -268,11 +308,9 @@ void FantasyNameGeneratorWidget::onSelectionChanged(const QItemSelection &select
                 buttonGroup->buttons().at(0)->setChecked(true);
 
                 cpptoml::array_of_trait<std::basic_string<char>>::return_type array =
-                    meta_toml->get_array_of<std::string>("choices");
+                    meta_toml->contains("choices") ? meta_toml->get_array_of<std::string>("choices") : cpptoml::array_of_trait<std::basic_string<char>>::return_type();
 
                 QList<QString> choices;
-
-
 
                 bool first = true;
                 for (const std::basic_string<char> &item : *array)
@@ -326,6 +364,7 @@ void FantasyNameGeneratorWidget::on_generateButton_clicked()
 
     QString pass;
     QString script;
+    QString entryPoint;
     bool large = false;
     foreach(const QAbstractButton * button, buttons)
     {
@@ -334,6 +373,7 @@ void FantasyNameGeneratorWidget::on_generateButton_clicked()
             pass = button->property("gender").toString();
             script = button->property("script").toString();
             large = button->property("large").toBool();
+            entryPoint = button->property("entrypoint").toString();
             break;
         }
     }
@@ -366,8 +406,10 @@ void FantasyNameGeneratorWidget::on_generateButton_clicked()
         int maxOut = 0;
         do
         {
-            name = jse->evaluate("nameGen(" + pass + ");").toString();
-        } while (name == "" && maxOut <= 5);
+            name = jse->evaluate(entryPoint + "(" + pass + ");").toString();
+        } while (name == "" && maxOut <= 5
+            && (ui->swearCheck->isChecked() || !SwearChecker::global().isClean(name))
+        );
 
         if (maxOut == 5)
             name = "Error: Generator returns empty string.";
@@ -397,5 +439,25 @@ void FantasyNameGeneratorWidget::on_generateButton_clicked()
 void FantasyNameGeneratorWidget::on_clearPushButton_clicked()
 {
     ui->nameTextEdit->setText("");
+}
+
+
+void FantasyNameGeneratorWidget::on_goToFolderButton_clicked()
+{
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+    QDir appDataDir(appDataPath);
+
+    if (!appDataDir.exists())
+        appDataDir.mkpath(".");
+
+    QString fngPath = appDataPath + QDir::separator() + "fng";
+    QDir fngDir(fngPath);
+
+    if (!fngDir.exists())
+        fngDir.mkpath(".");
+
+
+    QDesktopServices::openUrl(QUrl::fromLocalFile(fngPath));
 }
 

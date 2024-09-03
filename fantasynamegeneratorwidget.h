@@ -18,6 +18,7 @@
 #include <QLineEdit>
 #include <QTreeView>
 #include <QCompleter>
+#include <QDesktopServices>
 
 #include <cpptoml/cpptoml.h>
 
@@ -25,6 +26,8 @@
 #include "fantasynamegeneratordownloadwidget.h"
 #include "fngitemmodel.h"
 #include "treesortfilterproxymodel.h"
+#include "keypresseventfilter.h"
+#include "swearchecker.h"
 
 namespace Ui {
 class FantasyNameGeneratorWidget;
@@ -53,6 +56,8 @@ private slots:
     void on_generateButton_clicked();
 
     void on_clearPushButton_clicked();
+
+    void on_goToFolderButton_clicked();
 
 private:
     Ui::FantasyNameGeneratorWidget *ui;

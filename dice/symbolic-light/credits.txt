@@ -1,0 +1,18 @@
+Dice 4, 10, and 12 icon (dPercent.svg, d12.svg, d10.svg, d4.svg)
+by Skoll under CC BY 3.0
+https://game-icons.net/1x1/skoll/d4.html
+https://game-icons.net/1x1/skoll/d12.html
+https://game-icons.net/1x1/skoll/d12.html
+MODIFIED: created d100 using d10.
+
+Perspective dice 6 icon
+by Delapouite under CC BY 3.0
+https://game-icons.net/1x1/delapouite/perspective-dice-six.html
+
+Dice 8 faces 8 icon (d8.svg)
+by Delapouite under CC BY 3.0
+https://game-icons.net/1x1/delapouite/dice-eight-faces-eight.html
+
+Dice 20 faces 20 icon (d20.svg)
+by Delapouite under CC BY 3.0
+https://game-icons.net/1x1/delapouite/dice-twenty-faces-twenty.html

@@ -66,5 +66,31 @@
         <file>qmarkdown/markdown.qss</file>
         <file>icons/symbolic-dark/editor.svg</file>
         <file>icons/symbolic-light/editor.svg</file>
+        <file>qmarkdown/dark.qss</file>
+        <file>qmarkdown/light.qss</file>
+        <file>qmarkdown/highcontrast.qss</file>
+        <file>qmarkdown/lambdacomplex.qss</file>
+        <file>qmarkdown/5e.qss</file>
+        <file>qmarkdown/qbrew.qs</file>
+        <file>icons/symbolic-dark/reset.svg</file>
+        <file>icons/symbolic-light/reset.svg</file>
+        <file>icons/symbolic-dark/pencil.svg</file>
+        <file>icons/symbolic-light/pencil.svg</file>
+        <file>icons/symbolic-dark/code.svg</file>
+        <file>icons/symbolic-light/code.svg</file>
+        <file>icons/symbolic-light/markdown.svg</file>
+        <file>icons/symbolic-dark/markdown.svg</file>
+        <file>icons/symbolic-dark/magnify.svg</file>
+        <file>icons/symbolic-dark/minify.svg</file>
+        <file>icons/symbolic-light/minify.svg</file>
+        <file>icons/symbolic-light/magnify.svg</file>
+        <file>icons/symbolic-dark/folder.svg</file>
+        <file>icons/symbolic-light/folder.svg</file>
+        <file>fonts/EB Garamond/EBGaramond-VariableFont_wght.ttf</file>
+        <file>fonts/EB Garamond/OFL.txt</file>
+        <file>fonts/EB Garamond/README.txt</file>
+        <file>fonts/EB Garamond/EBGaramond-Italic-VariableFont_wght.ttf</file>
+        <file>icons/symbolic-dark/swear.svg</file>
+        <file>icons/symbolic-light/swear.svg</file>
     </qresource>
 </RCC>

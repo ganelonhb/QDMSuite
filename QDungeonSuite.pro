@@ -11,6 +11,7 @@ INCLUDEPATH += $$PWD/deps
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    acknowledgementwindow.cpp \
     calcmenupushbutton.cpp \
     calculator2ndpushbutton.cpp \
     calculatorwidget.cpp \
@@ -45,10 +46,13 @@ SOURCES += \
     splittabswidget.cpp \
     swearchecker.cpp \
     tabpressedeventfilter.cpp \
+    toggleswitch.cpp \
     treesortfilterproxymodel.cpp \
+    triswitch.cpp \
     welcomewidget.cpp
 
 HEADERS += \
+    acknowledgementwindow.h \
     calcmenupushbutton.h \
     calculator2ndpushbutton.h \
     calculatorwidget.h \
@@ -88,10 +92,13 @@ HEADERS += \
     splittabswidget.h \
     swearchecker.h \
     tabpressedeventfilter.h \
+    toggleswitch.h \
     treesortfilterproxymodel.h \
+    triswitch.h \
     welcomewidget.h
 
 FORMS += \
+    acknowledgementwindow.ui \
     calculatorwidget.ui \
     dicerollwidget.ui \
     downloadsfaileddialogwidget.ui \

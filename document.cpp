@@ -17,5 +17,5 @@ void Document::setCss(const QString &css)
     if (css == m_css) return;
 
     m_css = css;
-    emit textChanged(m_css);
+    emit cssChanged(m_css);
 }

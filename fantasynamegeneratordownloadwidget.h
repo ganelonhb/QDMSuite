@@ -15,6 +15,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QAtomicInt>
+#include <QTreeWidgetItemIterator>
 
 #include "downloadsfaileddialogwidget.h"
 #include "fnggeneratepagehtmlparser.h"
@@ -76,6 +77,8 @@ private slots:
 
     void onCloseRequested();
     void onShow();
+
+    void filterTreeItems(const QString &text);
 
 private:
     static inline void iterateTreeItems(QTreeWidgetItem *item, Qt::CheckState state = Qt::Unchecked);

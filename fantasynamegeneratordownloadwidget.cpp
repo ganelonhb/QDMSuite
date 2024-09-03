@@ -2,6 +2,8 @@
 #include "helper_functions.hpp"
 #include "ui_fantasynamegeneratordownloadwidget.h"
 
+#include <iostream>
+
 FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *parent, Qt::WindowFlags f)
     : QWidget(parent, f)
     , ui(new Ui::FantasyNameGeneratorDownloadWidget)
@@ -17,6 +19,8 @@ FantasyNameGeneratorDownloadWidget::FantasyNameGeneratorDownloadWidget(QWidget *
     connect(nw, &QNetworkAccessManager::finished, this, &FantasyNameGeneratorDownloadWidget::finished);
     connect(this, &FantasyNameGeneratorDownloadWidget::closeRequested, this, &FantasyNameGeneratorDownloadWidget::onCloseRequested);
     connect(this, &FantasyNameGeneratorDownloadWidget::shown, this, &FantasyNameGeneratorDownloadWidget::onShow);
+
+    connect(ui->lineEdit, &QLineEdit::textChanged, this, &FantasyNameGeneratorDownloadWidget::filterTreeItems);
 }
 
 FantasyNameGeneratorDownloadWidget::~FantasyNameGeneratorDownloadWidget()
@@ -397,7 +401,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
         QRegularExpression reNames(R"(\bnames\b)");
         QRegularExpression renMs(R"(\bnMs\b)");
-        QRegularExpression renm(R"(\bnm\b)");
+        QRegularExpression renm(R"(\bnm\b(?![\d"])");
         QRegularExpression reName(R"(\bname\b)");
         QRegularExpressionMatch matchNames = reNames.match(responseScript);
         QRegularExpressionMatch matchnMs = renMs.match(responseScript);
@@ -437,6 +441,8 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
                          .replace(R"($('#firChange').is(':checked'))", "false")
                          .replace(R"($('#secChange').is(':checked'))", "false")
                          .replace(R"($("#firChange").val())", "false")
+                         .replace(R"(element.appendChild(br[0]);)", "")
+                         .replace(R"(br2=document.createElement('br');)", "")
                          .replace(R"(element.appendChild(document.createTextNode(names[i]));)", "")
                          .replace(R"(element.appendChild(document.createTextNode(names));)", "")
                          .replace(R"(br[0]=document.createElement('br');)", "")
@@ -483,6 +489,7 @@ inline QList<FNGGeneratorItem> FantasyNameGeneratorDownloadWidget::downloadItems
 
         foreach(QString str, map.keys())
         {
+            std::cout << str.toStdString() << "=" << map[str].toStdString() << "\n";
             metaOut << '"' << str << "\" = \"" << map[str] << "\"\n";
         }
 
@@ -579,4 +586,30 @@ void FantasyNameGeneratorDownloadWidget::onCloseRequested()
 void FantasyNameGeneratorDownloadWidget::onShow()
 {
     cancelRequest = 0;
+}
+
+void FantasyNameGeneratorDownloadWidget::filterTreeItems(const QString &text)
+{
+    QTreeWidgetItemIterator it(ui->treeWidget);
+
+    while (*it)
+    {
+        QTreeWidgetItem *item = *it;
+
+        bool match = item->text(0).contains(text, Qt::CaseInsensitive);
+        item->setHidden(!match);
+
+        if (match)
+        {
+            QTreeWidgetItem *parent = item->parent();
+            while (parent)
+            {
+                parent->setHidden(false);
+                ui->treeWidget->expandItem(parent);
+                parent = parent->parent();
+            }
+        }
+
+        ++it;
+    }
 }

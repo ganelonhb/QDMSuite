@@ -10,6 +10,7 @@
 #include <QPalette>
 #include <QColor>
 #include <QMessageBox>
+#include <functional>
 
 #include "welcomewidget.h"
 #include "draggabletabwidget.h"

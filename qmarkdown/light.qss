@@ -1,0 +1,246 @@
+/*$@BACKGROUND_COLOR>
+$@BG_IMG=<BACKGROUND_IMAGE> */
+
+body{
+    margin: 0 auto;
+    font-family: <NATIVE_FONT>;
+    background-color: #ffffff;
+    color: #000000;
+    line-height: 1;
+    max-width: 100%;
+    margin-top: 0 !important;
+    padding: 2%;
+    padding-top: 0 !important;
+}
+
+h1, h2, h3, h4 {
+    font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, p {
+    margin-bottom: 0.33em;
+    padding: 0;
+}
+
+h1 {
+    color : #000000;
+    font-size: 3em;
+}
+
+h2 {
+    color : #000000;
+    font-size: 2.25em;
+    /* The bottom margin is small. It's designed to be used with gray meta text
+     * below a post title. */
+    margin: 24px 0 6px;
+}
+
+h3 {
+    color : #000000;
+    font-size: 1.5em;
+}
+
+h4 {
+    color : #000000;
+    font-size: 1.3125em;
+}
+
+h5 {
+    color : #000000;
+    font-size: 1.125em;
+}
+h6 {
+    color : #000000;
+    font-size: 1.025em;
+}
+
+a {
+    color: #0000EE;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #0000EE;
+}
+
+a:visited {
+    color: #551A8B;
+}
+
+ul, ol {
+    padding-left: 1.5em;
+    margin: 0;
+    list-style-position: inside; /* Or 'outside' based on preference */
+    }
+
+ul {
+    list-style-type: disc; /* For bullets */
+}
+
+ol {
+    list-style-type: decimal; /* For numbers */
+}
+
+li {
+    line-height: 1.5em;
+}
+li ul, li ul {
+    margin-left: 1.5em;
+}
+
+p, ul, ol {
+    font-size: 1em;
+    line-height: 1.5em;
+    max-width: 100%;
+}
+
+pre {
+    padding: 0% 3%;
+    max-width: 100%;
+    white-space: pre-wrap;
+}
+
+code {
+    font-family: Courier New, Courier, Consolas, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Ubuntu Mono, Source Code Pro, FreeMono, Andale Mono, Linux Libertine Mono, Bitstream Vera Sans Mono;
+    line-height: 1.5em;
+    font-size: 0.8125em;
+}
+
+aside {
+    display: block;
+    float: right;
+    width: 100%;
+}
+
+blockquote {
+    border-left:.5em solid #457aa8;
+    padding: 0 2em;
+    margin-left:0;
+    max-width: 100%;
+}
+
+blockquote  cite {
+    font-size:0.9375em;
+    line-height:1.25em;
+    color: #457aa8;
+}
+blockquote cite:before {
+    content: '\2014 \00A0';
+}
+
+blockquote p {
+    color: #000000;
+    max-width: 100%;
+}
+hr {
+    width: 100%;
+    text-align: left;
+    margin: 0 auto 0 0;
+    color: #000000;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #457aa8;
+}
+
+input,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="color"] {
+    background-color: #525252ff;
+    color: #000000;
+    border: 0.0625em solid #7b7b7bff;
+    padding: 0.3125em;
+    border-radius: 0.25em;
+}
+
+input::placeholder {
+    color: #f5f5f5;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: #457aa8;
+}
+
+input[type="radio"]:checked::before,
+input[type="checkbox"]:checked::before {
+    background-color: #f5f5f5;
+}
+
+input[type="range"] {
+    accent-color: #457aa8;
+    background-color: #525252ff;
+    color: #000000;
+}
+
+input[type="file"] {
+    background-color: #525252ff;
+    color: #000000;
+    border: 1px solid #7b7b7bff;
+    padding: 5px;
+}
+
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+    background-color: #f5f5f5;
+    color: #000000;
+    border: 1px solid #7b7b7bff;
+    padding: 7px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+select {
+    background-color: #f5f5f5;
+    color: #000000;
+    border: 1px solid #7b7b7bff;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+textarea {
+    background-color: #525252ff;
+    color: #000000;
+    border: 1px solid #7b7b7bff;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+progress {
+    background-color: #525252ff;
+    color: #000000;
+    accent-color: #457aa8;
+    border: 1px solid #7b7b7bff;
+}
+
+fieldset {
+    border: 1px solid #7b7b7bff;
+    padding: 10px;
+}
+
+legend {
+    color: #000000;
+    padding: 0 5px;
+}
+
+input:disabled, button:disabled, select:disabled, textarea:disabled {
+    cursor: not-allowed;
+}

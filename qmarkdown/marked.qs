@@ -2079,3 +2079,33 @@ var parseInline = marked.parseInline;
 var parse = marked;
 var parser = _Parser.parse;
 var lexer = _Lexer.lex;
+
+const customTokenizer = {
+  note(src) {
+    const match = /^(@ .+\n?)+/.exec(src);
+    if (match) {
+      // Combine all lines into a single string
+      const text = match[0]
+        .split('\n')               // Split into individual lines
+        .map(line => line.slice(2)) // Remove the leading '@ '
+        .join(' ');                // Join lines with a space
+
+      return {
+        type: 'note',              // Custom token type
+        raw: match[0],             // The entire matched string
+        text: text.trim(),         // The combined text
+      };
+    }
+  }
+};
+
+const customRenderer = {
+  note(token) {
+    return `<p class="note">${token.text}</p>\n`;
+  }
+};
+
+marked.use({
+  tokenizer: customTokenizer,
+  renderer: customRenderer,
+});

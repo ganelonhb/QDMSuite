@@ -9,6 +9,10 @@
 #include <QDir>
 #include <QStandardPaths>
 
+#include <cpptoml/cpptoml.h>
+#include <fstream>
+
+
 struct FileNode
 {
     QString name;
@@ -41,6 +45,8 @@ private:
     FileNode *findNode(const QString &path, FileNode *parentNode) const;
     FileNode *rootNode;
     QFileSystemWatcher *fileSystemWatcher;
+
+    bool validateQomlFile(const QString &filePath);
 };
 
 #endif // FNGITEMMODEL_H

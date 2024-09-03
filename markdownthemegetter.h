@@ -3,6 +3,12 @@
 
 #include <QObject>
 #include <QString>
+#include <QColor>
+#include <QPalette>
+#include <QApplication>
+#include <QFont>
+#include <QFontInfo>
+#include <QFile>
 
 enum class ThemeName
 {
@@ -15,22 +21,31 @@ enum class ThemeName
     LAMBDA_COMPLEX,
 };
 
-class MarkdownThemeGetter : QObject
+class MarkdownThemeGetter : public QObject
 {
     Q_OBJECT
 
 public:
-    MarkdownThemeGetter();
+    MarkdownThemeGetter(QObject *parent = nullptr);
 
-    void setTheme(ThemeName name = ThemeName::NATIVE);
     QString theme() const;
+    QString url() const;
+    QColor bgColor() const;
 
-    QString operator()() const;
+    QString operator()();
 
-    static MarkdownThemeGetter getter;
+signals:
+    void themeChanged();
+
+public slots:
+    void setTheme(const QString &name = "native", const QString &url = QString());
 
 private:
-    ThemeName m_theme;
+    QString m_theme;
+    QString m_url;
+    QColor bg;
+
+    QString colorFix(const QColor &color) const;
 };
 
 #endif // MARKDOWNTHEMEGETTER_H

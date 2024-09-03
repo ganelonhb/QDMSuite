@@ -1,3 +1,6 @@
+/*$@BACKGROUND_COLOR>
+$@BG_IMG=<BACKGROUND_IMAGE> */
+
 body{
     margin: 0 auto;
     font-family: <FONT>;
@@ -11,7 +14,6 @@ body{
 }
 
 h1, h2, h3, h4 {
-    color: <DEFAULT_TEXT>;
     font-weight: 400;
 }
 
@@ -21,10 +23,12 @@ h1, h2, h3, h4, h5, p {
 }
 
 h1 {
+    color : <H1_TEXT>;
     font-size: 3em;
 }
 
 h2 {
+    color : <H2_TEXT>;
     font-size: 2.25em;
     /* The bottom margin is small. It's designed to be used with gray meta text
      * below a post title. */
@@ -32,17 +36,25 @@ h2 {
 }
 
 h3 {
+    color : <H3_TEXT>;
     font-size: 1.5em;
 }
 
 h4 {
+    color : <H4_TEXT>;
     font-size: 1.3125em;
 }
 
 h5 {
+    color : <H5_TEXT>;
     font-size: 1.125em;
 }
+h6 {
+    color : <H6_TEXT>;
+    font-size: 1.025em;
+}
 
+a {
     color: <LINK>;
     margin: 0;
     padding: 0;
@@ -92,7 +104,7 @@ pre {
 }
 
 code {
-    font-family: Consolas, Monaco, Andale Mono, monospace;
+    font-family: Courier New, Courier, Consolas, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Ubuntu Mono, Source Code Pro, FreeMono, Andale Mono, Linux Libertine Mono, Bitstream Vera Sans Mono;
     line-height: 1.5em;
     font-size: 0.8125em;
 }
@@ -120,13 +132,115 @@ blockquote cite:before {
 }
 
 blockquote p {
-    color: <DEFAULT_TEXT>;
+    color: <QUOTE_TEXT>;
     max-width: 100%;
 }
 hr {
     width: 100%;
     text-align: left;
     margin: 0 auto 0 0;
-    color: <DEFAULT_TEXT>;
+    color: <HR_TEXT>;
 }
 
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: <FOCUS_COLOR>;
+}
+
+input,
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+input[type="color"] {
+    background-color: <INPUT_BG>;
+    color: <INPUT_TEXT>;
+    border: 0.0625em solid <INPUT_BORDER>;
+    padding: 0.3125em;
+    border-radius: 0.25em;
+}
+
+input::placeholder {
+    color: <PLACEHOLDER_COLOR>;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: <RADIO_CHECKBOX>;
+}
+
+input[type="radio"]:checked::before,
+input[type="checkbox"]:checked::before {
+    background-color: <BUTTON_BG>;
+}
+
+input[type="range"] {
+    accent-color: <RADIO_CHECKBOX>;
+    background-color: <INPUT_BG>;
+    color: <INPUT_TEXT>;
+}
+
+input[type="file"] {
+    background-color: <INPUT_BG>;
+    color: <INPUT_TEXT>;
+    border: 1px solid <INPUT_BORDER>;
+    padding: 5px;
+}
+
+button, input[type="button"], input[type="submit"], input[type="reset"] {
+    background-color: <BUTTON_BG>;
+    color: <BUTTON_TEXT>;
+    border: 1px solid <BUTTON_BORDER>;
+    padding: 7px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+select {
+    background-color: <BUTTON_BG>;
+    color: <BUTTON_TEXT>;
+    border: 1px solid <INPUT_BORDER>;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+textarea {
+    background-color: <INPUT_BG>;
+    color: <INPUT_TEXT>;
+    border: 1px solid <INPUT_BORDER>;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+progress {
+    background-color: <INPUT_BG>;
+    color: <INPUT_TEXT>;
+    accent-color: <RADIO_CHECKBOX>;
+    border: 1px solid <INPUT_BORDER>;
+}
+
+fieldset {
+    border: 1px solid <INPUT_BORDER>;
+    padding: 10px;
+}
+
+legend {
+    color: <INPUT_TEXT>;
+    padding: 0 5px;
+}
+
+input:disabled, button:disabled, select:disabled, textarea:disabled {
+    cursor: not-allowed;
+}

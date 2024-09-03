@@ -139,12 +139,28 @@ void FNGItemModel::traverseDirectory(const QString &directoryPath, FileNode *par
         {
             if (directoryContainsToml(entry.filePath()))
             {
-                FileNode *node = new FileNode{entry.fileName(), entry.filePath(), {}, parentNode};
-                parentNode->children.append(node);
-                traverseDirectory(entry.filePath(), node);
-                if (!watchedPaths.contains(entry.filePath()))
+                QDir subDir(entry.filePath());
+                QFileInfoList files = subDir.entryInfoList(QStringList() << "*.qoml", QDir::Files);
+                bool valid = true;
+
+                foreach (const QFileInfo &file, files)
                 {
-                    fileSystemWatcher->addPath(entry.filePath());
+                    if (!validateQomlFile(file.filePath()))
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+
+                if (valid)
+                {
+                    FileNode *node = new FileNode{entry.fileName(), entry.filePath(), {}, parentNode};
+                    parentNode->children.append(node);
+                    traverseDirectory(entry.filePath(), node);
+                    if (!watchedPaths.contains(entry.filePath()))
+                    {
+                        fileSystemWatcher->addPath(entry.filePath());
+                    }
                 }
             }
         }
@@ -175,4 +191,24 @@ FileNode* FNGItemModel::findNode(const QString &path, FileNode *parentNode) cons
         }
     }
     return nullptr;
+}
+
+
+bool FNGItemModel::validateQomlFile(const QString &filePath)
+{
+    try
+    {
+        std::shared_ptr<cpptoml::table> config =
+            cpptoml::parse_file(filePath.toStdString());
+
+        if (config->contains("name") && config->contains("script"))
+            return true;
+
+    }
+    catch (const cpptoml::parse_exception &ex)
+    {
+        return false;
+    }
+
+    return false;
 }

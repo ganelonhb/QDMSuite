@@ -1,8 +1,6 @@
 #include "markdowneditorwidget.h"
 #include "ui_markdowneditorwidget.h"
 
-#include <iostream>
-
 MarkdownEditorWidget::MarkdownEditorWidget(QWidget *parent)
     : QDMSWidget(parent)
     , ui(new Ui::MarkdownEditorWidget)
@@ -15,67 +13,107 @@ MarkdownEditorWidget::MarkdownEditorWidget(QWidget *parent)
 
     ui->preview->setPage(page);
 
-    ui->frame->setAutoFillBackground(true);
-    QPalette textEditPallete = ui->textEdit->palette();
-    textEditPallete.setColor(QPalette::Window, ui->frame->style()->standardPalette().color(QPalette::Base));
-    ui->frame->setPalette(textEditPallete);
+    connect(ui->textEdit->document(), &QTextDocument::contentsChanged, this, &MarkdownEditorWidget::textChanged);
 
-    QFrame *frame = ui->frame;
-
-    auto colorFix = [](const QString &s) -> QString {
-        return QString("#%1%2%3%4")
-            .arg(s.mid(3, 2))
-            .arg(s.mid(5, 2))
-            .arg(s.mid(7, 2))
-            .arg(s.mid(1, 2));
-    };
-
-    QPalette palette = frame->palette();
-    QColor bgColor = palette.color(frame->backgroundRole());
-    QString bg = colorFix(bgColor.name(QColor::HexArgb));
-
-    QColor textColor(QApplication::palette().color(QPalette::Text));
-    QString defaultText = colorFix(textColor.name(QColor::HexArgb));
-
-    QColor linkColor(QApplication::palette().color(QPalette::Link));
-    QColor linkVisitedColor(QApplication::palette().color(QPalette::LinkVisited));
-    QString link = colorFix(linkColor.name(QColor::HexArgb));
-    QString linkVisited = colorFix(linkVisitedColor.name(QColor::HexArgb));
-
-    QColor accentColor(QApplication::palette().color(QPalette::Accent));
-    QString accent = colorFix(accentColor.name(QColor::HexArgb));
-
-    QFont font = QApplication::font();
-    QFontInfo fontInfo(font);
-    QString fontName = fontInfo.family();
-
-    QFile qss(":/ui/qmarkdown/markdown.qss");
-    if (!qss.open(QIODevice::ReadOnly | QIODevice::Text))
-        qDebug() << "Somehow, we could not read the qrc file!";
-
-    QString qssText = QString(qss.readAll())
-                          .replace("<BACKGROUND_COLOR>", bg)
-                          .replace("<DEFAULT_TEXT>", defaultText)
-                          .replace("<FONT>", fontName)
-                          .replace("<BLOCK_QUOTE_CITE>", accent)
-                          .replace("<LINK>", link)
-                          .replace("<LINK_VISITED>", linkVisited)
-                          .replace("<BLOCK_QUOTE_COLOR>", accent);
-
-    std::cout << qssText.toStdString() << std::endl;
-    qss.close();
-
-    connect(ui->textEdit->document(), &QTextDocument::contentsChanged, [this]() {content.setText(ui->textEdit->document()->toPlainText());});
     QWebChannel *channel = new QWebChannel(this);
     channel->registerObject(QStringLiteral("content"), &content);
     page->setWebChannel(channel);
 
-    content.setCss(qssText);
+    content.setCss(theme());
+
+    connect(&theme, &MarkdownThemeGetter::themeChanged, this, &MarkdownEditorWidget::cssChanged);
 
     ui->preview->setUrl(QUrl("qrc:/ui/qmarkdown/index.qtml"));
+    ui->editCheckBox->setIcon(QIcon(":/ui/icons/symbolic-dark/pencil.svg"));
+
+    ui->modeButton->setIcons(QIcon(":/ui/icons/symbolic-dark/code.svg"), QIcon(":/ui/icons/symbolic-dark/markdown.svg"));
+
+    connect(ui->modeButton, &TriSwitch::positionChanged, this, &MarkdownEditorWidget::modeChanged);
+}
+
+void MarkdownEditorWidget::cssChanged()
+{
+    content.setCss(theme());
+}
+
+void MarkdownEditorWidget::textChanged()
+{
+    content.setText(ui->textEdit->document()->toPlainText());
+}
+
+void MarkdownEditorWidget::modeChanged(TriSwitchPosition pos)
+{
+    switch (pos)
+    {
+    case TriSwitchPosition::RIGHT:
+        ui->markdownRendererWidget->setVisible(false);
+        ui->textEdit->setVisible(true);
+        return;
+    case TriSwitchPosition::MIDDLE:
+        ui->markdownRendererWidget->setVisible(true);
+        ui->textEdit->setVisible(true);
+        return;
+    case TriSwitchPosition::LEFT:
+        ui->markdownRendererWidget->setVisible(true);
+        ui->textEdit->setVisible(false);
+        return;
+    }
+
+    return;
 }
 
 MarkdownEditorWidget::~MarkdownEditorWidget()
 {
     delete ui;
+}
+
+void MarkdownEditorWidget::on_comboBox_currentTextChanged(const QString &themeName)
+{
+    theme.setTheme(themeName);
+}
+
+
+void MarkdownEditorWidget::on_zoomSlider_sliderMoved(int position)
+{
+    double factor = position / 100.;
+
+    ui->preview->setZoomFactor(factor);
+    ui->zoomFactor->setText(QString::number(static_cast<int>(factor * 100)) + "%");
+}
+
+
+void MarkdownEditorWidget::on_resetFactor_clicked()
+{
+    ui->preview->setZoomFactor(1.0);
+    ui->zoomFactor->setText("100%");
+
+    ui->zoomSlider->blockSignals(true);
+    ui->zoomSlider->setValue(100);
+    ui->zoomSlider->blockSignals(false);
+}
+
+
+void MarkdownEditorWidget::on_zoomDown_clicked()
+{
+    qreal zoomFactor = ui->preview->zoomFactor();
+    ui->preview->setZoomFactor(zoomFactor - .1);
+
+    int sliderValue = ui->zoomSlider->value();
+    ui->zoomSlider->blockSignals(true);
+    ui->zoomSlider->setValue(sliderValue - 10);
+    ui->zoomFactor->setText(QString::number(static_cast<int>((zoomFactor - .1) * 100)) + "%");
+    ui->zoomSlider->blockSignals(false);
+}
+
+
+void MarkdownEditorWidget::on_zoomUp_clicked()
+{
+    qreal zoomFactor = ui->preview->zoomFactor();
+    ui->preview->setZoomFactor(zoomFactor + .1);
+
+    int sliderValue = ui->zoomSlider->value();
+    ui->zoomSlider->blockSignals(true);
+    ui->zoomSlider->setValue(sliderValue + 10);
+    ui->zoomFactor->setText(QString::number(static_cast<int>((zoomFactor + .1) * 100)) + "%");
+    ui->zoomSlider->blockSignals(false);
 }

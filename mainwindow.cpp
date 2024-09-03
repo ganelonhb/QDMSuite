@@ -213,3 +213,13 @@ void MainWindow::newMarkdownDock()
     this->newWidget(new MarkdownEditorWidget, WidgetType::FLOATING_DOCK, "Document Viewer (New)");
 }
 
+
+void MainWindow::on_actionAcknowledgements_triggered()
+{
+    AcknowledgementWindow *help = new AcknowledgementWindow(this, Qt::WindowFlags() | Qt::Window);
+    help->setAttribute(Qt::WA_DeleteOnClose);
+    help->setWindowTitle("Q.D.M.S. Acknowlegements");
+
+    help->show();
+}
+

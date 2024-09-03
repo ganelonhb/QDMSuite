@@ -14,6 +14,7 @@
 #include "diceroll3dwidget.h"
 #include "calculatorwidget.h"
 #include "markdowneditorwidget.h"
+#include "acknowledgementwindow.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -71,6 +72,8 @@ private slots:
     void on_calculatorPushButton_clicked();
 
     void on_markdownEditor_clicked();
+
+    void on_actionAcknowledgements_triggered();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <script src="qrc:/ui/qmarkdown/marked.qs"></script>
+    <script src="qrc:/ui/qmarkdown/qbrew.qs"></script>
     <script src="qrc:/qtwebchannel/qwebchannel.js"></script>
 </head>
 <body>
@@ -17,12 +18,16 @@
         placeholder.innerHTML = marked(text);
     }
 
-    var styleElement = document.createElement('style');
-    styleElement.type = 'text/css';
-    document.head.appendChild(styleElement);
-
     var updateCss = function(css) {
+        var existingStyle = document.querySelector('head style');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+
+        var styleElement = document.createElement('style');
+        styleElement.type = 'text/css';
         styleElement.innerHTML = css;
+        document.head.appendChild(styleElement);
     }
 
     new QWebChannel(
