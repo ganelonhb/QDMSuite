@@ -46,6 +46,7 @@ private:
     Ui::CalculatorWidget *ui;
 
     bool secondButtonClicked;
+    bool equalsPushed;
     ExprTkEngine<long double> e;
     QStringList history;
 

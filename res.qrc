@@ -93,4 +93,11 @@
         <file>icons/symbolic-dark/swear.svg</file>
         <file>icons/symbolic-light/swear.svg</file>
     </qresource>
+    <qresource prefix="/docs">
+        <file>Acknowledgements/assimp.md</file>
+        <file>Acknowledgements/cpptoml.md</file>
+        <file>Acknowledgements/ExprTk.md</file>
+        <file>Acknowledgements/htmlparser.md</file>
+        <file>Acknowledgements/Dependencies.md</file>
+    </qresource>
 </RCC>

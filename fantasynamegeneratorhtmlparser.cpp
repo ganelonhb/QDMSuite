@@ -43,7 +43,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                 if (entry->get_attr("class") == "")
                 {
                     QString entryName = QString::fromStdString(entry->to_text()).replace("/", " & ").simplified();
-                    entryName = entryName.replace(" - New!", "").simplified();
+                    entryName = entryName.replace(" - New!", "").replace(" - New", "").simplified();
 
                     QTreeWidgetItem *entryItem = new QTreeWidgetItem(0);
                     entryItem->setText(0, entryName);
@@ -59,7 +59,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                 else if (entry->get_attr("class") == "subList")
                 {
                     QString subListName = QString::fromStdString(entry->to_text()).split('\n')[0].simplified();
-                    subListName = subListName.replace(" - New!", "").replace(" >", "").replace("/", " & ").simplified();
+                    subListName = subListName.replace(" - New!", "").replace(" - New", "").replace(" >", "").replace("/", " & ").simplified();
 
                     QTreeWidgetItem* subListItem = new QTreeWidgetItem(0);
                     subListItem->setText(0, subListName);
@@ -72,7 +72,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                     for (html::node * subListNode : subListItems)
                     {
                         QString entryName = QString::fromStdString(subListNode->to_text()).replace("/", " & ").simplified();
-                        entryName = entryName.replace(" - New!", "");
+                        entryName = entryName.replace(" - New!", "").replace(" - New", "");
 
                         QTreeWidgetItem *entryItem = new QTreeWidgetItem(0);
                         entryItem->setText(0, entryName);
@@ -116,7 +116,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                             if (subEntry->get_attr("class") == "")
                             {
                                 QString entryName = QString::fromStdString(subEntry->to_text()).replace("/", " & ").simplified();
-                                entryName = entryName.replace(" - New!", "").simplified();
+                                entryName = entryName.replace(" - New!", "").replace(" - New", "").simplified();
 
                                 QTreeWidgetItem *entryItem = new QTreeWidgetItem(0);
                                 entryItem->setText(0, entryName);
@@ -132,7 +132,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                             else if (subEntry->get_attr("class") == "subList")
                             {
                                 QString subListName = QString::fromStdString(subEntry->to_text()).split('\n')[0].replace("/", " & ").simplified();
-                                subListName = subListName.replace(" - New!", "").replace(" >", "").simplified();
+                                subListName = subListName.replace(" - New!", "").replace(" - New", "").replace(" >", "").simplified();
 
                                 QTreeWidgetItem* subListItem = new QTreeWidgetItem(0);
                                 subListItem->setText(0, subListName);
@@ -145,7 +145,7 @@ void FantasyNameGeneratorHtmlParser::parse(QNetworkReply *r)
                                 for (html::node * subListNode : subListItems)
                                 {
                                     QString entryName = QString::fromStdString(subListNode->to_text()).replace("/", " & ").simplified();
-                                    entryName = entryName.replace(" - New!", "");
+                                    entryName = entryName.replace(" - New!", "").replace(" - New", "");
 
                                     QTreeWidgetItem *entryItem = new QTreeWidgetItem(0);
                                     entryItem->setText(0, entryName);

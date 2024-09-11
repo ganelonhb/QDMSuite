@@ -12,6 +12,8 @@ CalculatorWidget::CalculatorWidget(DiceRollTracker *dt, QWidget *parent)
     int fontId = QFontDatabase::addApplicationFont(":/ui/fonts/Unifont/unifont-15.1.05.otf");
     this->e.setDiceRollTracker(dt);
 
+    equalsPushed = false;
+
     QString fontFamily = QFontDatabase::applicationFontFamilies(fontId).at(0);
     QFont lcdFont = QFont(fontFamily);
 
@@ -502,8 +504,15 @@ void CalculatorWidget::on_secondButton_clicked()
     }
 }
 
+// TODO: Modify this button's behavior so that operators do not clear the display when equals was pushed.
 void CalculatorWidget::regularButtonClicked(QAbstractButton *b)
 {
+    if (equalsPushed)
+    {
+        this->ui->displayLineEdit->clear();
+        equalsPushed = false;
+    }
+
     QString currentText = this->ui->displayLineEdit->text();
 
     if (!secondButtonClicked)
@@ -526,6 +535,7 @@ void CalculatorWidget::regularButtonClicked(QAbstractButton *b)
 void CalculatorWidget::on_acButton_clicked()
 {
     this->ui->displayLineEdit->clear();
+    equalsPushed = false;
 }
 
 
@@ -534,6 +544,7 @@ void CalculatorWidget::on_delButton_clicked()
     QString oldString = this->ui->displayLineEdit->text();
     QString newString = oldString.mid(0, oldString.length() - 1);
     this->ui->displayLineEdit->setText(newString);
+    equalsPushed = false;
 }
 
 void CalculatorWidget::on_equalsPushButton_clicked()
@@ -587,6 +598,8 @@ void CalculatorWidget::on_equalsPushButton_clicked()
         this->ui->secondIndicator->setText("");
         secondButtonClicked = false;
     }
+
+    equalsPushed = true;
 }
 
 void CalculatorWidget::constMenuActionTriggered(QAction *action)
@@ -602,6 +615,12 @@ void CalculatorWidget::constMenuActionTriggered(QAction *action)
 
 void CalculatorWidget::on_ansPushButton_clicked()
 {
+    if (equalsPushed)
+    {
+        this->ui->displayLineEdit->clear();
+        equalsPushed = false;
+    }
+
     if (!secondButtonClicked)
     {
         QString currentText = this->ui->displayLineEdit->text();
@@ -611,10 +630,7 @@ void CalculatorWidget::on_ansPushButton_clicked()
     }
 
     if (history.isEmpty())
-    {
-        this->ui->displayLineEdit->setText("42");
-        return;
-    }
+        return this->ui->displayLineEdit->setText("42");
 
     this->ui->displayLineEdit->setText(history.last());
 }
